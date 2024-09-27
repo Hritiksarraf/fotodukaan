@@ -8,7 +8,7 @@ export default function Navbar() {
     // Replace javascript:void(0) paths with your paths
     const navigation = [
         { title: "Home", path: "/" },
-        { title: "About Us", path: "/about" },
+        { title: "About Us", path: "/about-us" },
         { title: "Photographer", path: "/photographer" },
         { title: "Contact", path: "/contact" }
     ]
