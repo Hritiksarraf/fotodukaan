@@ -13,7 +13,7 @@ export default function page() {
             <h1 className="px-3 md:px-10 py-5 text-5xl md:text-8xl font-bold text-left text-blue-800">Want's to Know</h1>
             <h1 className="px-3 md:px-10 pt-5 text-5xl md:text-8xl font-bold text-left text-white">What We Are Doing?</h1>
             <h1 className="px-3 md:px-10 pt-8 md:pt-0 pb-12 text-5xl md:text-8xl font-bold text-left text-white">What's Our story?</h1>
-            <h1 className="px-3 md:px-10 text-xl md:text-4xl font-bold text-left text-black">Scrole down for the answer <KeyboardArrowDownIcon className='text-3xl text-blue-700' /> </h1>
+            <h1 className="px-3 md:px-10 text-xl md:text-4xl font-bold text-left text-black">Scrolle down for the answer <KeyboardArrowDownIcon className='text-3xl text-blue-700' /> </h1>
           </div>
         </div>
         <section>
