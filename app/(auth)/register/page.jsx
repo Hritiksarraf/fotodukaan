@@ -456,7 +456,7 @@ export default function Page() {
                                        {/* Buttons */}
                                        <div className='flex gap-4'>
                                            <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 2 }))} type="submit" className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-500 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back</button>
-                                           <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 4 }))} type="submit" className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-500 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
+                                           <a onClick={() => setStep(prevState => ({ ...prevState, currentStep: 4 }))} href='/' type="submit" className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-500 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</a>
                                        </div>
                                    </form>
                                </div>

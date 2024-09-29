@@ -230,7 +230,7 @@ export default function Home() {
       </section>
       {/* Hero Section */}
       <section className="  bg-cover flex flex-col-reverse md:flex-row bg-gradient-to-t md:bg-gradient-to-r from-blue-800 to-blue-400   bg-center w-full h-full pt-20  text-center md:text-left ">
-        <div className=" md:w-[70vw] p-5 md:p-10 md:px-20">
+        <div className=" md:w-[70vw] p-5 md:p-10 md:px-15">
 
           <h1 className="text-5xl md:text-8xl font-bold text-left text-white">Find the Best Freelancers <p className="text-yellow-500 h-12 " >{' '}<span className=' text-3xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
 
@@ -238,9 +238,9 @@ export default function Home() {
           <p className='text-gray-300 border-l-2 px-2 text-left font-light md:hidden  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p> */}
           <p className='py-8 text-white text-lg'> Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p>
           <div className="mt-10 sm:mt-8 flex ">
-            <div className="bg-white rounded-md sadow-lg p-6 w-full sm:w-[40vw] flex flex-col sm:flex-row items-center justify-center gap-9 space-y-4 sm:space-y-0 sm:space-x-4">
-              <select className="w-[full] sm:w-auto border-gray-300 rounded-md p-2">
-                <option>Search for Vendors</option>
+            <div className="bg-white rounded-md sadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-9 space-y-4 sm:space-y-0 sm:space-x-4">
+              <select className="w-full sm:w-auto border-gray-300 rounded-md p-2">
+                <option>Search for Freelancer</option>
                 <option>Photographers</option>
                 <option>Makeup Artists</option>
                 <option>Mandap</option>
@@ -252,7 +252,7 @@ export default function Home() {
                 <option>Bangalore</option>
               </select>
               <button className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded-md">
-                Find Vendors →
+                Find Freelancer →
               </button>
             </div>
           </div>
