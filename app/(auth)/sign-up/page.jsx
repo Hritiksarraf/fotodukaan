@@ -2,14 +2,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
-// import $ from 'jquery';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { BsFillShieldLockFill } from "react-icons/bs";
+import { CgSpinner } from "react-icons/cg";
+import { ToastContainer, toast } from 'react-toastify';
+  
 import { auth } from '@/app/firebase.config';
-import { RecaptchaVerifier } from 'firebase/auth';
-import { signInWithPhoneNumber } from 'firebase/auth';
-
-
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import OTPInput from 'react-otp-input';
 
 export default function Pages() {
   const [name, setName] = useState('');
@@ -18,51 +17,31 @@ export default function Pages() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-
-  // const [recapt, setrecapt] = useState(second)
-
-  // Function to send OTP using jQuery
+  const [otp, setOtp] = useState(false)
+  const [otpValue, setOtpValue] = useState('')
+  const [loading, setLoading] = useState(false);
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
-  // const [Recap, setRecap] = useState(second)
-
-//   useEffect(() => {
-//     const recaptchaVerifier = new RecaptchaVerifier(
-//       auth,
-//       'recaptcha-container',
-//       {
-// size: 'invisible',
-//       }
-//     )
-
-  
-//     return () => {
-//       second
-//     }
-//   }, [auth])
-  
 
   function onCaptchVerify() {
-    // Ensure RecaptchaVerifier is initialized correctly
     if (!window.recaptchaVerifier) {
       try {
         window.recaptchaVerifier = new RecaptchaVerifier(
           auth,
-          'recaptcha-container',  // Correct container ID here
+          'recaptcha-container',
           {
-            size: 'normal',
+            size: 'invisible',
             callback: (response) => {
               console.log('reCAPTCHA solved:', response);
             },
             'expired-callback': () => {
               console.log('reCAPTCHA expired');
             },
-          } // Correctly passing the Firebase Auth instance
+          },
+          
         );
-        
         window.recaptchaVerifier.render().then((widgetId) => {
           window.recaptchaWidgetId = widgetId;
-          console.log('reCAPTCHA initialized with widget ID:', widgetId);
-          setRecaptchaLoaded(true);  // Mark reCAPTCHA as loaded
+          setRecaptchaLoaded(true);
         });
       } catch (error) {
         console.error('Error initializing reCAPTCHA:', error);
@@ -72,108 +51,147 @@ export default function Pages() {
 
   function onSignup(e) {
     e.preventDefault();
-    console.log('onsignup called');
-    
-    if (!recaptchaLoaded) {
-      console.error('Recaptcha verifier is not loaded');
-      return;
+    let formErrors = {};
+    if (name.length < 3) {
+      formErrors.name = 'Name must be at least 3 characters long.';
     }
+    if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
+      formErrors.phone = 'Phone number must be 10 digits.';
+    }
+    if (password.length < 8 || !/\d/.test(password)) {
+      formErrors.password = 'Password must be at least 8 characters long and contain at least one number.';
+    }
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+    } else {
+      setErrors({});
+      if (!recaptchaLoaded) {
+        console.error('Recaptcha verifier is not loaded');
+        return;
+      }
+      const appVerifier = window.recaptchaVerifier;
+      const phoneNumber = '+91' + phone;
+      signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+        .then((confirmationResult) => {
+          window.confirmationResult = confirmationResult;
+          setOtp(true);
+        })
+        .catch((error) => {
+          console.error('Error sending OTP:', error);
+        });
+    }
+  }
 
-    // onCaptchVerify();  // Ensure reCAPTCHA is verified before phone sign-in
-    
-    const appVerifier = window.recaptchaVerifier;
-    const phoneNumber = '+91' + phone;
-
-    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-        console.log('amost there')
-        window.confirmationResult = confirmationResult;
-        console.log('OTP sent');
+  function OTPVerify(e) {
+    e.preventDefault();
+    setLoading(true);
+    window.confirmationResult
+      .confirm(otpValue)
+      .then(async (res) => {
+        console.log(res);
+        setLoading(false);
+        handleSignUp();
       })
-      .catch((error) => {
-        console.error('Error sending OTP:', error);
+      .catch((err) => {
+        console.log('Invalid OTP:', err);
+        setLoading(false);
+        toast.error('Invalid OTP. Please try again.', {
+          position: 'top-left',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
       });
   }
 
+  const handleSignUp = async () => {
+    const data = { name, email, phone, password };
+    try {
+      let res = await fetch('/api/sign-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      let response = await res.json();
+      toast.success('Signup Successful!', {
+        position: 'top-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    } catch (error) {
+      toast.error('Signup Failed', {
+        position: 'top-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+  };
+
   useEffect(() => {
-    onCaptchVerify();  // Initialize recaptcha on component mount
+    onCaptchVerify();
   }, []);
-  
 
-  // const handleSignUp = async (e) => {
-  //   e.preventDefault();
-
-  //   // Validation logic
-  //   let formErrors = {};
-
-  //   // Name validation: minimum length 3
-  //   if (name.length < 3) {
-  //     formErrors.name = 'Name must be at least 3 characters long.';
-  //   }
-
-  //   // Phone validation: must be 10 digits
-  //   if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
-  //     formErrors.phone = 'Phone number must be 10 digits.';
-  //   }
-
-  //   // Password validation: at least 8 characters and 1 number
-  //   if (password.length < 8 || !/\d/.test(password)) {
-  //     formErrors.password = 'Password must be at least 8 characters long and contain at least one number.';
-  //   }
-
-  //   // If there are errors, update the state
-  //   if (Object.keys(formErrors).length > 0) {
-  //     setErrors(formErrors);
-  //   } else {
-  //     setErrors({})
-
-  //   const data = { name,email,phone,password };
-
-  //   try {
-  //     let res = await fetch('/api/sign-up', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify(data)
-  //     });
-
-  //     let response = await res.json();
-  //     console.log(response);
-      
-  //     toast.success('Signup Successful', {
-  //       position: 'top-left',
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: 'light',
-  //     });
-      
-
-  //     // Redirect to another page if needed
-  //     router.push('/sign-in');
-      
-  //   } catch (error) {
-  //     toast.error('Signup Failed', {
-  //       position: 'top-left',
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: 'light',
-  //     });
-  //   }
-  // }
-  // };
 
   return (
     <div>
-      <section className="bg-gradient-to-b from-white to-blue-200 h-[100vh]">
+      {otp && <section className='bg-gradient-to-b from-white to-blue-200 h-[100vh] w-[100vw] flex flex-col gap-8 justify-center items-center'>
+        <div className='flex flex-col gap-8 justify-center items-center '>
+        <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <Image
+              className="mr-2"
+              src="/assets/logo-light.png"
+              width={150}
+              height={50}
+              alt="fotodukaan logo"
+            />
+          </Link>
+      
+      <div><h1 className='text-black text-3xl md:text-5xl'>Please Verify Your OTP</h1></div>
+                <div className="bg-white text-emerald-500 w-fit mx-auto p-4 rounded-full">
+                  <BsFillShieldLockFill className='' size={30} />
+                </div>
+                <label
+                  htmlFor="otp"
+                  className="font-bold text-xl  text-blue-600 text-center"
+                >
+                  Enter your OTP
+                </label>
+                <div className='text-5xl '>
+                <OTPInput
+      value={otpValue}
+      onChange={setOtpValue}
+      numInputs={6}
+      renderSeparator={<span className='m-1'></span>}
+      renderInput={(props) => <input {...props} />}
+    />
+    </div>
+                <button
+                  onClick={OTPVerify}
+                  className="bg-emerald-600 px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
+                >
+                  {loading && (
+                    <CgSpinner size={20} className="mt-1 animate-spin" />
+                  )}
+                  <span>Verify OTP</span>
+                </button>
+                </div>
+              </section>}
+      
+      {!otp && <section className="bg-gradient-to-b from-white to-blue-200 h-[100vh]">
       <div id='recaptcha-container'></div>
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -271,8 +289,8 @@ export default function Pages() {
             </div>
           </div>
         </div>
-      </section>
-      {/* <ToastContainer/> */}
+      </section>}
+      <ToastContainer/>
     </div>
   );
 }
