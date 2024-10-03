@@ -108,8 +108,8 @@ export default function Pages() {
       });
   }
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
+  const handleSignUp = async () => {
+    
     const data = { name, email, phone, password };
     console.log(name, email, phone, password )
     try {
@@ -262,7 +262,7 @@ export default function Pages() {
                 </div>
                 <button
                   type="submit"
-                  onClick={handleSignUp}
+                  onClick={onSignup}
                   className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Sign up
