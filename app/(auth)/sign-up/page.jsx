@@ -113,7 +113,7 @@ export default function Pages() {
     const data = { name, email, phone, password };
     console.log(name, email, phone, password )
     try {
-      let res = await fetch('/api/auth/sign-up', {
+      let res = await fetch('/api/sign-up', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
