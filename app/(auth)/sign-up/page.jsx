@@ -110,6 +110,7 @@ export default function Pages() {
 
   const handleSignUp = async () => {
     const data = { name, email, phone, password };
+    console.log(name, email, phone, password )
     try {
       let res = await fetch('/api/sign-up', {
         method: 'POST',
