@@ -118,27 +118,10 @@ export default function Pages() {
         body: JSON.stringify(data)
       });
       let response = await res.json();
-      toast.success('Signup Successful!', {
-        position: 'top-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      console.log(response)
+      
     } catch (error) {
-      toast.error('Signup Failed', {
-        position: 'top-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
+      console.log(error)
     }
   };
 
