@@ -24,14 +24,14 @@ export default function Navbar() {
         <nav className={`bg-white shadow-xl z-50 fixed  w-[100vw] p-3  md:text-sm ${state ? "shadow-lg rounded-xl border mx-2 mt-2 md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
             <div className="gap-x-14 items-center max-w-screen-xxl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between  md:block">
-                    <a href="javascript:void(0)">
+                    <Link href="/">
                         <img
                             src="./assets/logo-light.png"
                             width={150}
                             height={50}
                             alt="fotodukaan logo"
                         />
-                    </a>
+                    </Link>
                     <div className="md:hidden">
                         <button className="menu-btn text-white hover:text-gray-800"
                             onClick={() => setState(!state)}
@@ -56,9 +56,9 @@ export default function Navbar() {
                             navigation.map((item, idx) => {
                                 return (
                                     <li key={idx} className="text-blue-700 font-bold       hover:text-gray-400">
-                                        <a href={item.path} className="block">
+                                        <Link href={item.path} className="block">
                                             {item.title}
-                                        </a>
+                                        </Link>
                                     </li>
                                 )
                             })
