@@ -108,17 +108,21 @@ export default function Pages() {
       });
   }
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (e) => {
+    e.preventDefault();
     const data = { name, email, phone, password };
     console.log(name, email, phone, password )
     try {
-      let res = await fetch('/api/sign-up', {
+      let res = await fetch('/api/auth/sign-up', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(data)
       });
+
       let response = await res.json();
-      console.log(response)
+      console.log(response);
       
     } catch (error) {
       console.log(error)
