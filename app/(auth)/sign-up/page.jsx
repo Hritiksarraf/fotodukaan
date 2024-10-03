@@ -108,8 +108,8 @@ export default function Pages() {
       });
   }
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
+  const handleSignUp = async () => {
+    
     const data = { name, email, phone, password };
     console.log(name, email, phone, password )
     try {
