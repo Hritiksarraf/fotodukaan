@@ -24,7 +24,9 @@ export const POST = async (req) => {
           {
             phone: user.phone,
             name:user.name,
-            userid:user._id
+            userid:user._id,
+            email:user.email,
+            profilePhoto:user.profilePhoto
           },
           "jwtfotoDukaan@Mani2003"  // Token expiry added here
         );
