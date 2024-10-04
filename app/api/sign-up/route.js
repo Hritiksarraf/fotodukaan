@@ -5,9 +5,17 @@ var CryptoJS = require("crypto-js");
 export const POST = async (req) => {
   try {
     await connectToDB();
-    
-    const { name, email, password,phone } = await req.json();
-    
+
+    const { name, email, password, phone } = await req.json();
+
+    const existingUser = await User.findOne({ phone: phone });
+    if (existingUser) {
+      return new Response(
+        JSON.stringify({ error: "User already exists" }),
+        { status: 400 }
+      );
+    }
+
     let u = new User({
       name: name,
       email: email,
@@ -20,6 +28,9 @@ export const POST = async (req) => {
     return new Response(JSON.stringify({ success: "success" }), { status: 200 });
   } catch (err) {
     console.log(err);
-    return new Response(JSON.stringify({ error: "user can not be registered" }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "User cannot be registered" }),
+      { status: 500 }
+    );
   }
 };

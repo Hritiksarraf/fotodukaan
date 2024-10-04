@@ -5,10 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
   
 import { auth } from '@/app/firebase.config';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import OTPInput from 'react-otp-input';
+import { useRouter } from 'next/navigation';
+
 
 export default function Pages() {
   const [name, setName] = useState('');
@@ -21,6 +24,8 @@ export default function Pages() {
   const [otpValue, setOtpValue] = useState('')
   const [loading, setLoading] = useState(false);
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const router = useRouter();
 
   function onCaptchVerify() {
     if (!window.recaptchaVerifier) {
@@ -64,17 +69,20 @@ export default function Pages() {
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
     } else {
+      setVerifyLoading(true)
       setErrors({});
       if (!recaptchaLoaded) {
         console.error('Recaptcha verifier is not loaded');
         return;
       }
+
       const appVerifier = window.recaptchaVerifier;
       const phoneNumber = '+91' + phone;
       signInWithPhoneNumber(auth, phoneNumber, appVerifier)
         .then((confirmationResult) => {
           window.confirmationResult = confirmationResult;
           setOtp(true);
+          setVerifyLoading(false)
         })
         .catch((error) => {
           console.error('Error sending OTP:', error);
@@ -89,7 +97,7 @@ export default function Pages() {
       .confirm(otpValue)
       .then(async (res) => {
         console.log(res);
-        setLoading(false);
+        
         handleSignUp();
       })
       .catch((err) => {
@@ -120,12 +128,55 @@ export default function Pages() {
         },
         body: JSON.stringify(data)
       });
+      setLoading(false);
+      
+      
 
       let response = await res.json();
       console.log(response);
+      if(response.success){
+        console.log(response);
+        toast.success('Signup Successful', {
+          position: 'top-left',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+        
+      }
+      else{
+        toast.error( response.error, {
+          position: 'top-left',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      }
+      setTimeout(() => {
+        router.push('/log-in');
+      }, 2000);
+      
       
     } catch (error) {
       console.log(error)
+      toast.error('Signup Failed', {
+        position: 'top-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     }
   };
 
@@ -136,6 +187,7 @@ export default function Pages() {
 
   return (
     <div>
+      <ToastContainer/>
       {otp && <section className='bg-gradient-to-b from-white to-blue-200 h-[100vh] w-[100vw] flex flex-col gap-8 justify-center items-center'>
         <div className='flex flex-col gap-8 justify-center items-center '>
         <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
@@ -261,12 +313,16 @@ export default function Pages() {
                   {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                 </div>
                 <button
-                  type="submit"
+                type="submit"
                   onClick={onSignup}
-                  className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="bg-blue-600 w-full px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
-                  Sign up
+                  {verifyLoading && (
+                    <CgSpinner size={20} className="mt-1 animate-spin" />
+                  )}
+                  <span> Sign Up</span>
                 </button>
+                
                 <p className="text-sm font-light text-gray-500 dark:text-black">
                   Already have an account?{' '}
                   <Link href="/log-in" className="font-medium text-primary-600 hover:underline dark:text-blue-500">
