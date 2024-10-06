@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify';
   import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import OTPInput from 'react-otp-input';
 import { auth } from '@/app/firebase.config';
+import { BsFillShieldLockFill } from "react-icons/bs";
 
 
 
@@ -986,9 +987,7 @@ const router=useRouter()
                   onClick={OTPVerify}
                   className="bg-emerald-600 px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
-                  {loading && (
-                    <CgSpinner size={20} className="mt-1 animate-spin" />
-                  )}
+                  
                   <span>Verify OTP</span>
                 </button>
                 </div>
