@@ -70,7 +70,6 @@ const router=useRouter()
           }
         }
       }
-    //for otp ends here
 
 
     // Validation rules
@@ -160,7 +159,7 @@ const router=useRouter()
               }
         
               const appVerifier = window.recaptchaVerifier;
-              const phoneNumber = '+91' + phone;
+              const phoneNumber = '+91' + formData.phone;
               signInWithPhoneNumber(auth, phoneNumber, appVerifier)
                 .then((confirmationResult) => {
                   window.confirmationResult = confirmationResult;
@@ -341,6 +340,7 @@ const router=useRouter()
     return (
         <div>
             <ToastContainer/>
+            <div id='recaptcha-container'></div>
             <div className="max-w-2xl mx-auto mt-10 p-4   shadow-2xl ">
                 <ul aria-label="Steps" className="items-center text-gray-600 font-medium flex">
                     {steps.stepsItems.map((item, idx) => (
