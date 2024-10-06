@@ -188,8 +188,8 @@ const router=useRouter()
         }
     };
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
+    const handleRegister = async () => {
+       
       
         try {
           // Step 1: Handle profile photo upload to Cloudinary
