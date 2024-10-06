@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
   import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import OTPInput from 'react-otp-input';
+import { auth } from '@/app/firebase.config';
 
 
 
