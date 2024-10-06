@@ -61,10 +61,10 @@ export default function Navbar() {
                     </Link>
                     <div className="md:hidden flex gap-4">
                     <div className="flex ">
-                            <div>
+                           {userLogin && <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
-                            </div>
+                            </div>}
                             {profileState && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                             <div>
                                 <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
