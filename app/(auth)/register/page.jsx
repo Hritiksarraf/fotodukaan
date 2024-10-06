@@ -26,6 +26,7 @@ const router=useRouter()
 
     const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
     const [otpValue, setOtpValue] = useState('')
+    const [loading, setLoading] = useState(false);
     
 
 
@@ -258,7 +259,7 @@ const router=useRouter()
           .confirm(otpValue)
           .then(async (res) => {
             console.log(res);
-            
+            setLoading(false);
             handleRegister();
           })
           .catch((err) => {
@@ -989,7 +990,9 @@ const router=useRouter()
                   onClick={OTPVerify}
                   className="bg-emerald-600 px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
-                  
+                   {loading && (
+                    <CgSpinner size={20} className="mt-1 animate-spin" />
+                  )}
                   <span>Verify OTP</span>
                 </button>
                 </div>
