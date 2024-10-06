@@ -25,6 +25,8 @@ const router=useRouter()
     const [selectedCategories, setSelectedCategories] = useState({});
 
     const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
+    const [otpValue, setOtpValue] = useState('')
+    
 
 
     const [formData, setFormData] = useState({
