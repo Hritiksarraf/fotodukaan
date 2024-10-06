@@ -33,9 +33,9 @@ export default function Navbar() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-          const decodedUser = jwt.decode(token); 
-          setUser(decodedUser); 
-          setUserLogin(true)
+            const decodedUser = jwt.decode(token);
+            setUser(decodedUser);
+            setUserLogin(true)
         }
 
     }, [])
@@ -45,8 +45,8 @@ export default function Navbar() {
         router.push('/') // Redirect to home page
         window.location.reload();   // Reload the page to refresh the state
     }
-    
-    
+
+
     return (
         <nav className={`bg-white shadow-xl z-50 fixed  w-[100vw] p-3  md:text-sm ${state ? "shadow-lg rounded-xl border mx-2 mt-2 md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
             <div className="gap-x-14 items-center max-w-screen-xxl mx-auto px-4 md:flex md:px-8">
@@ -59,12 +59,43 @@ export default function Navbar() {
                             alt="fotodukaan logo"
                         />
                     </Link>
-                    <div className="md:hidden">
+                    <div className="md:hidden flex gap-4">
+                    <div className="flex ">
+                            <div>
+                                <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
+
+                            </div>
+                            {profileState && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                            <div>
+                                <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
+
+                            </div>
+                            <h1 className="text-white font-bold">{user.name}</h1>
+                            <div className="flex flex-col gap-5">
+                                <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                                    Bookings
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                    </svg>
+                                </Link>
+                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                    Logout
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+
+                            </div>
+                        </div>}
+                        </div>
+                        
+
                         <button className="menu-btn text-white hover:text-gray-800"
                             onClick={() => setState(!state)}
                         >
                             {
                                 state ? (
+
                                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                                     </svg>
@@ -91,57 +122,61 @@ export default function Navbar() {
                             })
                         }
                     </ul>
-                    { userLogin? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
-                        <div>
-                        <button onClick={()=>{setProfileState(!profileState)}} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
-                            Profile
-                        </button>
+                    {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
+                        <div className="flex ">
+                            <div>
+                                <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
+
+                            </div>
+                            <button onClick={() => { setProfileState(!profileState) }} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 font-medium text-blue-700 hover:text-yellow-700 active:bg-blue-600 rounded-full md:inline-flex">
+                                {user.name}
+                            </button>
                         </div>
 
                         {profileState && <div className="absolute md:translate-y-32 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                             <div>
                                 <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
-                                
+
                             </div>
                             <h1 className="text-white font-bold">{user.name}</h1>
                             <div className="flex flex-col gap-5">
-                            <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
-                            Bookings
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                            </svg>
-                        </Link>
-                            <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
-                            Logout
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                            </svg>
-                        </button>
-                        
+                                <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                                    Bookings
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                    </svg>
+                                </Link>
+                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                    Logout
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                    </svg>
+                                </button>
+
                             </div>
                         </div>}
                     </div>) :
-                    (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
-                        <Link href="/log-in" className="block text-blue-600 hover:text-gray-400">
-                            Log in
-                        </Link>
-                        <Link href="sign-up" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
-                            Sign up
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                            </svg>
-                        </Link>
-                        <Link href="/register" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
-                            Register as Photographer
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                            </svg>
-                        </Link>
-                    </div>)
-}
+                        (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
+                            <Link href="/log-in" className="block text-blue-600 hover:text-gray-400">
+                                Log in
+                            </Link>
+                            <Link href="sign-up" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                Sign up
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                    <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                </svg>
+                            </Link>
+                            <Link href="/register" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                                Register as Photographer
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                    <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                </svg>
+                            </Link>
+                        </div>)
+                    }
                 </div>
             </div>
         </nav>
-       
+
     )
 }

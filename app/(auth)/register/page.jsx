@@ -1,7 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+useRouter
 
 const categories = [
     { name: 'Photography', subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'] },
@@ -12,7 +14,267 @@ const categories = [
 ];
 
 export default function Page() {
+const router=useRouter()
     const [selectedCategories, setSelectedCategories] = useState({});
+
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+        profilePhoto: null,
+        city: "",
+        address: "",
+        startingPrice: "",
+        halfDayPrice: "",
+        extraHourPrice: "",
+        aboutYourself: "",
+    });
+
+    const [formErrors, setFormErrors] = useState({});
+
+
+    //for otp start here
+    function onCaptchVerify() {
+        if (!window.recaptchaVerifier) {
+          try {
+            window.recaptchaVerifier = new RecaptchaVerifier(
+              auth,
+              'recaptcha-container',
+              {
+                size: 'invisible',
+                callback: (response) => {
+                  console.log('reCAPTCHA solved:', response);
+                },
+                'expired-callback': () => {
+                  console.log('reCAPTCHA expired');
+                },
+              },
+              
+            );
+            window.recaptchaVerifier.render().then((widgetId) => {
+              window.recaptchaWidgetId = widgetId;
+              setRecaptchaLoaded(true);
+            });
+          } catch (error) {
+            console.error('Error initializing reCAPTCHA:', error);
+          }
+        }
+      }
+    //for otp ends here
+
+
+    // Validation rules
+    const validate = () => {
+        let errors = {};
+        if (!formData.name.trim()) {
+            errors.name = "Name is required";
+        }
+        if (!formData.email) {
+            errors.email = "Email is required";
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            errors.email = "Email address is invalid";
+        }
+        if (!formData.phone) {
+            errors.phone = "Phone number is required";
+        } else if (!/^\d{10}$/.test(formData.phone)) {
+            errors.phone = "Phone number must be 10 digits";
+        }
+        if (!formData.password) {
+            errors.password = "Password is required";
+        } else if (formData.password.length < 8) {
+            errors.password = "Password must be at least 8 characters";
+        }
+        if (steps == 3) {
+
+            if (!formData.profilePhoto) {
+                errors.profilePhoto = "Profile photo is required";
+            }
+            if (!formData.city) {
+                errors.city = "City is required";
+            }
+            if (!formData.address) {
+                errors.address = "Address is required";
+            }
+            if (!formData.startingPrice) {
+                errors.startingPrice = "Starting price is required";
+            }
+            if (!formData.halfDayPrice) {
+                errors.halfDayPrice = "Half-day price is required";
+            }
+            if (!formData.extraHourPrice) {
+                errors.extraHourPrice = "Extra hour price is required";
+            }
+            if (!formData.aboutYourself) {
+                errors.aboutYourself = "About yourself is required";
+            }
+        }
+
+        return errors;
+    };
+
+    const step1 = (e) => {
+        e.preventDefault();
+        const errors = validate();
+        if (Object.keys(errors).length === 0) {
+            // Proceed to the next step if no errors
+            setStep((prevState) => ({ ...prevState, currentStep: 2 }));
+        } else {
+            setFormErrors(errors);
+        }
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value, type, files } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: type === "file" ? files[0] : value,
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const errors = validate();
+        if (Object.keys(errors).length === 0) {
+            if (!recaptchaLoaded) {
+                toast.error('reload and try again', {
+                    position: 'top-left',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                  });
+                return;
+              }
+        
+              const appVerifier = window.recaptchaVerifier;
+              const phoneNumber = '+91' + phone;
+              signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+                  window.confirmationResult = confirmationResult;
+                  setStep((prevState) => ({ ...prevState, currentStep: 4 }));
+                })
+                .catch((error) => {
+                  console.error('Error sending OTP:', error);
+                  toast.error('error sending otp try again', {
+                    position: 'top-left',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                  });
+                });
+        } else {
+            setFormErrors(errors);
+        }
+    };
+
+    const handleRegister = async ()=>{
+        const payload = {
+            ...formData,
+            selectedCategories,  
+        };
+
+        try {
+            const res = await fetch("/api/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            let response = await res.json();
+      console.log(response);
+      if(response.success){
+        console.log(response);
+        toast.success('Signup Successful', {
+          position: 'top-left',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+        
+      }
+      else{
+        toast.error( response.error, {
+          position: 'top-left',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      }
+      setTimeout(() => {
+        router.push('/log-in');
+      }, 2000);
+      
+      
+    } catch (error) {
+      console.log(error)
+      toast.error('Signup Failed', {
+        position: 'top-left',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    }
+        console.log(selectedCategories, formData)
+    } 
+    
+
+    function OTPVerify(e) {
+        e.preventDefault();
+        setLoading(true);
+        window.confirmationResult
+          .confirm(otpValue)
+          .then(async (res) => {
+            console.log(res);
+            
+            handleRegister();
+          })
+          .catch((err) => {
+            console.log('Invalid OTP:', err);
+            setLoading(false);
+            toast.error('Invalid OTP. Please try again.', {
+              position: 'top-left',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            });
+          });
+      }
+
+
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
 
     const handleCategoryClick = (category) => {
         setSelectedCategories(prevState => {
@@ -64,31 +326,73 @@ export default function Page() {
         currentStep: 1
     });
 
+    useEffect(() => {
+        onCaptchVerify();
+      }, []);
+
     return (
         <div>
             <div className="max-w-2xl mx-auto mt-10 p-4   shadow-2xl ">
                 <ul aria-label="Steps" className="items-center text-gray-600 font-medium flex">
                     {steps.stepsItems.map((item, idx) => (
-                        <li aria-current={steps.currentStep === idx + 1 ? "step" : false} key={idx} className="flex-1 last:flex-none flex gap-x-2 md:items-center">
+                        <li
+                            aria-current={steps.currentStep === idx + 1 ? "step" : false}
+                            key={idx}
+                            className="flex-1 last:flex-none flex gap-x-2 md:items-center"
+                        >
                             <div className="flex items-center flex-col gap-x-2">
-                                <div className={`w-8 h-8 rounded-full border-2 flex-none flex items-center justify-center ${steps.currentStep > idx + 1 ? "bg-indigo-600 border-indigo-600" : "" || steps.currentStep === idx + 1 ? "border-indigo-600" : ""}`}>
-                                    <span className={`${steps.currentStep > idx + 1 ? "hidden" : "" || steps.currentStep === idx + 1 ? "text-indigo-600" : ""}`}>
+                                <div
+                                    className={`w-8 h-8 rounded-full border-2 flex-none flex items-center justify-center ${steps.currentStep > idx + 1
+                                            ? "bg-indigo-600 border-indigo-600"
+                                            : "" || steps.currentStep === idx + 1
+                                                ? "border-indigo-600"
+                                                : ""
+                                        }`}
+                                >
+                                    <span
+                                        className={`${steps.currentStep > idx + 1
+                                                ? "hidden"
+                                                : "" || steps.currentStep === idx + 1
+                                                    ? "text-indigo-600"
+                                                    : ""
+                                            }`}
+                                    >
                                         {idx + 1}
                                     </span>
                                     {steps.currentStep > idx + 1 && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-white">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={1.5}
+                                            stroke="currentColor"
+                                            className="w-5 h-5 text-white"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M4.5 12.75l6 6 9-13.5"
+                                            />
                                         </svg>
                                     )}
                                 </div>
-                                
                             </div>
                             <div className="h-8 flex items-center md:h-auto">
-                                <h3 className={`text-sm ${steps.currentStep === idx + 1 ? "text-indigo-600" : ""}`}>
+                                <h3
+                                    className={`text-sm ${steps.currentStep === idx + 1 ? "text-indigo-600" : ""
+                                        }`}
+                                >
                                     {item}
                                 </h3>
                             </div>
-                            <hr className={`hidden mr-2 w-full md:border  md:block ${idx + 1 === steps.stepsItems.length ? "hidden" : "" || steps.currentStep > idx + 1 ? "md:border-indigo-600" : ""}`} />
+                            <hr
+                                className={`hidden mr-2 w-full md:border md:block ${idx + 1 === steps.stepsItems.length
+                                        ? "hidden"
+                                        : "" || steps.currentStep > idx + 1
+                                            ? "md:border-indigo-600"
+                                            : ""
+                                    }`}
+                            />
                         </li>
                     ))}
                 </ul>
@@ -100,35 +404,111 @@ export default function Page() {
                         {/* this is details section */}
                         <section className="bg-gradient-to-b from-white to-yellow-200 h-[100vh]">
                             <div className="flex flex-col items-center  h-[80vh] px-6 py-2 mx-auto md:h-screen lg:py-0">
-                                <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                                    <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
+                                <Link
+                                    href="/"
+                                    className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
+                                >
+                                    <Image
+                                        className="mr-2"
+                                        src="/assets/logo-light.png"
+                                        width={150}
+                                        height={50}
+                                        alt="fotodukaan logo"
+                                    />
                                 </Link>
                                 <div className="w-full rounded-lg shadow dark:border dark:border-gray-700 md:mt-0 text-black sm:max-w-md xl:p-0 bg-gradient-to-r from-white to-white">
                                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
                                             Sign-up as a freelancer and start earning
                                         </h1>
-                                        <form className="space-y-4 md:space-y-6" action="#">
+                                        <form className="space-y-4 md:space-y-6" onSubmit={step1}>
                                             <div>
-                                                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Your Name</label>
-                                                <input type="text" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Hritik Sarraf" required />
+                                                <label
+                                                    htmlFor="name"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+                                                >
+                                                    Your Name
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="name"
+                                                    id="name"
+                                                    value={formData.name}
+                                                    onChange={handleChange}
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="Hritik Sarraf"
+                                                    required
+                                                />
+                                                {formErrors.name && <p className="text-red-600">{formErrors.name}</p>}
                                             </div>
                                             <div>
-                                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Your email</label>
-                                                <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required />
+                                                <label
+                                                    htmlFor="email"
+                                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-black"
+                                                >
+                                                    Your email
+                                                </label>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    id="email"
+                                                    value={formData.email}
+                                                    onChange={handleChange}
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="name@company.com"
+                                                    required
+                                                />
+                                                {formErrors.email && <p className="text-red-600">{formErrors.email}</p>}
                                             </div>
                                             <div>
-                                                <label htmlFor="phone" className="block mb-2 text-sm font-medium text-black dark:text-black">Your Phone Number</label>
-                                                <input type="text" name="phone" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="7061652485" required />
+                                                <label
+                                                    htmlFor="phone"
+                                                    className="block mb-2 text-sm font-medium text-black dark:text-black"
+                                                >
+                                                    Your Phone Number
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="phone"
+                                                    id="phone"
+                                                    value={formData.phone}
+                                                    onChange={handleChange}
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    placeholder="7061652485"
+                                                    required
+                                                />
+                                                {formErrors.phone && <p className="text-red-600">{formErrors.phone}</p>}
                                             </div>
                                             <div>
-                                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-black dark:text-black">Password</label>
-                                                <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                                                <label
+                                                    htmlFor="password"
+                                                    className="block mb-2 text-sm font-medium text-black dark:text-black"
+                                                >
+                                                    Password
+                                                </label>
+                                                <input
+                                                    type="password"
+                                                    name="password"
+                                                    id="password"
+                                                    value={formData.password}
+                                                    onChange={handleChange}
+                                                    placeholder="••••••••"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    required
+                                                />
+                                                {formErrors.password && <p className="text-red-600">{formErrors.password}</p>}
                                             </div>
-
-                                            <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 2 }))} type="submit" className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-500 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
-                                            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                                Already have an account? <Link href="/auth/login" className="font-medium text-blue-400 hover:underline">Sign in</Link>
+                                            <button
+                                                type="submit"
+                                                className="w-full text-white bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                            >
+                                                Next
+                                            </button>
+                                            <p className="text-sm font-light text-gray-900 dark:text-black">
+                                                Already have an account?{" "}
+                                                <Link href="#" className="font-medium text-yellow-600 hover:underline dark:text-primary-500">
+                                                    Login here
+                                                </Link>
                                             </p>
                                         </form>
                                     </div>
@@ -138,15 +518,15 @@ export default function Page() {
                     </section>
                 )}
                 {steps.currentStep === 2 && (
-                    
+
                     <section className="bg-gradient-to-b md:min-h-[100vh] min-h-[100vh]  from-white to-yellow-200 ">
-                       <div className="flex flex-col items-center    px-6  mx-auto ">
-                                <Link href="/" className="flex items-center  text-2xl font-semibold text-gray-900 dark:text-white">
-                                    <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
-                                </Link>
-                                </div>
+                        <div className="flex flex-col items-center    px-6  mx-auto ">
+                            <Link href="/" className="flex items-center  text-2xl font-semibold text-gray-900 dark:text-white">
+                                <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
+                            </Link>
+                        </div>
                         <div className="flex flex-col items-center my-auto justify-center shadow-2xl bg-white  border-2 w-[90vw] md:w-[30vw]  px-6 py-8 mx-auto  lg:py-0">
-                        
+
                             <h1 className="text-xl font-bold mt-5 md:mt-15 leading-tight tracking-tight text-blue-500 md:text-3xl ">
                                 Step-2
                             </h1>
@@ -381,7 +761,16 @@ export default function Page() {
                             </div>
                             <div className='flex justify-between w-[100%] md:mb-20'>
                                 <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 1 }))} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">back</button>
-                                <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 3 }))} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
+                                <button onClick={() => {
+                                    const isValid = Object.values(selectedCategories).some(
+                                        (category) => category.subcategories && category.subcategories.length > 0
+                                    );
+                                    if (isValid) {
+                                        setStep((prevState) => ({ ...prevState, currentStep: 3 }));
+                                    } else {
+                                        alert("Please select at least one category and subcategory.");
+                                    }
+                                }} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
 
                             </div>
                         </div>
@@ -389,120 +778,216 @@ export default function Page() {
                 )}
 
                 {steps.currentStep === 3 && (
-                   <section>
-                   {/* this is profile section */}
-                   <section className="bg-gradient-to-b from-white py-5 to-yellow-200">
-                       <div className="flex flex-col items-center my-auto justify-center px-6 py-8 mx-auto lg:py-0">
-                           <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                               <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
-                           </Link>
-                           <div className="w-full rounded-lg shadow dark:border dark:border-gray-700 md:mt-0 text-black sm:max-w-md xl:p-0 bg-gradient-to-r from-white to-white">
-                               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                                   <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
-                                       Set Up Your Profile
-                                   </h1>
-                                   <form className="space-y-4 md:space-y-6" action="#">
-                                       {/* Profile Photo */}
-                                       <div>
-                                           <label htmlFor="profile-photo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">Profile Photo</label>
-                                           <input type="file" accept="image/*" name="profile-photo" id="profile-photo" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
-                                       </div>
-                                       
-                                       {/* City */}
-                                       <div>
-                                           <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">City</label>
-                                           <select name="city" id="city" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                               <option value="patna">Patna</option>
-                                               <option value="muzaffarpur">Muzaffarpur</option>
-                                           </select>
-                                       </div>
-                       
-                                       {/* Full Address */}
-                                       <div>
-                                           <label htmlFor="address" className="block mb-2 text-sm font-medium text-black dark:text-black">Full Address</label>
-                                           <input type="text" name="address" id="address" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your full address" required />
-                                       </div>
-               
-                                       {/* Starting Price */}
-                                       <div>
-                                           <label htmlFor="starting-price" className="block mb-2 text-sm font-medium text-black dark:text-black">Starting Price</label>
-                                           <input type="number" name="starting-price" id="starting-price" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter starting price" required />
-                                       </div>
-               
-                                       {/* Half Day Price */}
-                                       <div>
-                                           <label htmlFor="half-day-price" className="block mb-2 text-sm font-medium text-black dark:text-black">Half Day Price</label>
-                                           <input type="number" name="half-day-price" id="half-day-price" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter half-day price" required />
-                                       </div>
-               
-                                       {/* Charge */}
-                                       <div>
-                                           <label htmlFor="charge" className="block mb-2 text-sm font-medium text-black dark:text-black">Charge</label>
-                                           <input type="number" name="charge" id="charge" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter charge" required />
-                                       </div>
-               
-                                       {/* Extra Hour Price */}
-                                       <div>
-                                           <label htmlFor="extra-hour-price" className="block mb-2 text-sm font-medium text-black dark:text-black">Extra Hour Price</label>
-                                           <input type="number" name="extra-hour-price" id="extra-hour-price" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter extra hour price" required />
-                                       </div>
-               
-                                       {/* About Yourself */}
-                                       <div>
-                                           <label htmlFor="about-yourself" className="block mb-2 text-sm font-medium text-black dark:text-black">About Yourself</label>
-                                           <textarea name="about-yourself" id="about-yourself" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write a few sentences about yourself" rows="4" required></textarea>
-                                       </div>
-               
-                                       {/* Buttons */}
-                                       <div className='flex gap-4'>
-                                           <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 2 }))} type="submit" className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-500 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Back</button>
-                                           <a onClick={() => setStep(prevState => ({ ...prevState, currentStep: 4 }))} href='/' type="submit" className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-500 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</a>
-                                       </div>
-                                   </form>
-                               </div>
-                           </div>
-                       </div>
-                   </section>
-               </section>
-               
-                
-                
-                )}
+                    <section>
+                        {/* this is profile section */}
+                        <section className="bg-gradient-to-b from-white py-5 to-yellow-200">
+                            <div className="flex flex-col items-center my-auto justify-center px-6 py-8 mx-auto lg:py-0">
+                                <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                                    <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
+                                </Link>
+                                <div className="w-full rounded-lg shadow dark:border dark:border-gray-700 md:mt-0 text-black sm:max-w-md xl:p-0 bg-gradient-to-r from-white to-white">
+                                    <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+                                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
+                                            Set Up Your Profile
+                                        </h1>
+                                        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+                                            {/* Profile Photo */}
+                                            <div>
+                                                <label htmlFor="profile-photo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
+                                                    Profile Photo
+                                                </label>
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    name="profilePhoto"
+                                                    id="profile-photo"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                    onChange={handleInputChange}
+                                                    required
+                                                />
+                                                {formErrors.profilePhoto && <p className="text-red-500 text-sm">{formErrors.profilePhoto}</p>}
+                                            </div>
 
+                                            {/* City */}
+                                            <div>
+                                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                    City
+                                                </label>
+                                                <select
+                                                    name="city"
+                                                    id="city"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                    onChange={handleInputChange}
+                                                    value={formData.city}
+                                                    required
+                                                >
+                                                    <option value="">Select City</option>
+                                                    <option value="patna">Patna</option>
+                                                    <option value="muzaffarpur">Muzaffarpur</option>
+                                                </select>
+                                                {formErrors.city && <p className="text-red-500 text-sm">{formErrors.city}</p>}
+                                            </div>
 
+                                            {/* Full Address */}
+                                            <div>
+                                                <label htmlFor="address" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                    Full Address
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="address"
+                                                    id="address"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                    placeholder="Your full address"
+                                                    onChange={handleInputChange}
+                                                    value={formData.address}
+                                                    required
+                                                />
+                                                {formErrors.address && <p className="text-red-500 text-sm">{formErrors.address}</p>}
+                                            </div>
 
-                {/* {steps.currentStep === 3 && (
-                    <section className="bg-gradient-to-b from-white to-yellow-200 h-[100vh]">
-                        <div className="flex flex-col items-center my-auto justify-center h-[80vh] px-6 py-8 mx-auto md:h-screen lg:py-0">
-                            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
-                                Confirm Your Information
-                            </h1>
-                            <div className="flex flex-col items-start justify-start w-full max-w-md">
-                                {Object.entries(selectedCategories).map(([categoryName, details]) => (
-                                    <div key={categoryName} className="border-b pb-2 mb-2">
-                                        <h2 className="font-semibold">{categoryName}</h2>
-                                        <p>Subcategories: {details.subcategories.join(', ')}</p>
-                                        <p>Camera Model: {details.cameraDetails.model}</p>
-                                        <p>Camera Specs: {details.cameraDetails.specs}</p>
+                                            {/* Starting Price */}
+                                            <div>
+                                                <label htmlFor="starting-price" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                    Starting Price
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    name="startingPrice"
+                                                    id="starting-price"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                    placeholder="Enter starting price"
+                                                    onChange={handleInputChange}
+                                                    value={formData.startingPrice}
+                                                    required
+                                                />
+                                                {formErrors.startingPrice && <p className="text-red-500 text-sm">{formErrors.startingPrice}</p>}
+                                            </div>
+
+                                            {/* Half Day Price */}
+                                            <div>
+                                                <label htmlFor="half-day-price" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                    Half Day Price
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    name="halfDayPrice"
+                                                    id="half-day-price"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                    placeholder="Enter half-day price"
+                                                    onChange={handleInputChange}
+                                                    value={formData.halfDayPrice}
+                                                    required
+                                                />
+                                                {formErrors.halfDayPrice && <p className="text-red-500 text-sm">{formErrors.halfDayPrice}</p>}
+                                            </div>
+
+                                            {/* Extra Hour Price */}
+                                            <div>
+                                                <label htmlFor="extra-hour-price" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                    Extra Hour Price
+                                                </label>
+                                                <input
+                                                    type="number"
+                                                    name="extraHourPrice"
+                                                    id="extra-hour-price"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                    placeholder="Enter extra hour price"
+                                                    onChange={handleInputChange}
+                                                    value={formData.extraHourPrice}
+                                                    required
+                                                />
+                                                {formErrors.extraHourPrice && <p className="text-red-500 text-sm">{formErrors.extraHourPrice}</p>}
+                                            </div>
+
+                                            {/* About Yourself */}
+                                            <div>
+                                                <label htmlFor="about-yourself" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                    About Yourself
+                                                </label>
+                                                <textarea
+                                                    name="aboutYourself"
+                                                    id="about-yourself"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                    placeholder="Write a few sentences about yourself"
+                                                    rows="4"
+                                                    onChange={handleInputChange}
+                                                    value={formData.aboutYourself}
+                                                    required
+                                                ></textarea>
+                                                {formErrors.aboutYourself && <p className="text-red-500 text-sm">{formErrors.aboutYourself}</p>}
+                                            </div>
+
+                                            {/* Buttons */}
+                                            <div className="flex gap-4">
+                                                <button
+                                                    onClick={() => setStep((prevState) => ({ ...prevState, currentStep: 2 }))}
+                                                    type="button"
+                                                    className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                                >
+                                                    Back
+                                                </button>
+                                                <button
+                                                    type="submit"
+                                                    className="w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                                >
+                                                    Next
+                                                </button>
+                                            </div>
+                                        </form>
                                     </div>
-                                ))}
+                                </div>
                             </div>
-                            <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 4 }))} className="mt-4 w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                            <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 2 }))} className="mt-4 w-full text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">back</button>
-                        </div>
+                        </section>
                     </section>
                 )}
-                {steps.currentStep === 4 && (
-                    <section className="bg-gradient-to-b from-white to-yellow-200 h-[100vh]">
-                        <div className="flex flex-col items-center my-auto justify-center h-[80vh] px-6 py-8 mx-auto md:h-screen lg:py-0">
-                            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
-                                Registration Complete
-                            </h1>
-                            <p className="mt-4">Thank you for registering!</p>
-                            <Link href="/" className="mt-4 w-full text-center text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Go to Home</Link>
-                        </div>
-                    </section>
-                )} */}
+
+{steps.currentStep === 4 && <section className='bg-gradient-to-b from-white to-blue-200 h-[100vh] w-[100vw] flex flex-col gap-8 justify-center items-center'>
+        <div className='flex flex-col gap-8 justify-center items-center '>
+        <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <Image
+              className="mr-2"
+              src="/assets/logo-light.png"
+              width={150}
+              height={50}
+              alt="fotodukaan logo"
+            />
+          </Link>
+      
+      <div><h1 className='text-black text-3xl md:text-5xl'>Please Verify Your OTP</h1></div>
+                <div className="bg-white text-emerald-500 w-fit mx-auto p-4 rounded-full">
+                  <BsFillShieldLockFill className='' size={30} />
+                </div>
+                <label
+                  htmlFor="otp"
+                  className="font-bold text-xl  text-blue-600 text-center"
+                >
+                  Enter your OTP
+                </label>
+                <div className='text-5xl '>
+                <OTPInput
+      value={otpValue}
+      onChange={setOtpValue}
+      numInputs={6}
+      renderSeparator={<span className='m-1'></span>}
+      renderInput={(props) => <input {...props} />}
+    />
+    </div>
+                <button
+                  onClick={OTPVerify}
+                  className="bg-emerald-600 px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
+                >
+                  {loading && (
+                    <CgSpinner size={20} className="mt-1 animate-spin" />
+                  )}
+                  <span>Verify OTP</span>
+                </button>
+                </div>
+              </section>}
+
+
+
+
             </div>
         </div>
     );
