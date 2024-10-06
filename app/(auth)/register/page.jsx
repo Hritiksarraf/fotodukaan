@@ -188,69 +188,77 @@ const router=useRouter()
         }
     };
 
-    const handleRegister = async ()=>{
-        const payload = {
-            ...formData,
-            selectedCategories,  
-        };
-
+    const handleRegister = async (e) => {
+        e.preventDefault();
+      
         try {
-            const res = await fetch("/api/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
+          // Step 1: Handle profile photo upload to Cloudinary
+          let profilePhotoUrl = "";
+          if (formData.profilePhoto) {
+            const imgData = new FormData();
+            imgData.append("file", formData.profilePhoto);
+            imgData.append("upload_preset", "social");
+            imgData.append("cloud_name", "hritiksarraf");
+      
+            const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
+              method: "POST",
+              body: imgData,
             });
-
-            let response = await res.json();
       
-      if(response.success){
-        console.log(response);
-        toast.success('Signup Successful', {
-          position: 'top-left',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
-        
-      }
-      else{
-        toast.error( response.error, {
-          position: 'top-left',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
-      }
-      setTimeout(() => {
-        router.push('/log-in');
-      }, 2000);
+            if (imgResponse.ok) {
+              const imgResult = await imgResponse.json();
+              profilePhotoUrl = imgResult.url; // Get the URL from Cloudinary response
+            } else {
+              throw new Error("Image upload failed");
+            }
+          }
       
+          // Step 2: Prepare the rest of the form data
+          const payload = {
+            ...formData,
+            profilePhoto: profilePhotoUrl, // Add the photo URL here
+            selectedCategories,
+          };
       
-    } catch (error) {
-      console.log(error)
-      toast.error('Signup Failed', {
-        position: 'top-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-    }
-        console.log(selectedCategories, formData)
-    } 
+          // Step 3: Send the payload to your register API
+          const res = await fetch("/api/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+      
+          const response = await res.json();
+          setLoading(false);
+          if (response.success) {
+            toast.success("Signup Successful", {
+              position: "top-left",
+              autoClose: 5000,
+              theme: "light",
+            });
+            setTimeout(() => {
+              router.push("/log-in");
+            }, 2000);
+          } else {
+            toast.error(response.error, {
+              position: "top-left",
+              autoClose: 5000,
+              theme: "light",
+            });
+          }
+        } catch (error) {
+          console.error(error);
+          toast.error("Signup Failed", {
+            position: "top-left",
+            autoClose: 5000,
+            theme: "light",
+          });
+        }
+      
+        console.log(selectedCategories, formData);
+      };
+      
     
 
     function OTPVerify(e) {
@@ -260,7 +268,7 @@ const router=useRouter()
           .confirm(otpValue)
           .then(async (res) => {
             console.log(res);
-            setLoading(false);
+            
             handleRegister();
           })
           .catch((err) => {
@@ -805,6 +813,7 @@ const router=useRouter()
                                             Set Up Your Profile
                                         </h1>
                                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+                                        {/* <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}> */}
                                             {/* Profile Photo */}
                                             <div>
                                                 <label htmlFor="profile-photo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
@@ -818,6 +827,7 @@ const router=useRouter()
                                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                                                     onChange={handleInputChange}
                                                     required
+                                                    
                                                 />
                                                 {formErrors.profilePhoto && <p className="text-red-500 text-sm">{formErrors.profilePhoto}</p>}
                                             </div>
@@ -856,6 +866,7 @@ const router=useRouter()
                                                     onChange={handleInputChange}
                                                     value={formData.address}
                                                     required
+                                                    onClick={console.log(formData)}
                                                 />
                                                 {formErrors.address && <p className="text-red-500 text-sm">{formErrors.address}</p>}
                                             </div>

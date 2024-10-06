@@ -29,22 +29,23 @@ export const POST = async (req) => {
         { status: 400 }
       );
     }
-    const imgData = new FormData();
-    imgData.append("file", profilePhoto);
-    imgData.append("upload_preset", "FotoDukaan");
-    imgData.append("cloud_name", "hritiksarraf");
-
-    const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
-      method: "POST",
-      body: imgData,
-    });
-
-    if (!imgResponse.ok) {
-      throw new Error("Failed to upload image to Cloudinary");
-    }
-
-    const imgUrl = await imgResponse.json();
-    const profilePhotoUrl = imgUrl.url;
+    // console.log('step1')
+    // const imgData = new FormData();
+    // imgData.append("file", profilePhoto);
+    // imgData.append("upload_preset", "social");
+    // imgData.append("cloud_name", "hritiksarraf");
+    // console.log('step2')
+    // const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
+    //   method: "POST",
+    //   body: imgData,
+    // });
+    // console.log('step3')
+    // if (!imgResponse.ok) {
+    //   throw new Error("Failed to upload image to Cloudinary",imgResponse);
+    // }
+    // console.log('step4')
+    // const imgUrl = await imgResponse.json();
+    // const profilePhotoUrl = imgUrl.url;
     // Encrypt password
     const encryptedPassword = CryptoJS.AES.encrypt(password, "fotoDukaan@Mani2003").toString();
 
@@ -60,7 +61,7 @@ export const POST = async (req) => {
       halfDayPrice:halfDayPrice,
       extraHourPrice:extraHourPrice,
       aboutYourself:aboutYourself,
-      profilePhoto:profilePhotoUrl,  // If you plan to handle this as a file, ensure you're handling file upload properly
+      profilePhoto:profilePhoto,  // If you plan to handle this as a file, ensure you're handling file upload properly
       freelancerDetails:selectedCategories,  // Assuming categories is an array or object
     });
 
