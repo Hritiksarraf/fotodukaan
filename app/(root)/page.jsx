@@ -9,6 +9,7 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
+import Link from 'next/link';
 
 export default function Home() {
 
@@ -273,7 +274,7 @@ export default function Home() {
           </div>
           <div className="mt-8 flex mx-auto w-[100%] justify-center md:justify-start">
 
-            <button className="bg-yellow-600 text-white px-6 py-3 rounded-full mr-4">Contact Us</button>
+            <Link href={"/contact"} className="bg-yellow-600 text-white px-6 py-3 rounded-full mr-4">Contact Us</Link>
 
           </div>
         </div>
@@ -376,7 +377,7 @@ export default function Home() {
 
           </div>
           <div className="pt-8 flex mx-auto w-full justify-center md:justify-start">
-            <button className="bg-blue-500 text-white px-6 py-3 rounded-full mr-4">Contact Us</button>
+            <Link href='/contact' className="bg-blue-500 text-white px-6 py-3 rounded-full mr-4">Contact Us</Link>
 
           </div>
         </div>
@@ -393,7 +394,7 @@ export default function Home() {
         </div>
         <div className='bg-gradient-to-r w-[100vw]  from-white to-white'>
           <Slider {...settings2}>
-            {freelancer.map(({ _id, profilePhoto, name, }) => {
+            {freelancer.map(({ _id, profilePhoto, name,startingPrice, stars }) => {
 
               // const [readMore, setReadMore] = useState(true)
               // const truncatedText = text.split(' ').length > 20
@@ -409,7 +410,7 @@ export default function Home() {
 
                     <div className='flex flex-col items-center text-center mt-4'>
                       <p className='text-xl font-bold my-1'>{name}</p>
-                      <p className='text-sm'> <span className='font-semibold text-xl'>1000 ₹ </span > Starting Price  </p>
+                      <p className='text-sm'> <span className='font-semibold text-xl'>{startingPrice} ₹ </span > Starting Price  </p>
 
                       {/* <div className="flex flex-wrap items-center justify-center gap-y-4 my-4 space-x-2">
                       
@@ -422,15 +423,15 @@ export default function Home() {
                 </span>
               ))}
             </div> */}
-                      {/* <div className='h-5 flex'>
+                      <div className='h-5 flex'>
                         {Array(5).fill(0).map((_, index) => (
-                          index < star ? (
+                          index < Number(stars.star) ? (
                             <StarIcon key={index} size="small" className="text-yellow-500" />
                           ) : (
                             <StarBorderIcon key={index} size="small" className="text-yellow-500" />
                           )
                         ))}
-                      </div> */}
+                      </div>
 
                       <button className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4">Know more</button>
 
