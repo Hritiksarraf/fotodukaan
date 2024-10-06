@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
+  import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import OTPInput from 'react-otp-input';
+
 
 
 const categories = [
