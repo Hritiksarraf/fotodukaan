@@ -17,6 +17,8 @@ export default function Page() {
 const router=useRouter()
     const [selectedCategories, setSelectedCategories] = useState({});
 
+    const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
+
 
     const [formData, setFormData] = useState({
         name: "",
