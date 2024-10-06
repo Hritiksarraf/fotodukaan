@@ -5,8 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
-  
+import 'react-toastify/dist/ReactToastify.css';
 import { auth } from '@/app/firebase.config';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import OTPInput from 'react-otp-input';

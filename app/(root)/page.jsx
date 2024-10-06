@@ -99,7 +99,7 @@ export default function Home() {
   ]
   const imgurl = "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
-  //this seting is for the slider 
+  
   var settings2 = {
 
     infinite: true,
@@ -185,7 +185,17 @@ export default function Home() {
   const [delta, setDelta] = useState(300 - Math.random() * 100);
   const [index, setIndex] = useState(1);
   const toRotate = ["Photographer", "Cinematographer", "Drone", "Video Editor", "Crane"];
+  const [freelancer, setFreelancer] = useState([])
   const period = 2000;
+
+  const getFeelancer = async () => {
+    console.log('getting freelancer')
+    const response = await fetch("/api/freelancer");
+    const data = await response.json();
+    console.log('got freelancer',data)
+    setFreelancer(data);
+  };
+
 
   useEffect(() => {
     let ticker = setInterval(() => {
@@ -219,6 +229,11 @@ export default function Home() {
       setIndex(prevIndex => prevIndex + 1);
     }
   }
+
+  useEffect(() => {
+    getFeelancer()
+  }, [])
+  
 
 
 
@@ -378,18 +393,18 @@ export default function Home() {
         </div>
         <div className='bg-gradient-to-r w-[100vw]  from-white to-white'>
           <Slider {...settings2}>
-            {TestimonialData.map(({ id, img, name, text, star, skills }) => {
+            {freelancer.map(({ _id, profilePhoto, name, }) => {
 
-              const [readMore, setReadMore] = useState(true)
-              const truncatedText = text.split(' ').length > 20
-                ? text.split(' ').slice(0, 20).join(' ')
-                : text;
+              // const [readMore, setReadMore] = useState(true)
+              // const truncatedText = text.split(' ').length > 20
+              //   ? text.split(' ').slice(0, 20).join(' ')
+              //   : text;
 
               return (
                 <>
-                  <div key={id} className='relative w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
+                  <div key={_id} className='relative w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
                     <div className='block h-64 w-64  mx-auto rounded-full pt-4'>
-                      <img src={img} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
+                      <img src={profilePhoto} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
                     </div>
 
                     <div className='flex flex-col items-center text-center mt-4'>
@@ -407,7 +422,7 @@ export default function Home() {
                 </span>
               ))}
             </div> */}
-                      <div className='h-5 flex'>
+                      {/* <div className='h-5 flex'>
                         {Array(5).fill(0).map((_, index) => (
                           index < star ? (
                             <StarIcon key={index} size="small" className="text-yellow-500" />
@@ -415,7 +430,7 @@ export default function Home() {
                             <StarBorderIcon key={index} size="small" className="text-yellow-500" />
                           )
                         ))}
-                      </div>
+                      </div> */}
 
                       <button className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4">Know more</button>
 
