@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-useRouter
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+
 
 const categories = [
     { name: 'Photography', subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'] },
@@ -334,6 +336,7 @@ const router=useRouter()
 
     return (
         <div>
+            <ToastContainer/>
             <div className="max-w-2xl mx-auto mt-10 p-4   shadow-2xl ">
                 <ul aria-label="Steps" className="items-center text-gray-600 font-medium flex">
                     {steps.stepsItems.map((item, idx) => (
