@@ -204,7 +204,7 @@ const router=useRouter()
             });
 
             let response = await res.json();
-      console.log(response);
+      
       if(response.success){
         console.log(response);
         toast.success('Signup Successful', {
@@ -1003,6 +1003,7 @@ const router=useRouter()
 
 
             </div>
+            <ToastContainer/>
         </div>
     );
 }
