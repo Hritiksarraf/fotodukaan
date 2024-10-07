@@ -11,7 +11,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import Link from 'next/link';
 
-export default function Home() {
+export default function Home () {
 
   const Services = [
     {
@@ -433,7 +433,7 @@ export default function Home() {
                         ))}
                       </div>
 
-                      <button className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4">Know more</button>
+                      <Link href={`/freelancer/${_id}`} className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4">Know more</Link>
 
                     </div>
                   </div>
