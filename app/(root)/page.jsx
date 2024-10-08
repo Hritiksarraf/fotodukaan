@@ -16,23 +16,28 @@ export default function Home () {
   const Services = [
     {
       title: "Photographer",
-      img: "https://www.silkphotos.com/wp-content/uploads/2013/08/Indian-wedding-photographer-05.jpg"
+      img: "https://www.silkphotos.com/wp-content/uploads/2013/08/Indian-wedding-photographer-05.jpg",
+      link:"/freelancer/type/Photography"
     },
     {
       title: "Drone",
-      img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      link:"/freelancer/type/Drone"
     },
     {
       title: "Video Editing",
-      img: "https://lwks.com/hubfs/Editor2-min.webp"
+      img: "https://lwks.com/hubfs/Editor2-min.webp",
+      link:"/freelancer/type/Video Editing"
     },
     {
       title: "Crane",
-      img: "https://img.freepik.com/premium-photo/tv-camera-crane-studio_42764-53.jpg?w=2000"
+      img: "https://img.freepik.com/premium-photo/tv-camera-crane-studio_42764-53.jpg?w=2000",
+      link:"/freelancer/type/Crane"
     },
     {
       title: 'Cinematographer',
-      img: "https://img.freepik.com/free-photo/close-up-influencer-holding-flowers_23-2149172443.jpg"
+      img: "https://img.freepik.com/free-photo/close-up-influencer-holding-flowers_23-2149172443.jpg",
+      link:"/freelancer/type/Videography"
     }
   ]
   const Partner = [
@@ -189,6 +194,9 @@ export default function Home () {
   const [freelancer, setFreelancer] = useState([])
   const period = 2000;
 
+  const [category, setCategory] = useState("");
+  const [place, setPlace] = useState("");
+
   const getFeelancer = async () => {
     console.log('getting freelancer')
     const response = await fetch("/api/freelancer");
@@ -235,7 +243,7 @@ export default function Home () {
     getFeelancer()
   }, [])
   
-
+  const isSearchDisabled = !category;
 
 
 
@@ -254,23 +262,39 @@ export default function Home () {
           <p className='text-gray-300 border-l-2 px-2 text-left font-light md:hidden  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p> */}
           <p className='py-8 text-white text-lg'> Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p>
           <div className="mt-10 sm:mt-8 flex ">
-            <div className="bg-white rounded-md sadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-9 space-y-4 sm:space-y-0 sm:space-x-4">
-              <select className="w-full sm:w-auto border-gray-300 rounded-md p-2">
-                <option>Search for Freelancer</option>
-                <option>Photographers</option>
-                <option>Makeup Artists</option>
-                <option>Mandap</option>
-              </select>
-              <select className="w-full sm:w-auto border-gray-300 rounded-md p-2">
-                <option>Search for Location</option>
-                <option>Delhi</option>
-                <option>Mumbai</option>
-                <option>Bangalore</option>
-              </select>
-              <button className="w-full sm:w-auto bg-blue-500 text-white px-4 py-2 rounded-md">
-                Find Freelancer →
-              </button>
-            </div>
+          <div className="bg-white rounded-md shadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-9 space-y-4 sm:space-y-0 sm:space-x-4">
+      <select
+        value={category}
+        onChange={(e)=>{setCategory(e.target.value)}}
+        className="w-full sm:w-auto border-gray-300 rounded-md p-2"
+      >
+        <option value="">Select Category</option>
+        <option>Photography</option>
+        <option>Videography</option>
+        <option>Drone</option>
+        <option>Video Editing</option>
+        <option>Crane</option>
+      </select>
+
+      <select
+        value={place}
+        onChange={(e)=>{setPlace(e.target.value)}}
+        className="w-full sm:w-auto border-gray-300 rounded-md p-2"
+      >
+        <option value="">Select Place</option>
+        <option>patna</option>
+        <option>muzaffarpur</option>
+      </select>
+
+      <Link
+        href={isSearchDisabled ? "#" : `/freelancer/type/${category}/${place}`}
+        className={`w-full sm:w-auto px-4 py-2 rounded-md text-white ${
+          isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
+        }`}
+      >
+        Find Freelancer →
+      </Link>
+    </div>
           </div>
           <div className="mt-8 flex mx-auto w-[100%] justify-center md:justify-start">
 
@@ -301,11 +325,11 @@ export default function Home () {
         </div>
         <div className='flex flex-wrap items-center justify-center'>
           
-          {Services.map(({ service, index, img, title }) => {
+          {Services.map(({ service, index, img, title, link }) => {
 
 
             return (
-              <>
+              <Link href={link}>
                 <div key={index} className='relative border-[0.4rem] md:w-[26vw] mx-6 bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10  '>
                   <div className='block md:h-[21rem] md:w-[21rem] mx-6 md:mx-auto rounded-full pt-6'>
                     <img src={img} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
@@ -319,7 +343,7 @@ export default function Home () {
 
                   </div>
                 </div>
-              </>
+              </Link>
             )
           })}
         </div>

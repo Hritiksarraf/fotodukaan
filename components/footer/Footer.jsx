@@ -11,7 +11,7 @@ export default function Footer() {
                     <div data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="mb-10 md:mb-0">
                         <Link href="/ " to="#home" smooth className="flex items-center mb-10">
                             <img
-                                src="./assets/logo-dark.jpeg"
+                                src="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397187/logo-dark_tsro8u.jpg"
                                 width={150}
                                 height={50}
                                 alt="fotodukaan logo"

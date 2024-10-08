@@ -1,23 +1,49 @@
-import Link from "next/link"
-export default function ServiceCard(props) {
-    return (
-        <>
-            {/* data-aos="fade-up" */}
-            
-            <div className=' w-96 rounded-xl flex flex-col m-5 min-h-[24rem]' >
-            <Link href='/'>
-                <img src={props.img}  className='border-8 rounded-xl  p-2  aspect-[4/3] border-[#142a58] h-100 object-cover   w-100 ' alt="error loading img" />
-                
-                <h1 className='blue1 px-2 font-bold hover:text-red-800 text-decoration-none text-4xl my-2 lg:text-5xl text-center ' style={{
-                    fontFamily: "poppins"
-                    , fontSize: "2rem"
-                }} href="#">{props.title}</h1>
-                </Link>
-                <p className='text-center lg:text-lg block ' style={{
-                    fontFamily: "Garamond"
-                }}>Our most coveted banquet at The Tamarind Tree is the place you can relax in captivating surroundings and celebrate your Sangeeth ceremony. .</p>
-            </div>
-            
-        </>
-    )
+import Link from 'next/link';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+
+export default function ServiceCard({
+  _id,
+  profilePhoto,
+  name,
+  startingPrice,
+  stars,
+}) {
+  return (
+    <div className=" w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r from-white to-white dark:text-black my-6 shadow-lg flex flex-col bg-primary/10 ">
+      <div className="block h-64 w-64 mx-auto rounded-full pt-4">
+        <img
+          src={profilePhoto}
+          alt={name}
+          className="aspect-square object-cover rounded-md h-full w-full"
+        />
+      </div>
+
+      <div className="flex flex-col items-center text-center mt-4">
+        <p className="text-xl font-bold my-1">{name}</p>
+        <p className="text-sm">
+          <span className="font-semibold text-xl">{startingPrice} ₹</span> Starting Price
+        </p>
+
+        <div className="h-5 flex">
+          {Array(5)
+            .fill(0)
+            .map((_, index) =>
+              index < Number(stars.star) ? (
+                <StarIcon key={index} size="small" className="text-yellow-500" />
+              ) : (
+                <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+              )
+            )}
+        </div>
+
+        <Link
+          href={`/freelancer/${_id}`}
+          className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4"
+        >
+          Know more
+        </Link>
+      </div>
+    </div>
+  );
 }

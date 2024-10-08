@@ -24,20 +24,8 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         
-        <link rel="icon" href="./assets/fav.jpeg" />
-        <link rel="apple-touch-icon" sizes="180x180" href="./assets/fav.jpeg" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="./assets/fav.jpeg"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="./assets/fav.jpeg"
-        />
+        <link rel="icon" href="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397187/fav_rjw9cu.jpg" />
+        
 
         <link
           rel="stylesheet"

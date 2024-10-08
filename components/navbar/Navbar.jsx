@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import jwt from "jsonwebtoken";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
-useRouter
+
 
 
 export default function Navbar() {
@@ -14,19 +14,19 @@ export default function Navbar() {
     const [userLogin, setUserLogin] = useState(false)
     const router = useRouter();
     const [profileState, setProfileState] = useState(false)
+    const [category, setCategory] = useState("");
 
     // Replace javascript:void(0) paths with your paths
     const navigation = [
         { title: "Home", path: "/" },
         { title: "About Us", path: "/about-us" },
-        { title: "Photographer", path: "/photographer" },
         { title: "Contact", path: "/contact" }
     ]
 
     useEffect(() => {
         document.onclick = (e) => {
             const target = e.target;
-            if (!target.closest(".menu-btn") && !target.closest(".menu") && !target.closest(".profile-btn")) setState(false);
+            if (!target.closest(".menu-btn") && !target.closest(".menu") && !target.closest(".btn-select")  && !target.closest(".profile-btn")) setState(false);
         };
     }, [])
 
@@ -47,6 +47,14 @@ export default function Navbar() {
         window.location.reload();   // Reload the page to refresh the state
     }
 
+    const handleCategoryChange = (e) => {
+        const selectedCategory = e.target.value;
+        if (selectedCategory) {
+            setState(false)
+          router.push(`/freelancer/type/${selectedCategory}`); // Adjust the path to match your dynamic route
+        }
+      };
+
 
     return (
         <nav className={`bg-white shadow-xl z-50 fixed  w-[100vw] p-3  md:text-sm ${state ? "shadow-lg rounded-xl border mx-2 mt-2 md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
@@ -54,64 +62,64 @@ export default function Navbar() {
                 <div className="flex items-center justify-between  md:block">
                     <Link href="/">
                         <img
-                            src="./assets/logo-light.png"
+                            src="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png"
                             width={150}
                             height={50}
                             alt="fotodukaan logo"
                         />
                     </Link>
                     <div className="md:hidden flex gap-4">
-                    <div className="flex ">
-                           {userLogin && <div>
+                        <div className="flex ">
+                            {userLogin && <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>}
                             {profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
-                            <div>
-                                <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
+                                <div>
+                                    <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
-                            </div>
-                            <h1 className="text-white font-bold">{user.name}</h1>
-                            <div className="flex flex-col gap-5">
-                                <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
-                                    Bookings
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                                    </svg>
-                                </Link>
-                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
-                                    Logout
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                                    </svg>
-                                </button>
+                                </div>
+                                <h1 className="text-white font-bold">{user.name}</h1>
+                                <div className="flex flex-col gap-5">
+                                    <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                                        Bookings
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                        </svg>
+                                    </Link>
+                                    <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                        Logout
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                        </svg>
+                                    </button>
 
-                            </div>
-                        </div>}
-                        {profileState && user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
-                            <div>
-                                <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
+                                </div>
+                            </div>}
+                            {profileState && user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                                <div>
+                                    <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
-                            </div>
-                            <h1 className="text-white font-bold">{user.name}</h1>
-                            <div className="flex flex-col gap-5">
-                                <Link href="/dashboard" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
-                                    DashBoard
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                                    </svg>
-                                </Link>
-                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
-                                    Logout
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                                    </svg>
-                                </button>
+                                </div>
+                                <h1 className="text-white font-bold">{user.name}</h1>
+                                <div className="flex flex-col gap-5">
+                                    <Link href="/dashboard" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                                        DashBoard
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                        </svg>
+                                    </Link>
+                                    <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                        Logout
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                        </svg>
+                                    </button>
 
-                            </div>
-                        </div>}
+                                </div>
+                            </div>}
                         </div>
-                        
+
 
                         <button className="menu-btn text-white hover:text-gray-800"
                             onClick={() => setState(!state)}
@@ -144,6 +152,20 @@ export default function Navbar() {
                                 )
                             })
                         }
+                        <li>
+        <select
+          value={category}
+          onChange={handleCategoryChange}
+          className="text-blue-700 font-bold       hover:text-gray-400"
+        >
+          <option value="">Select Category</option>
+          <option value="Photography">Photography</option>
+          <option value="Videography">Videography</option>
+          <option value="Drone">Drone</option>
+          <option value="Video Editing">Video Editing</option>
+          <option value="Crane">Crane</option>
+        </select>
+      </li>
                     </ul>
                     {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">
@@ -186,7 +208,7 @@ export default function Navbar() {
                             <h1 className="text-white font-bold">{user.name}</h1>
                             <div className="flex flex-col gap-5">
                                 <Link href="/dashboard" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
-                                Dashboard
+                                    Dashboard
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                         <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                                     </svg>
