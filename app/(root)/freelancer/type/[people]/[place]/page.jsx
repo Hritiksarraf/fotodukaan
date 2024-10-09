@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import ServiceCard from '@/components/card/ServiceCard';
+import SearchBar from '@/components/searchBar/SearchBar';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 export default function Page() {
   const { people, place } = useParams();
@@ -38,18 +41,31 @@ export default function Page() {
   }, [people, place]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (<div className='min-h-[80vh] w-[100vw]'>
+        <Box sx={{ display: 'flex' }}>
+            <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
+        <CircularProgress color="inherit" size="8rem" />
+        </div>
+      </Box>
+    </div>);
   }
 
   return (
-    <div className="pt-24">
+    <div className="pt-24 min-h-[80vh]">
+        <div>
+            <SearchBar/>
+        </div>
       {data.length === 0 ? (
-        <p>No freelancers found for {people} in {place}.</p>
-      ) : ( <div className='flex flex-wrap gap-8'>
+        <p className='text-center text-2xl md:text-5xl'>No freelancers found for {people} in {place}.</p>
+      ) : ( <>
+       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{people}</span> in <span className='text-yellow-500'>{place}. </span></p>
+      <div className='flex flex-wrap gap-8'>
+         
         {data.map((freelancer) => (
           <ServiceCard key={freelancer._id} {...freelancer} />
         ))}
-        </div>)}
+        </div>
+        </>)}
     </div>
   );
 }

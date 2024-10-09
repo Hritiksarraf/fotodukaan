@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <title>FotoDukaan</title>
         
         <link rel="icon" href="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397187/fav_rjw9cu.jpg" />
         

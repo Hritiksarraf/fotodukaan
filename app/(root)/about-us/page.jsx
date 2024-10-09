@@ -80,13 +80,13 @@ export default function page() {
             </div>
           </div>
 
-         
-         
+
+
         </section>
 
         <section>
           <div className=''>
-            
+
             <h1 className=" pt-5 text-4xl md:text-7xl  text-center text-black">For Clients</h1>
           </div>
 
@@ -104,7 +104,7 @@ export default function page() {
                 Hassle-Free Hiring. Book Freelancers Instantly!
               </h1>
               <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-20 font-serif text-left text-black text-[0.6rem]">
-              At Photo Dukaan, we make it easy for talented freelancers and clients to connect. Whether you need professional photographers, cinematographers, drone operators, crane operators, or video editors, we’re here to simplify the process. From weddings and events to corporate shoots and creative projects, we ensure clients find the right experts, and freelancers get the exposure they deserve.
+                At Photo Dukaan, we make it easy for talented freelancers and clients to connect. Whether you need professional photographers, cinematographers, drone operators, crane operators, or video editors, we’re here to simplify the process. From weddings and events to corporate shoots and creative projects, we ensure clients find the right experts, and freelancers get the exposure they deserve.
               </p>
               <div className='mt-9'>
 
@@ -133,10 +133,10 @@ export default function page() {
                     <h1 className='text-xl md:text-3xl font-serif text-left text-black '>Simple Booking Process</h1>
                     <p className="md:text-sm md:pr-64 text-left text-black font-serif text-[0.6rem]">We’ve made it effortless for you:
 
-Browse and select the freelancers that suit your needs.
-Book instantly by paying a small token amount.
-Relax and enjoy the peace of mind as your project is handled by the pros.
-It’s that simple! Let us help you find the right professionals for your next project..</p>
+                      Browse and select the freelancers that suit your needs.
+                      Book instantly by paying a small token amount.
+                      Relax and enjoy the peace of mind as your project is handled by the pros.
+                      It’s that simple! Let us help you find the right professionals for your next project..</p>
                   </div>
                 </div>
 
@@ -148,15 +148,15 @@ It’s that simple! Let us help you find the right professionals for your next p
             </div>
           </div>
 
-         
-         
+
+
         </section>
 
 
 
         <section>
           <div className=''>
-            
+
             <h1 className=" pt-5 text-4xl md:text-7xl  text-center text-black">Our Story!</h1>
           </div>
 
@@ -174,12 +174,12 @@ It’s that simple! Let us help you find the right professionals for your next p
                 Connecting Creativity with Memories – Your Go-To Platform for Freelance Visual Artists
               </h1>
               <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-40 font-serif text-left  text-[0.7rem]">
-              Founded in 2024, Fotodukaan.com emerged from a simple idea: to bridge the gap between talented photographers and cinematographers and those who cherish their special moments. Our founder, driven by a passion for storytelling and visual arts, saw the challenges both freelancers and clients faced in finding each other. Freelancers often struggled to showcase their work and reach potential clients, while people frequently found it difficult to locate skilled professionals who could understand and capture their vision.
+                Founded in 2024, Fotodukaan.com emerged from a simple idea: to bridge the gap between talented photographers and cinematographers and those who cherish their special moments. Our founder, driven by a passion for storytelling and visual arts, saw the challenges both freelancers and clients faced in finding each other. Freelancers often struggled to showcase their work and reach potential clients, while people frequently found it difficult to locate skilled professionals who could understand and capture their vision.
               </p>
               <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-20 font-serif text-left  text-[0.7rem]">Recognizing this gap, Fotodukaan.com was established as a dedicated platform where freelancers can display their portfolios and connect with clients seamlessly. Our mission is to empower freelance photographers, cinematographers, drone operators, and video editors by providing them with a platform to showcase their talents, and to offer clients a convenient, reliable way to find the perfect professionals for their needs.</p>
               <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-20 font-serif text-left  text-[0.7rem]">From weddings and birthdays to corporate events and personal projects, Fotodukaan.com aims to be a trusted partner in every significant life event. We believe in the power of visual storytelling and the importance of preserving memories, and we are committed to making high-quality photography and videography accessible to everyone across India.</p>
               <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-20 font-serif text-left  text-[0.7rem]">Today, Fotodukaan.com continues to grow, bringing together a vibrant community of creatives and clients. We are proud to facilitate connections that not only create beautiful memories but also support and celebrate the incredible talent of freelance visual artists in India.</p>
-              
+
               <div className="pt-8 flex mx-auto w-full justify-center md:justify-start">
                 <button className="bg-yellow-500 text-white px-6 py-3 rounded-full mr-4">Contact Us</button>
 
@@ -187,14 +187,14 @@ It’s that simple! Let us help you find the right professionals for your next p
             </div>
           </div>
 
-         
-         
+
+
         </section>
 
 
-        
 
-        
+
+
       </div>
     </>
   )
