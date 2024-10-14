@@ -15,7 +15,7 @@ export default function page() {
     const { id } = useParams();
 
     const [freelancerData, setFreelancerData] = useState({
-        freelancerDetails: {} // Initialize as an empty object
+        freelancerDetails: {}
     });
 
     const getUser = async () => {
@@ -86,7 +86,7 @@ export default function page() {
 
                                 <div className="flex">
                                     <p className='text-sm'> <span className='font-semibold text-3xl'>{freelancerData.startingPrice} ₹ </span > Starting Price  </p>
-                                    <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</button>
+                                    <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link>
 
 
                                 </div>
