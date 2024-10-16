@@ -12,10 +12,9 @@ export const POST = async (req) => {
       password, 
       phone, 
       city, 
-      address, 
-      startingPrice, 
-      halfDayPrice, 
-      extraHourPrice, 
+      address,
+      price, 
+      weddingPrice,
       aboutYourself,
       profilePhoto,
       selectedCategories 
@@ -49,6 +48,17 @@ export const POST = async (req) => {
     // Encrypt password
     const encryptedPassword = CryptoJS.AES.encrypt(password, "fotoDukaan@Mani2003").toString();
 
+    const processedCategories = Object.entries(selectedCategories).reduce((acc, [category, details]) => {
+      if (details.subcategories && details.subcategories.length > 0) {
+        acc[category] = {
+          ...details,
+          price: details.price || {},
+          weddingPrice: details.weddingPrice || {}
+        };
+      }
+      return acc;
+    }, {});
+
     // Create new freelancer instance
     let f = new Freelancer({
       name:name,
@@ -57,12 +67,11 @@ export const POST = async (req) => {
       password: encryptedPassword,
       city:city,
       address:address,
-      startingPrice:startingPrice,
-      halfDayPrice:halfDayPrice,
-      extraHourPrice:extraHourPrice,
+      price:price,
+      weddingPrice:weddingPrice,
       aboutYourself:aboutYourself,
       profilePhoto:profilePhoto,  // If you plan to handle this as a file, ensure you're handling file upload properly
-      freelancerDetails:selectedCategories,  // Assuming categories is an array or object
+      freelancerDetails:processedCategories ,  // Assuming categories is an array or object
     });
 
     // Save freelancer to database
