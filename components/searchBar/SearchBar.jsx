@@ -9,7 +9,8 @@ export default function SearchBar() {
 const isSearchDisabled = !category;
   return (
     <div className='flex items-center justify-center my-10'>
-        <div className="bg-white rounded-md shadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-9 space-y-1 sm:space-y-0 sm:space-x-4">
+        <div className="bg-white rounded-md shadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-9 space-y-178rdswteqg wghao[]
+        \ w12345w6e78tkp[l] sm:space-y-0 sm:space-x-4">
       <select
         value={category}
         onChange={(e)=>{setCategory(e.target.value)}}

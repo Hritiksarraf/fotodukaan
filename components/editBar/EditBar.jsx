@@ -7,8 +7,8 @@ export default function EditBar() {
         <div className='flex text-black md:w-[50vw] w-[90vw]  h-[6vh] justify-center gap-10 font-bold rounded-xl shadow-xl  '>
             <Link href='/editProfile/gallery' className='' >Gallery</Link>
             <Link href='/editProfile/profile' className='' >Profile</Link>
-            <Link href='/editProfile/services' className='' >Services</Link>
-            <Link href='/editProfile/details' className='' >details</Link>
+            <Link href='/editProfile/service' className='' >Service</Link>
+            
         </div>
     </div>
   )

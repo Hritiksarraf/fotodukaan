@@ -1010,8 +1010,8 @@ const router=useRouter()
                                                     required
                                                 >
                                                     <option value="">Select City</option>
-                                                    <option value="patna">Patna</option>
-                                                    <option value="muzaffarpur">Muzaffarpur</option>
+                                                    <option value="Patna">Patna</option>
+                                                    <option value="Muzaffarpur">Muzaffarpur</option>
                                                 </select>
                                                 {formErrors.city && <p className="text-red-500 text-sm">{formErrors.city}</p>}
                                             </div>
