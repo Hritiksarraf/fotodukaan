@@ -76,6 +76,9 @@ const categories = [
     pricing: {
         fullDayPrice: true,
     },
+    weddingPrice: {
+        fullDayPrice: true,
+    },
     },
     {
     name: 'Crane',
@@ -255,12 +258,13 @@ const router=useRouter()
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prevData => ({
+        const { name, value, type, files } = e.target;
+        setFormData((prevData) => ({
             ...prevData,
             [name]: type === "file" ? files[0] : value,
         }));
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -732,13 +736,10 @@ const router=useRouter()
                                                     ))}
                                                 </div>
 
-                                                {/* Camera Details Section */}
                                                 
-
-                                                {/*  pricing section */}
                                                     
                                                 
-                                                {(category.name === "Photography" || category.name === "Videography" || category.name === "Candid Photography") && (
+                                                {(category.name === "Photography" || category.name === "Videography" || category.name === "Candid Photography" || category.name==="Cinematography") && (
                                                     <div className="mt-2 mb-5 "> 
                                                         <div className='block w-[100%] h-[100%]'>
                                                             <h2 className="text-3xl text-center my-5 font-semibold">Camera Details</h2>
@@ -922,7 +923,7 @@ const router=useRouter()
                                                         <h3 className="text-lg font-medium mb-2">LED Details:</h3>
                                                         <div>
                                                         <label className="block mb-2 text-sm font-medium text-black dark:text-black">
-                                                            Size (in feet)
+                                                            Size 
                                                         </label>
                                                         <input
                                                             type="text"
