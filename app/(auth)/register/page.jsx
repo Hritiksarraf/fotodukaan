@@ -14,11 +14,92 @@ import { CgSpinner } from "react-icons/cg";
 
 
 const categories = [
-    { name: 'Photography', subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'] },
-    { name: 'Videography', subcategories: ['Wedding', 'Toure & Travel', 'Pre wedding', 'Birthday', 'Anniversary', 'Engagement', 'Event', 'New Born Baby', 'Corporate', 'Brand Promotion', 'Fashion', 'Other'] },
-    { name: 'Drone', subcategories: ['Wedding', 'Corporate', 'Event', 'Other'] },
-    { name: 'Video Editing', subcategories: ['Music Video & Album', 'Wedding', 'Event', 'Pre-Wedding', 'Film & Web Series', 'Youtube Vlogs', 'Reels', 'Content & Brand Promotion Videos', 'Other'] },
-    { name: 'Crane', subcategories: ['Wedding', 'Event', 'Other'] }
+    {
+    name: 'Photography',
+    subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Candid Photography',
+    subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Videography',
+    subcategories: ['Wedding', 'Toure & Travel', 'Pre wedding', 'Birthday', 'Anniversary', 'Engagement', 'Event', 'New Born Baby', 'Corporate', 'Brand Promotion', 'Fashion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Cinematography',
+    subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Drone',
+    subcategories: ['Wedding', 'Corporate', 'Event', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+    },
+    },
+    {
+    name: 'Crane',
+    subcategories: [ 'All Events'],
+    pricing: {
+        fullDayPrice: true,
+    },
+    },
+    {
+    name: 'LED wall',
+    subcategories: ['All Events'],
+    ledDetails: { size: '' },
+    pricing: {
+        fullDayPrice: true,
+    },
+    },
+    {
+    name: 'LED TV',
+    subcategories: ['All Events'],
+    ledDetails: { size: '' },
+    pricing: {
+        fullDayPrice: true,
+    },
+    },
 ];
 
 export default function Page() {
@@ -30,7 +111,6 @@ const router=useRouter()
     const [loading, setLoading] = useState(false);
     
 
-
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -39,9 +119,6 @@ const router=useRouter()
         profilePhoto: null,
         city: "",
         address: "",
-        startingPrice: "",
-        halfDayPrice: "",
-        extraHourPrice: "",
         aboutYourself: "",
     });
 
@@ -51,30 +128,30 @@ const router=useRouter()
     //for otp start here
     function onCaptchVerify() {
         if (!window.recaptchaVerifier) {
-          try {
-            window.recaptchaVerifier = new RecaptchaVerifier(
-              auth,
-              'recaptcha-container',
-              {
-                size: 'invisible',
-                callback: (response) => {
-                  console.log('reCAPTCHA solved:', response);
+            try {
+                window.recaptchaVerifier = new RecaptchaVerifier(
+                auth,
+                'recaptcha-container',
+                {
+                    size: 'invisible',
+                    callback: (response) => {
+                    console.log('reCAPTCHA solved:', response);
+                    },
+                    'expired-callback': () => {
+                    console.log('reCAPTCHA expired');
+                    },
                 },
-                'expired-callback': () => {
-                  console.log('reCAPTCHA expired');
-                },
-              },
-              
-            );
-            window.recaptchaVerifier.render().then((widgetId) => {
-              window.recaptchaWidgetId = widgetId;
-              setRecaptchaLoaded(true);
-            });
-          } catch (error) {
-            console.error('Error initializing reCAPTCHA:', error);
-          }
+                
+                );
+                window.recaptchaVerifier.render().then((widgetId) => {
+                window.recaptchaWidgetId = widgetId;
+                setRecaptchaLoaded(true);
+                });
+            } catch (error) {
+                console.error('Error initializing reCAPTCHA:', error);
+            }
         }
-      }
+    }
 
 
     // Validation rules
@@ -109,15 +186,55 @@ const router=useRouter()
             if (!formData.address) {
                 errors.address = "Address is required";
             }
-            if (!formData.startingPrice) {
-                errors.startingPrice = "Starting price is required";
-            }
-            if (!formData.halfDayPrice) {
-                errors.halfDayPrice = "Half-day price is required";
-            }
-            if (!formData.extraHourPrice) {
-                errors.extraHourPrice = "Extra hour price is required";
-            }
+            Object.entries(selectedCategories).forEach(([category, details]) => {
+                if (!errors[category]) errors[category] = {};
+    
+                // Validate subcategories
+                if (!details.subcategories || details.subcategories.length === 0) {
+                    errors[category].subcategories = "Please select at least one subcategory";
+                }
+    
+                // Validate prices
+                if (!errors[category].price) errors[category].price = {};
+                if (details.price.fullDayPrice === '') {
+                    errors[category].price.fullDayPrice = "Full day price is required";
+                }
+                if (details.price.halfDayPrice === '') {
+                    errors[category].price.halfDayPrice = "Half day price is required";
+                }
+                if (details.price.extraHourPrice === '') {
+                    errors[category].price.extraHourPrice = "Extra hour price is required";
+                }
+    
+                // Validate wedding prices only if 'Wedding' subcategory is selected
+                if (details.subcategories && details.subcategories.includes('Wedding')) {
+                    if (!errors[category].weddingPrice) errors[category].weddingPrice = {};
+                    if (details.weddingPrice.fullDayPrice === '') {
+                        errors[category].weddingPrice.fullDayPrice = "Wedding full day price is required";
+                    }
+                    if (details.weddingPrice.halfDayPrice === '') {
+                        errors[category].weddingPrice.halfDayPrice = "Wedding half day price is required";
+                    }
+                    if (details.weddingPrice.extraHourPrice === '') {
+                        errors[category].weddingPrice.extraHourPrice = "Wedding extra hour price is required";
+                    }
+                }
+    
+                // Validate LED details
+                if (category === "LED wall" || category === "LED TV") {
+                    if (!details.ledDetails || !details.ledDetails.size) {
+                        if (!errors[category].ledDetails) errors[category].ledDetails = {};
+                        errors[category].ledDetails.size = "LED size is required";
+                    }
+                }
+            });
+            
+            // if (!formData.halfDayPrice) {
+            //     errors.halfDayPrice = "Half-day price is required";
+            // }
+            // if (!formData.extraHourPrice) {
+            //     errors.extraHourPrice = "Extra hour price is required";
+            // }
             if (!formData.aboutYourself) {
                 errors.aboutYourself = "About yourself is required";
             }
@@ -138,8 +255,8 @@ const router=useRouter()
     };
 
     const handleInputChange = (e) => {
-        const { name, value, type, files } = e.target;
-        setFormData((prevData) => ({
+        const { name, value } = e.target;
+        setFormData(prevData => ({
             ...prevData,
             [name]: type === "file" ? files[0] : value,
         }));
@@ -298,49 +415,75 @@ const router=useRouter()
 
     const handleCategoryClick = (category) => {
         setSelectedCategories(prevState => {
-            // If the category is already selected, remove it
             if (prevState[category]) {
-                const updatedCategories = { ...prevState };
-                delete updatedCategories[category];  // Remove category from state
-                return updatedCategories;
+                const { [category]: _, ...rest } = prevState;
+                return rest;
             }
-
-            // Otherwise, add the category
             return {
                 ...prevState,
-                [category]: { subcategories: [], cameraDetails: {} }
+                [category]: {
+                subcategories: [],
+                cameraDetails: {},
+                price: { fullDayPrice: '', halfDayPrice: '', extraHourPrice: '' },
+                weddingPrice: { fullDayPrice: '', halfDayPrice: '', extraHourPrice: '' }
+                }
             };
-        });
-    };
+            });
+        };
 
 
-    const handleSubcategoryClick = (category, subcategory) => {
-        setSelectedCategories(prevState => {
-            const categoryData = prevState[category] || { subcategories: [], cameraDetails: {} };
-            const updatedSubcategories = categoryData.subcategories.includes(subcategory)
-                ? categoryData.subcategories.filter(sub => sub !== subcategory)
-                : [...categoryData.subcategories, subcategory];
+        const handleSubcategoryClick = (category, subcategory) => {
+            setSelectedCategories(prevState => {
+                const categoryData = prevState[category] || { subcategories: [], cameraDetails: {} };
+                const updatedSubcategories = categoryData.subcategories.includes(subcategory)
+                    ? categoryData.subcategories.filter(sub => sub !== subcategory)
+                    : [...categoryData.subcategories, subcategory];
+            
+                return {
+                    ...prevState,
+                    [category]: { ...categoryData, subcategories: updatedSubcategories }
+                };
+                });
+            };
 
-            return {
+        const handlePriceChange = (category, priceType, field, value) => {
+            setSelectedCategories(prev => ({
+                ...prev,
+                [category]: {
+                ...prev[category],
+                [priceType]: {
+                    ...prev[category][priceType],
+                    [field]: value
+                }
+                }
+            }));
+            };
+
+        const handleCameraDetailsChange = (category, field, value) => {
+            setSelectedCategories(prevState => ({
                 ...prevState,
-                [category]: { ...categoryData, subcategories: updatedSubcategories }
+                [category]: {
+                ...prevState[category],
+                cameraDetails: {
+                    ...prevState[category].cameraDetails,
+                    [field]: value
+                }
+                }
+            }));
             };
-        });
-    };
-
-    const handleCameraDetailsChange = (category, field, value) => {
-        setSelectedCategories(prevState => {
-            const categoryData = prevState[category] || { subcategories: [], cameraDetails: {} };
-            const updatedCameraDetails = { ...categoryData.cameraDetails, [field]: value };
-
-            return {
+    
+        const handleLedDetailsChange = (category, field, value) => {
+            setSelectedCategories(prevState => ({
                 ...prevState,
-                [category]: { ...categoryData, cameraDetails: updatedCameraDetails }
+                [category]: {
+                ...prevState[category],
+                ledDetails: {
+                    ...prevState[category]?.ledDetails,
+                    [field]: value
+                }
+                }
+            }));
             };
-        });
-        console.log(selectedCategories)
-    };
-
     const [steps, setStep] = useState({
         stepsItems: ["Details", "Service", "Profile"],
         currentStep: 1
@@ -590,8 +733,13 @@ const router=useRouter()
                                                 </div>
 
                                                 {/* Camera Details Section */}
-                                                {category.name == "Photography" && (
-                                                    <div className="mt-2 mb-5 ">
+                                                
+
+                                                {/*  pricing section */}
+                                                    
+                                                
+                                                {(category.name === "Photography" || category.name === "Videography" || category.name === "Candid Photography") && (
+                                                    <div className="mt-2 mb-5 "> 
                                                         <div className='block w-[100%] h-[100%]'>
                                                             <h2 className="text-3xl text-center my-5 font-semibold">Camera Details</h2>
 
@@ -643,138 +791,153 @@ const router=useRouter()
                                                         </div>
                                                     </div>
                                                 )}
-
-
-                                                {category.name == "Videography" && (
-                                                    <div className="mt-2 mb-5 mr-20">
-                                                        <div className='block w-[100%] h-[100%]'>
-                                                            <h2 className="text-3xl text-center my-5 font-semibold">Camera Details</h2>
-
-                                                            <label htmlFor="brand" className="block mb-2">Camera Brand</label>
-                                                            <select
-                                                                id="brand"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded"
-                                                            >
-                                                                <option value="" disabled>Select Camera Brand</option>
-                                                                <option value="Nikon">Nikon</option>
-                                                                <option value="Canon">Canon</option>
-                                                                <option value="GoPro">GoPro</option>
-                                                                <option value="Sony">Sony</option>
-                                                                <option value="Fujifilm">Fujifilm</option>
-                                                                <option value="Panasonic">Panasonic</option>
-                                                                <option value="Leica">Leica</option>
-                                                                <option value="Hasselblad">Hasselblad</option>
-                                                                <option value="Red">Red</option>
-                                                                <option value="Arri">Arri</option>
-                                                            </select>
-
-                                                            <label htmlFor="model" className="block mb-2 mt-4">Camera Model</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Model"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.model || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded"
-                                                            />
-
-                                                            <label htmlFor="specs" className="block mb-2 mt-4">Camera Lense</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Lense"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.lanse || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'lanse', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded mt-2"
-                                                            />
-                                                            <label htmlFor="Gimble" className="block mb-2 mt-4">Gimble</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Lense"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.gimble || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'gimble', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded mt-2"
-                                                            />
-                                                        </div>
+                                                <h3 className="text-lg font-medium mt-4 mb-1">Pricing:</h3>
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                {category.pricing.fullDayPrice && (
+                                                    <div>
+                                                    <label className="block">Full Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name].price.fullDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'price', 'fullDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    {formErrors[category.name]?.price?.fullDayPrice && (
+                                                        <p className="text-red-500 text-xs mt-1">{formErrors[category.name].price.fullDayPrice}</p>
+                                                    )}
                                                     </div>
                                                 )}
-
-                                                {category.name == "Drone" && (
-                                                    <div className="mt-2 mb-5 mr-20">
-                                                        <div className='block w-[100%] h-[100%]'>
-                                                            <h2 className="text-3xl text-center my-5 font-semibold">Drone Details</h2>
-
-                                                            <label htmlFor="specs" className="block mb-2 mt-4">Drone Brand</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Lense"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded mt-2"
-                                                            />
-
-                                                            <label htmlFor="model" className="block mb-2 mt-4">Drone Model</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Model"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.model || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded"
-                                                            />
-
-
-                                                        </div>
+                                                {category.pricing.halfDayPrice && (
+                                                    <div>
+                                                    <label className="block">Half Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name].price.halfDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'price', 'halfDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    {formErrors[category.name]?.price?.halfDayPrice && (
+                                                        <p className="text-red-500 text-xs mt-1">{formErrors[category.name].price.halfDayPrice}</p>
+                                                    )}
+                                                    </div>
+                                                    
+                                                )}
+                                                {category.pricing.extraHourPrice && (
+                                                    <div>
+                                                    <label className="block">Extra Hour Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name].price.extraHourPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'price', 'extraHourPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    {formErrors[category.name]?.price?.extraHourPrice && (
+                                                        <p className="text-red-500 text-xs mt-1">{formErrors[category.name].price.extraHourPrice}</p>
+                                                    )}
                                                     </div>
                                                 )}
-
-                                                {category.name == "Video Editing" && (
-                                                    <div className="mt-2 mb-5 mr-20">
-                                                        <div className='block w-[100%] h-[100%]'>
-                                                            <h2 className="text-3xl text-center my-5 font-semibold">Video Editing Software</h2>
-
-                                                            <label htmlFor="brand" className="block mb-2">Software 1</label>
-                                                            <select
-                                                                id="brand"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.Software1 || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'Software1', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded"
-                                                            >
-                                                                <option value="" disabled>Select Software-1</option>
-                                                                <option value="Adobe After Effects">Adobe After Effects</option>
-                                                                <option value="Adobe Premiere Pro">Adobe Premiere Pro</option>
-                                                                <option value="GoPro">Finel Cut Pro</option>
-                                                                <option value="Davinci Resolve">Davinci Resolve</option>
-                                                                <option value="CapCut">CapCut</option>
-                                                                <option value="Filmora">Filmora</option>
-                                                                <option value="Other Software">Other Software</option>
-
-                                                            </select>
-
-                                                            <label htmlFor="brand" className="block mb-2">Software 2</label>
-                                                            <select
-                                                                id="brand"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.Software2 || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'Software2', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded"
-                                                            >
-                                                                <option value="" disabled>Select Software-2</option>
-                                                                <option value="Adobe After Effects">Adobe After Effects</option>
-                                                                <option value="Adobe Premiere Pro">Adobe Premiere Pro</option>
-                                                                <option value="GoPro">Finel Cut Pro</option>
-                                                                <option value="Davinci Resolve">Davinci Resolve</option>
-                                                                <option value="CapCut">CapCut</option>
-                                                                <option value="Filmora">Filmora</option>
-                                                                <option value="Other Software">Other Software</option>
-
-                                                            </select>
-
-
-                                                        </div>
+                                                </div>
+                                                {category?.weddingPrice&&(
+                                                    <h3 className="text-lg font-medium mt-4 mb-1">Wedding Pricing:</h3>
+                                                )}
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                {category?.weddingPrice?.fullDayPrice && (
+                                                    <div>
+                                                    <label className="block">Wedding Full Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name].weddingPrice.fullDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'fullDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    {formErrors[category.name]?.weddingPrice?.fullDayPrice && (
+                                                        <p className="text-red-500 text-xs mt-1">{formErrors[category.name].weddingPrice.fullDayPrice}</p>
+                                                    )}
                                                     </div>
                                                 )}
+                                                {category?.weddingPrice?.halfDayPrice && (
+                                                    <div>
+                                                    <label className="block">Wedding Half Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name].weddingPrice.halfDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'halfDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    {formErrors[category.name]?.weddingPrice?.halfDayPrice && (
+                                                        <p className="text-red-500 text-xs mt-1">{formErrors[category.name].weddingPrice.halfDayPrice}</p>
+                                                    )}
+                                                    </div>
+                                                )}
+                                                {category?.weddingPrice?.extraHourPrice && (
+                                                    <div>
+                                                    <label className="block">Wedding Extra Hour Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name].weddingPrice.extraHourPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'extraHourPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    {formErrors[category.name]?.weddingPrice?.extraHourPrice && (
+                                                        <p className="text-red-500 text-xs mt-1">{formErrors[category.name].weddingPrice.extraHourPrice}</p>
+                                                    )}
+                                                    </div>
+                                                )}
+                                                </div>
+
+                                                
+                                                {category.name === "Drone" && (
+                                                <div className="mt-4">
+                                                    <h3 className="text-lg font-medium mb-2">Drone Details:</h3>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                        Drone Brand
+                                                        </label>
+                                                        <input
+                                                        type="text"
+                                                        placeholder="Enter Drone Brand"
+                                                        value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
+                                                        onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
+                                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                        Drone Model
+                                                        </label>
+                                                        <input
+                                                        type="text"
+                                                        placeholder="Enter Drone Model"
+                                                        value={selectedCategories[category.name]?.cameraDetails?.model || ''}
+                                                        onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
+                                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                        />
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                )}
+                                                {(category.name === "LED wall" || category.name === "LED TV") && (
+                                                    <div className="mt-4">
+                                                        <h3 className="text-lg font-medium mb-2">LED Details:</h3>
+                                                        <div>
+                                                        <label className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                            Size (in feet)
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Enter size (e.g., 10x20)"
+                                                            value={selectedCategories[category.name]?.ledDetails?.size || ''}
+                                                            onChange={(e) => handleLedDetailsChange(category.name, 'size', e.target.value)}
+                                                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                        />
+                                                        </div>
+                                                    </div>
+                                            )}
+                                                
 
 
-
+                                                
 
                                             </div>
                                         )}
@@ -788,6 +951,7 @@ const router=useRouter()
                                         (category) => category.subcategories && category.subcategories.length > 0
                                     );
                                     if (isValid) {
+                                        console.log("a",selectedCategories)
                                         setStep((prevState) => ({ ...prevState, currentStep: 3 }));
                                     } else {
                                         alert("Please select at least one category and subcategory.");
@@ -869,60 +1033,6 @@ const router=useRouter()
                                                     onClick={console.log(formData)}
                                                 />
                                                 {formErrors.address && <p className="text-red-500 text-sm">{formErrors.address}</p>}
-                                            </div>
-
-                                            {/* Starting Price */}
-                                            <div>
-                                                <label htmlFor="starting-price" className="block mb-2 text-sm font-medium text-black dark:text-black">
-                                                    Starting Price
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    name="startingPrice"
-                                                    id="starting-price"
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
-                                                    placeholder="Enter starting price"
-                                                    onChange={handleInputChange}
-                                                    value={formData.startingPrice}
-                                                    required
-                                                />
-                                                {formErrors.startingPrice && <p className="text-red-500 text-sm">{formErrors.startingPrice}</p>}
-                                            </div>
-
-                                            {/* Half Day Price */}
-                                            <div>
-                                                <label htmlFor="half-day-price" className="block mb-2 text-sm font-medium text-black dark:text-black">
-                                                    Half Day Price
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    name="halfDayPrice"
-                                                    id="half-day-price"
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
-                                                    placeholder="Enter half-day price"
-                                                    onChange={handleInputChange}
-                                                    value={formData.halfDayPrice}
-                                                    required
-                                                />
-                                                {formErrors.halfDayPrice && <p className="text-red-500 text-sm">{formErrors.halfDayPrice}</p>}
-                                            </div>
-
-                                            {/* Extra Hour Price */}
-                                            <div>
-                                                <label htmlFor="extra-hour-price" className="block mb-2 text-sm font-medium text-black dark:text-black">
-                                                    Extra Hour Price
-                                                </label>
-                                                <input
-                                                    type="number"
-                                                    name="extraHourPrice"
-                                                    id="extra-hour-price"
-                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
-                                                    placeholder="Enter extra hour price"
-                                                    onChange={handleInputChange}
-                                                    value={formData.extraHourPrice}
-                                                    required
-                                                />
-                                                {formErrors.extraHourPrice && <p className="text-red-500 text-sm">{formErrors.extraHourPrice}</p>}
                                             </div>
 
                                             {/* About Yourself */}
