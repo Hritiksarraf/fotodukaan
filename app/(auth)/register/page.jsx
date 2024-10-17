@@ -309,8 +309,8 @@ const router=useRouter()
         }
     };
 
-    const handleRegister = async () => {
-       
+    const handleRegister = async (e) => {
+       e.preventDefault()
       
         try {
           // Step 1: Handle profile photo upload to Cloudinary
@@ -333,14 +333,14 @@ const router=useRouter()
               throw new Error("Image upload failed");
             }
           }
-      
+          console.log("step 1 passed")
           // Step 2: Prepare the rest of the form data
           const payload = {
             ...formData,
             profilePhoto: profilePhotoUrl, // Add the photo URL here
             selectedCategories,
           };
-      
+            console.log("step up 2 passed")
           // Step 3: Send the payload to your register API
           const res = await fetch("/api/register", {
             method: "POST",
@@ -349,8 +349,9 @@ const router=useRouter()
             },
             body: JSON.stringify(payload),
           });
-      
+          console.log("step 3 db register")
           const response = await res.json();
+          console.log("a",res,"b",response)
           setLoading(false);
           if (response.success) {
             toast.success("Signup Successful", {
@@ -977,7 +978,7 @@ const router=useRouter()
                                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
                                             Set Up Your Profile
                                         </h1>
-                                        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+                                        <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
                                         {/* <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}> */}
                                             {/* Profile Photo */}
                                             <div>

@@ -13,8 +13,6 @@ export const POST = async (req) => {
       phone, 
       city, 
       address,
-      price, 
-      weddingPrice,
       aboutYourself,
       profilePhoto,
       selectedCategories 
@@ -58,6 +56,17 @@ export const POST = async (req) => {
       }
       return acc;
     }, {});
+    console.log('Data being sent to Freelancer model:', {
+      name,
+      email,
+      phone,
+      password: encryptedPassword,
+      city,
+      address,
+      aboutYourself,
+      profilePhoto,
+      freelancerDetails: processedCategories
+    });
 
     // Create new freelancer instance
     let f = new Freelancer({
@@ -67,8 +76,6 @@ export const POST = async (req) => {
       password: encryptedPassword,
       city:city,
       address:address,
-      price:price,
-      weddingPrice:weddingPrice,
       aboutYourself:aboutYourself,
       profilePhoto:profilePhoto,  // If you plan to handle this as a file, ensure you're handling file upload properly
       freelancerDetails:processedCategories ,  // Assuming categories is an array or object
