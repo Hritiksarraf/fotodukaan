@@ -49,7 +49,15 @@ export default function page() {
         const regExp = /^.*(youtu.be\/|v\/|\/u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
         const match = url.match(regExp);
         return match && match[2].length === 11 ? match[2] : null;
-      }
+    }
+    let minamount=Number.MAX_VALUE;
+    Object.keys(freelancerData?.freelancerDetails).forEach((key) => {
+    const details = freelancerData?.freelancerDetails[key];
+    const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
+    const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
+    
+    minamount = Math.min(minamount, fullDayPrice, weddingPrice);
+    });
 
     return (
         <div className='pt-20'>
@@ -85,7 +93,7 @@ export default function page() {
                                 <p className="leading-relaxed min-h-32">{freelancerData.aboutYourself}</p>
 
                                 <div className="flex">
-                                    <p className='text-sm'> <span className='font-semibold text-3xl'>{freelancerData.startingPrice} ₹ </span > Starting Price  </p>
+                                    <p className='text-sm'> <span className='font-semibold text-3xl'>{minamount} ₹ </span > Starting Price  </p>
                                     <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link>
 
 

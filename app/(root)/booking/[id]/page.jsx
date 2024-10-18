@@ -32,6 +32,7 @@ export default function OrderForm() {
   const [userData, setUserData] = useState({});
   const [couponMessage, setCouponMessage] = useState('');
   const [isCouponValid, setIsCouponValid] = useState(false);
+  const [events,setEvents]=useState([]);
 
   // Fetch freelancer data
   const getFreelancer = async () => {
@@ -58,7 +59,12 @@ export default function OrderForm() {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setOrderData({ ...orderData, [name]: value });
-
+    if (name === 'selectedService') {
+      const eventsdata = userData?.freelancerDetails[value]?.subcategories || [];
+      setEvents(eventsdata);
+      console.log("Subcategories for selected service:", eventsdata);
+      setOrderData((prevData) => ({ ...prevData, eventType: value }));
+    }
     // Update price based on selected time (Half Day or Full Day)
     if (name === 'time') {
       if (value === 'Half Day') {
@@ -179,7 +185,6 @@ console.log('i am here')
       </div>
     );
   }
-
   return (
     <div className="pt-32 min-h-[80vh] bg-gray-50">
       <div className="container mx-auto px-4 max-w-lg">
@@ -292,20 +297,6 @@ console.log('i am here')
                   />
                 </div>
 
-                {/* Event */}
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">Event</label>
-                  <input
-                    type="text"
-                    name="event"
-                    value={orderData.event}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    placeholder="Enter the event name"
-                    required
-                  />
-                </div>
-
                 {/* Freelancer Service Dropdown */}
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Service</label>
@@ -325,6 +316,27 @@ console.log('i am here')
                   </select>
                 </div>
 
+
+                {/* Event */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2 text-gray-700">Event</label>
+                  <select
+                    name="event"
+                    value={orderData.event}
+                    onChange={(e) => setOrderData((prevData) => ({ ...prevData, event: e.target.value }))} // Update only the event state
+                    className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
+                  >
+                    <option value="">Select the Event</option>
+                    {events?.map((event) => (
+                      <option key={event} value={event}>
+                        {event}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                
                 {/* Time Selector */}
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Time</label>

@@ -418,12 +418,20 @@ export default function Home () {
         </div>
         <div className='bg-gradient-to-r w-[100vw]  from-white to-white'>
           <Slider {...settings2}>
-            {freelancer.map(({ _id, profilePhoto, name,startingPrice, stars }) => {
+            {freelancer.map(({ _id, profilePhoto, name,startingPrice, stars,freelancerDetails }) => {
 
               // const [readMore, setReadMore] = useState(true)
               // const truncatedText = text.split(' ').length > 20
               //   ? text.split(' ').slice(0, 20).join(' ')
               //   : text;
+              let minamount=Number.MAX_VALUE;
+              Object.keys(freelancerDetails).forEach((key) => {
+                const details = freelancerDetails[key];
+                const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
+                const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
+              
+                minamount = Math.min(minamount, fullDayPrice, weddingPrice);
+              });
 
               return (
                 <>
@@ -434,7 +442,7 @@ export default function Home () {
 
                     <div className='flex flex-col items-center text-center mt-4'>
                       <p className='text-xl font-bold my-1'>{name}</p>
-                      <p className='text-sm'> <span className='font-semibold text-xl'>{startingPrice} ₹ </span > Starting Price  </p>
+                      <p className='text-sm'> <span className='font-semibold text-xl'>{minamount} ₹ </span > Starting Price  </p>
 
                       {/* <div className="flex flex-wrap items-center justify-center gap-y-4 my-4 space-x-2">
                       
