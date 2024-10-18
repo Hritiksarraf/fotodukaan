@@ -20,7 +20,7 @@ export default function OrderForm() {
     selectedService: '',
     eventDate: '',
     couponCode: '',
-    time: 'Full Day',
+    time: '',
     event:''
   });
 
@@ -33,6 +33,8 @@ export default function OrderForm() {
   const [couponMessage, setCouponMessage] = useState('');
   const [isCouponValid, setIsCouponValid] = useState(false);
   const [events,setEvents]=useState([]);
+  const [price,setPrice] = useState()
+  const [time,setTime]=useState([])
 
   // Fetch freelancer data
   const getFreelancer = async () => {
@@ -64,16 +66,27 @@ export default function OrderForm() {
       setEvents(eventsdata);
       console.log("Subcategories for selected service:", eventsdata);
       setOrderData((prevData) => ({ ...prevData, eventType: value }));
+      setTime([])
+      setTokenAmount(0);
+      setOriginalTokenAmount(0);
+      if (userData?.freelancerDetails[value]?.price?.fullDayPrice !== '') {
+        setTime((prev) => [...prev, 'fullDay']);
+      }
+      if (userData?.freelancerDetails[value]?.price?.halfDayPrice !== '') {
+        setTime((prev) => [...prev, 'halfDay']);
+      }
     }
+    
     // Update price based on selected time (Half Day or Full Day)
     if (name === 'time') {
-      if (value === 'Half Day') {
-        setTokenAmount(freelancerData.halfDayPrice);
-        setOriginalTokenAmount(freelancerData.halfDayPrice);
-      } else {
-        setTokenAmount(freelancerData.startingPrice);
-        setOriginalTokenAmount(freelancerData.startingPrice);
-      }
+      setOrderData((prevData)=>({...prevData,time:value}))
+      if (value === 'halfDay') {
+        setTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
+        setOriginalTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
+    } else {
+        setTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
+        setOriginalTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
+    }
     }
   };
 
@@ -323,7 +336,7 @@ console.log('i am here')
                   <select
                     name="event"
                     value={orderData.event}
-                    onChange={(e) => setOrderData((prevData) => ({ ...prevData, event: e.target.value }))} // Update only the event state
+                    onChange={handleInputChange} 
                     className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   >
@@ -347,8 +360,13 @@ console.log('i am here')
                     className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   >
-                    <option value="Full Day">Full Day</option>
-                    <option value="Half Day">Half Day</option>
+                    <option value="">Select the time</option>
+                    {time.map((time) =>(
+                      <option key={time} value={time}>
+                        {time}
+                      </option>
+                    ))}
+
                   </select>
                 </div>
 
