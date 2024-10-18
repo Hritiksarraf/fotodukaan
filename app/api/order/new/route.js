@@ -24,37 +24,52 @@ export async function POST(req) {
       additionalDetails,
       userid,
       freelancerid,
-      time
+      time,
+      isPolicyAccepted
     } = await req.json();
 
+    
     // Validation (ensure required fields are present)
-    if (!name || !email || !phone || !pinCode || !address || !city || !date || !paidAmount || !totalAmount || !service || !event || !userid || !freelancerid) {
+    if (!name || !email || !phone || !pinCode || !address || !city || !date || !paidAmount || !totalAmount || !service || !event || !userid || !freelancerid ||!isPolicyAccepted) {
       return new Response(
         JSON.stringify({ error: "All required fields must be filled." }),
         { status: 400 }
       );
     }
+    const freelancer = await Freelancer.findById(freelancerid)
+    if(!freelancer){
+      return new Response(
+        JSON.stringify({ error: "Freelancer not found" }),
+        { status: 404 }
+      )
+    }
+
+  
 
     // Create a new order object
     const newOrder = new Order({
-      name,
-      email,
-      phone,
+      customerName:name,
+      freelancerName:freelancer?.name,
+      customerEmail:email,
+      freelancerEmail:freelancer?.email,
+      customerPhone:Number(phone),
+      freelancerPhone:Number(freelancer?.phone),
       pinCode,
       address,
       city,
       date,
-      paidAmount,
-      totalAmount,
+      paidAmount:Number(paidAmount),
+      totalAmount:Number(totalAmount),
       discount,
       service,
       event,
       additionalDetails: additionalDetails || [],
       userId: userid,
       freelancerId: freelancerid,
+      isPolicyAccepted,
       time:time
     });
-
+    
     // Save the order to the database
     await newOrder.save();
 

@@ -33,7 +33,7 @@ export default function OrderForm() {
   const [couponMessage, setCouponMessage] = useState('');
   const [isCouponValid, setIsCouponValid] = useState(false);
   const [events,setEvents]=useState([]);
-  const [price,setPrice] = useState()
+  const [isRefundPolicyAccepted, setIsRefundPolicyAccepted] = useState(false);
   const [time,setTime]=useState([])
 
   // Fetch freelancer data
@@ -130,6 +130,10 @@ export default function OrderForm() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!isRefundPolicyAccepted) {
+      alert('You must accept the refund policy to proceed.');
+      return;
+  }
     const userid = userData._id;
     const freelancerid = freelancerData._id;
     const discount= originalTokenAmount - tokenAmount
@@ -153,6 +157,7 @@ console.log('i am here')
       userid,
       freelancerid,
       time: orderData.time,
+      isPolicyAccepted:isRefundPolicyAccepted
     };
 
     console.log(orderDetails)
@@ -395,6 +400,20 @@ console.log('i am here')
                     </p>
                   )}
                 </div>
+                {/* Refund Policy Checkbox */}
+                <div className="flex items-center mb-4">
+                    <input
+                        type="checkbox"
+                        id="refundPolicy"
+                        checked={isRefundPolicyAccepted}
+                        onChange={(e) => setIsRefundPolicyAccepted(e.target.checked)}
+                        className="mr-2"
+                        required // Optionally make it required
+                    />
+                    <label htmlFor="refundPolicy" className="text-sm text-gray-700">
+                        I accept the <a href="https://example.com/refund-policy" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund policy</a>
+                    </label>
+                  </div>
 
                 {/* Amount to be Paid */}
                 <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p>
