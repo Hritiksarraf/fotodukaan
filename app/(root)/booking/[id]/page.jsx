@@ -63,19 +63,19 @@ export default function OrderForm() {
     setOrderData({ ...orderData, [name]: value });
     if (name === 'selectedService') {
       setEvents([])
-      const eventsdata = userData?.freelancerDetails[value]?.subcategories || [];
+      const eventsdata = freelancerData?.freelancerDetails[value]?.subcategories || [];
       setEvents(eventsdata);
       console.log("Subcategories for selected service:", eventsdata);
       setOrderData((prevData) => ({ ...prevData, eventType: value, time: '',event: '' })); 
       setTime([])
       setTokenAmount(0);
       setOriginalTokenAmount(0);
-      if (userData?.freelancerDetails[value]?.price) {
+      if (freelancerData?.freelancerDetails[value]?.price) {
       const availableTimes = [];
-      if (userData?.freelancerDetails[value]?.price?.fullDayPrice !== '') {
+      if (freelancerData?.freelancerDetails[value]?.price?.fullDayPrice !== '') {
         availableTimes.push('fullDay');
       }
-      if (userData?.freelancerDetails[value]?.price?.halfDayPrice !== '') {
+      if (freelancerData?.freelancerDetails[value]?.price?.halfDayPrice !== '') {
         availableTimes.push('halfDay');
       }
       setTime(availableTimes); // Update the time state with available options
@@ -92,20 +92,20 @@ export default function OrderForm() {
       // Update token amount based on selected event and time
       if (orderData.event === 'Wedding') {
         if (value === 'halfDay') {
-          setTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0);
-          setOriginalTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0);
+          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0);
+          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0);
         } else if (value === 'fullDay') {
-          setTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0);
-          setOriginalTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0);
+          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0);
+          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0);
         }
       } else {
         // Non-wedding event pricing
         if (value === 'halfDay') {
-          setTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
-          setOriginalTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
+          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
+          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
         } else {
-          setTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
-          setOriginalTokenAmount(userData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
+          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
+          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
         }
       }
     }
@@ -114,7 +114,7 @@ export default function OrderForm() {
 
   // Apply coupon logic
   const applyCoupon = () => {
-    if (orderData.couponCode === "TRYFIRST" && userData.booking.length === 0) {
+    if (orderData.couponCode === "TRYFIRST" && freelancerData.booking.length === 0) {
       const discountedAmount = tokenAmount * 0.1; // 90% discount
       setTokenAmount(discountedAmount);
       setCouponApplied(true);
