@@ -12,11 +12,95 @@ import Image from 'next/image';
 
 
 const categories = [
-    { name: 'Photography', subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'] },
-    { name: 'Videography', subcategories: ['Wedding', 'Toure & Travel', 'Pre wedding', 'Birthday', 'Anniversary', 'Engagement', 'Event', 'New Born Baby', 'Corporate', 'Brand Promotion', 'Fashion', 'Other'] },
-    { name: 'Drone', subcategories: ['Wedding', 'Corporate', 'Event', 'Other'] },
-    { name: 'Video Editing', subcategories: ['Music Video & Album', 'Wedding', 'Event', 'Pre-Wedding', 'Film & Web Series', 'Youtube Vlogs', 'Reels', 'Content & Brand Promotion Videos', 'Other'] },
-    { name: 'Crane', subcategories: ['Wedding', 'Event', 'Other'] }
+    {
+    name: 'Photography',
+    subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Candid Photography',
+    subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Videography',
+    subcategories: ['Wedding', 'Toure & Travel', 'Pre wedding', 'Birthday', 'Anniversary', 'Engagement', 'Event', 'New Born Baby', 'Corporate', 'Brand Promotion', 'Fashion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Cinematography',
+    subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+        halfDayPrice: true,
+        extraHourPrice: true,
+        },
+    },
+    {
+    name: 'Drone',
+    subcategories: ['Wedding', 'Corporate', 'Event', 'Other'],
+    pricing: {
+        fullDayPrice: true,
+    },
+    weddingPrice: {
+        fullDayPrice: true,
+    },
+    },
+    {
+    name: 'Crane',
+    subcategories: [ 'All Events'],
+    pricing: {
+        fullDayPrice: true,
+    },
+    },
+    {
+    name: 'LED wall',
+    subcategories: ['All Events'],
+    ledDetails: { size: '' },
+    pricing: {
+        fullDayPrice: true,
+    },
+    },
+    {
+    name: 'LED TV',
+    subcategories: ['All Events'],
+    ledDetails: { size: '' },
+    pricing: {
+        fullDayPrice: true,
+    },
+    },
 ];
 
 export default function page() {
@@ -26,6 +110,7 @@ export default function page() {
     const [selectedCategories, setSelectedCategories] = useState({});
     const [freelancerData, setFreelancerData] = useState({
     });
+    const [freelancerId, setFreelancerId] = useState(null); 
     const [uploading, setUploading] = useState(false);
 
 
@@ -61,32 +146,61 @@ export default function page() {
          });
      };
  
-     const handleCameraDetailsChange = (category, field, value) => {
-         setSelectedCategories(prevState => {
-             const categoryData = prevState[category] || { subcategories: [], cameraDetails: {} };
-             const updatedCameraDetails = { ...categoryData.cameraDetails, [field]: value };
- 
-             return {
-                 ...prevState,
-                 [category]: { ...categoryData, cameraDetails: updatedCameraDetails }
-             };
-         });
-         console.log(selectedCategories)
-     };
+    
+    
 
-     const handleSubmit = async (e) => {
+     const handlePriceChange = (category, priceType, field, value) => {
+        setSelectedCategories(prev => ({
+            ...prev,
+            [category]: {
+                ...prev[category],
+                [priceType]: {
+                    ...prev[category][priceType],
+                    [field]: value
+                }
+            }
+        }));
+    };
+
+    const handleCameraDetailsChange = (category, field, value) => {
+        setSelectedCategories(prevState => ({
+            ...prevState,
+            [category]: {
+                ...prevState[category],
+                cameraDetails: {
+                    ...prevState[category]?.cameraDetails,
+                    [field]: value
+                }
+            }
+        }));
+    };
+
+    const handleLedDetailsChange = (category, field, value) => {
+        setSelectedCategories(prevState => ({
+            ...prevState,
+            [category]: {
+                ...prevState[category],
+                ledDetails: {
+                    ...prevState[category]?.ledDetails,
+                    [field]: value
+                }
+            }
+        }));
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = Object.values(selectedCategories).some(
             (category) => category.subcategories && category.subcategories.length > 0
         );
         if (!isValid) {
             alert("Please select at least one category and subcategory.");
-            return
+            return;
         }
-
+    
         setUploading(true);
-        const id=freelancerData._id
-
+        const id = freelancerData._id;
+    
         // Post the updated freelancer profile data
         const response = await fetch('/api/edit/service', {
             method: 'POST',
@@ -95,17 +209,18 @@ export default function page() {
             },
             body: JSON.stringify({
                 selectedCategories,
-                id
+                id:freelancerId
             }),
         });
         const data = await response.json();
         if (response.ok) {
             alert("Profile updated successfully");
             setFreelancerData(data.freelancer.freelancerDetails); // Clear the selected file after successful upload
+            await getUser()
         } else {
-            alert("Failed to update profile");
+            alert("Failed to update profile: " + data.message || "Unknown error");
         }
-
+    
         setUploading(false);
     };
 
@@ -133,7 +248,7 @@ export default function page() {
 
     useEffect(() => {
         getUser();
-    }, [localUser]);
+    }, [localUser,freelancerId]);
 
 
     useEffect(() => {
@@ -141,6 +256,7 @@ export default function page() {
         if (token) {
             const decodedUser = jwt.decode(token);
             setLocalUser(decodedUser);
+            setFreelancerId(decodedUser.userid)
 
         }
     }, [])
@@ -208,9 +324,9 @@ export default function page() {
                                                     ))}
                                                 </div>
 
-                                                {/* Camera Details Section */}
-                                                {category.name == "Photography" && (
-                                                    <div className="mt-2 mb-5 ">
+                                                
+                                                {(category.name === "Photography" || category.name === "Videography" || category.name === "Candid Photography" || category.name==="Cinematography") && (
+                                                    <div className="mt-2 mb-5 "> 
                                                         <div className='block w-[100%] h-[100%]'>
                                                             <h2 className="text-3xl text-center my-5 font-semibold">Camera Details</h2>
 
@@ -255,142 +371,145 @@ export default function page() {
                                                             <input
                                                                 type="text"
                                                                 placeholder="Camera Lense"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.gimble || ''}
+                                                                value={selectedCategories[category?.name]?.cameraDetails?.gimble || ''}
                                                                 onChange={(e) => handleCameraDetailsChange(category.name, 'gimble', e.target.value)}
                                                                 className="block w-full bg-blue-100 p-2 border rounded mt-2"
                                                             />
                                                         </div>
                                                     </div>
                                                 )}
-
-
-                                                {category.name == "Videography" && (
-                                                    <div className="mt-2 mb-5 mr-20">
-                                                        <div className='block w-[100%] h-[100%]'>
-                                                            <h2 className="text-3xl text-center my-5 font-semibold">Camera Details</h2>
-
-                                                            <label htmlFor="brand" className="block mb-2">Camera Brand</label>
-                                                            <select
-                                                                id="brand"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded"
-                                                            >
-                                                                <option value="" disabled>Select Camera Brand</option>
-                                                                <option value="Nikon">Nikon</option>
-                                                                <option value="Canon">Canon</option>
-                                                                <option value="GoPro">GoPro</option>
-                                                                <option value="Sony">Sony</option>
-                                                                <option value="Fujifilm">Fujifilm</option>
-                                                                <option value="Panasonic">Panasonic</option>
-                                                                <option value="Leica">Leica</option>
-                                                                <option value="Hasselblad">Hasselblad</option>
-                                                                <option value="Red">Red</option>
-                                                                <option value="Arri">Arri</option>
-                                                            </select>
-
-                                                            <label htmlFor="model" className="block mb-2 mt-4">Camera Model</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Model"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.model || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded"
-                                                            />
-
-                                                            <label htmlFor="specs" className="block mb-2 mt-4">Camera Lense</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Lense"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.lanse || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'lanse', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded mt-2"
-                                                            />
-                                                            <label htmlFor="Gimble" className="block mb-2 mt-4">Gimble</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Lense"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.gimble || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'gimble', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded mt-2"
-                                                            />
-                                                        </div>
+                                                <h3 className="text-lg font-medium mt-4 mb-1">Pricing:</h3>
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                {category.pricing.fullDayPrice && (
+                                                    <div>
+                                                    <label className="block">Full Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category?.name]?.price?.fullDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'price', 'fullDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    
                                                     </div>
                                                 )}
-
-                                                {category.name == "Drone" && (
-                                                    <div className="mt-2 mb-5 mr-20">
-                                                        <div className='block w-[100%] h-[100%]'>
-                                                            <h2 className="text-3xl text-center my-5 font-semibold">Drone Details</h2>
-
-                                                            <label htmlFor="specs" className="block mb-2 mt-4">Drone Brand</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Lense"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded mt-2"
-                                                            />
-
-                                                            <label htmlFor="model" className="block mb-2 mt-4">Drone Model</label>
-                                                            <input
-                                                                type="text"
-                                                                placeholder="Camera Model"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.model || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
-                                                                className="block bg-blue-100 w-full p-2 border rounded"
-                                                            />
-
-
-                                                        </div>
+                                                {category.pricing.halfDayPrice && (
+                                                    <div>
+                                                    <label className="block">Half Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category?.name]?.price?.halfDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'price', 'halfDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    
+                                                    </div>
+                                                    
+                                                )}
+                                                {category.pricing.extraHourPrice && (
+                                                    <div>
+                                                    <label className="block">Extra Hour Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name]?.price?.extraHourPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'price', 'extraHourPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    
                                                     </div>
                                                 )}
-
-                                                {category.name == "Video Editing" && (
-                                                    <div className="mt-2 mb-5 mr-20">
-                                                        <div className='block w-[100%] h-[100%]'>
-                                                            <h2 className="text-3xl text-center my-5 font-semibold">Video Editing Software</h2>
-
-                                                            <label htmlFor="brand" className="block mb-2">Software 1</label>
-                                                            <select
-                                                                id="brand"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.Software1 || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'Software1', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded"
-                                                            >
-                                                                <option value="" disabled>Select Software-1</option>
-                                                                <option value="Adobe After Effects">Adobe After Effects</option>
-                                                                <option value="Adobe Premiere Pro">Adobe Premiere Pro</option>
-                                                                <option value="GoPro">Finel Cut Pro</option>
-                                                                <option value="Davinci Resolve">Davinci Resolve</option>
-                                                                <option value="CapCut">CapCut</option>
-                                                                <option value="Filmora">Filmora</option>
-                                                                <option value="Other Software">Other Software</option>
-
-                                                            </select>
-
-                                                            <label htmlFor="brand" className="block mb-2">Software 2</label>
-                                                            <select
-                                                                id="brand"
-                                                                value={selectedCategories[category.name]?.cameraDetails?.Software2 || ''}
-                                                                onChange={(e) => handleCameraDetailsChange(category.name, 'Software2', e.target.value)}
-                                                                className="block w-full bg-blue-100 p-2 border rounded"
-                                                            >
-                                                                <option value="" disabled>Select Software-2</option>
-                                                                <option value="Adobe After Effects">Adobe After Effects</option>
-                                                                <option value="Adobe Premiere Pro">Adobe Premiere Pro</option>
-                                                                <option value="GoPro">Finel Cut Pro</option>
-                                                                <option value="Davinci Resolve">Davinci Resolve</option>
-                                                                <option value="CapCut">CapCut</option>
-                                                                <option value="Filmora">Filmora</option>
-                                                                <option value="Other Software">Other Software</option>
-
-                                                            </select>
-
-
-                                                        </div>
+                                                </div>
+                                                {category?.weddingPrice&&(
+                                                    <h3 className="text-lg font-medium mt-4 mb-1">Wedding Pricing:</h3>
+                                                )}
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                {category?.weddingPrice?.fullDayPrice && (
+                                                    <div>
+                                                    <label className="block">Wedding Full Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name]?.weddingPrice?.fullDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'fullDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    
                                                     </div>
                                                 )}
+                                                {category?.weddingPrice?.halfDayPrice && (
+                                                    <div>
+                                                    <label className="block">Wedding Half Day Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name]?.weddingPrice?.halfDayPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'halfDayPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    
+                                                    </div>
+                                                )}
+                                                {category?.weddingPrice?.extraHourPrice && (
+                                                    <div>
+                                                    <label className="block">Wedding Extra Hour Price:</label>
+                                                    <input
+                                                        type="number"
+                                                        value={selectedCategories[category.name]?.weddingPrice?.extraHourPrice}
+                                                        onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'extraHourPrice', e.target.value)}
+                                                        className="w-full p-2 border rounded"
+                                                    />
+                                                    
+
+                                                    </div>
+                                                )}
+                                                </div>
+
+                                                
+                                                {category.name === "Drone" && (
+                                                <div className="mt-4">
+                                                    <h3 className="text-lg font-medium mb-2">Drone Details:</h3>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                        Drone Brand
+                                                        </label>
+                                                        <input
+                                                        type="text"
+                                                        placeholder="Enter Drone Brand"
+                                                        value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
+                                                        onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
+                                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                        Drone Model
+                                                        </label>
+                                                        <input
+                                                        type="text"
+                                                        placeholder="Enter Drone Model"
+                                                        value={selectedCategories[category.name]?.cameraDetails?.model || ''}
+                                                        onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
+                                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                        />
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                )}
+                                                {(category.name === "LED wall" || category.name === "LED TV") && (
+                                                    <div className="mt-4">
+                                                        <h3 className="text-lg font-medium mb-2">LED Details:</h3>
+                                                        <div>
+                                                        <label className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                            Size 
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Enter size (e.g., 10x20)"
+                                                            value={selectedCategories[category.name]?.ledDetails?.size || ''}
+                                                            onChange={(e) => handleLedDetailsChange(category.name, 'size', e.target.value)}
+                                                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                        />
+                                                        </div>
+                                                    </div>
+                                            )}
 
 
 

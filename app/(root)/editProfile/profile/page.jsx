@@ -15,9 +15,6 @@ export default function ProfileUpdateForm() {
         profilePhoto: null,
         city: "",
         address: "",
-        startingPrice: "",
-        halfDayPrice: "",
-        extraHourPrice: "",
         aboutYourself: "",
     });
     const [selectedFile, setSelectedFile] = useState(null);
@@ -189,42 +186,6 @@ export default function ProfileUpdateForm() {
                         type="text"
                         name="address"
                         value={freelancerData.address}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 p-2 rounded-lg"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">Starting Price</label>
-                    <input
-                        type="number"
-                        name="startingPrice"
-                        value={freelancerData.startingPrice}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 p-2 rounded-lg"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">Half Day Price</label>
-                    <input
-                        type="number"
-                        name="halfDayPrice"
-                        value={freelancerData.halfDayPrice}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 p-2 rounded-lg"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">Extra Hour Price</label>
-                    <input
-                        type="number"
-                        name="extraHourPrice"
-                        value={freelancerData.extraHourPrice}
                         onChange={handleInputChange}
                         className="w-full border border-gray-300 p-2 rounded-lg"
                         required
