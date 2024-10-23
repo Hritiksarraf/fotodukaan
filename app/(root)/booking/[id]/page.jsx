@@ -231,15 +231,15 @@ console.log('i am here')
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           Place Your Order
         </h2>
-        <div className="bg-white p-8 shadow-lg rounded-lg">
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-white p-8 shadow-lg rounded-lg mb-10">
+          <form onSubmit={handleSubmit} className="space-y-6 ">
 
             {/* Step 1 - Basic Details */}
             {step === 1 && (
               <>
                 {/* Customer Name */}
                 <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">Customer Name</label>
+                  <label className="block text-sm font-semibold mb-2  text-gray-700">Customer Name</label>
                   <input
                     type="text"
                     name="customerName"

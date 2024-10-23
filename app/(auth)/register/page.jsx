@@ -695,7 +695,7 @@ const router=useRouter()
                                 <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
                             </Link>
                         </div>
-                        <div className="flex flex-col items-center my-auto justify-center shadow-2xl bg-white  border-2 w-[90vw] md:w-[30vw]  px-6 py-8 mx-auto  lg:py-0">
+                        <div className="flex flex-col items-center   justify-center shadow-2xl bg-white  border-2 w-[90vw] md:w-[30vw]  px-6 py-8 mx-auto  lg:py-0">
 
                             <h1 className="text-xl font-bold mt-5 md:mt-15 leading-tight tracking-tight text-blue-500 md:text-3xl ">
                                 Step-2
@@ -946,7 +946,7 @@ const router=useRouter()
                                     </div>
                                 ))}
                             </div>
-                            <div className='flex justify-between w-[100%] md:mb-20'>
+                            <div className='flex justify-between w-[100%] md:mb-5'>
                                 <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 1 }))} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">back</button>
                                 <button onClick={() => {
                                     const isValid = Object.values(selectedCategories).some(
@@ -968,7 +968,7 @@ const router=useRouter()
                 {steps.currentStep === 3 && (
                     <section>
                         {/* this is profile section */}
-                        <section className="bg-gradient-to-b from-white py-5 to-yellow-200">
+                        <section className="bg-gradient-to-b min-h-[100vh] from-white py-5 to-yellow-200">
                             <div className="flex flex-col items-center my-auto justify-center px-6 py-8 mx-auto lg:py-0">
                                 <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                                     <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
@@ -978,7 +978,7 @@ const router=useRouter()
                                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
                                             Set Up Your Profile
                                         </h1>
-                                        <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}>
+                                        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                                         {/* <form className="space-y-4 md:space-y-6" onSubmit={handleRegister}> */}
                                             {/* Profile Photo */}
                                             <div>
