@@ -136,7 +136,7 @@ function OrdersPage() {
     }
   }
 
-  const sendOTP = async (e, oid) => {
+  const sendOTP = async (e, oid,cphone) => {
     e.preventDefault();
 
     setOrderId(oid)
@@ -144,7 +144,7 @@ function OrdersPage() {
       alert('error sending otp')
     }
     const appVerifier = window.recaptchaVerifier;
-    const phoneNumber = '+917061652485';
+    const phoneNumber = '+91'+String(cphone);
     signInWithPhoneNumber(auth, phoneNumber, appVerifier)
       .then((confirmationResult) => {
         window.confirmationResult = confirmationResult;
@@ -247,7 +247,7 @@ function OrdersPage() {
 
 
                           <button href={`/`} className="flex mt-4 mr-auto text-white bg-red-500  border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Cancle</button>
-                          <button onClick={(e) => sendOTP(e, order._id)} className="flex mt-4 mr-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
+                          <button onClick={(e) => sendOTP(e, order._id,order.customerPhone)} className="flex mt-4 mr-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
                             SEND OTP
                           </button>
 
