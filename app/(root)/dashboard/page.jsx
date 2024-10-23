@@ -11,6 +11,7 @@ import { auth } from '@/app/firebase.config';
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
