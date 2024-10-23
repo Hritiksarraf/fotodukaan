@@ -172,7 +172,7 @@ function OrdersPage() {
 
   useEffect(() => {
     onCaptchVerify();
-  }, []);
+  }, [orders]);
 
   if (loading) {
     return (<div className='min-h-[80vh] w-[100vw]'>
@@ -190,8 +190,9 @@ function OrdersPage() {
   return (
 
     <div className='pt-32 bg-blue-100'>
+      <div id='recaptcha-container'></div>
       {!enterOtp && (<div className="min-h-screen p-8 bg-blue-100">
-        <div id='recaptcha-container'></div>
+        
         <h1 className="text-3xl text-blue-900 font-bold text-center mb-6">Welcome <span className='text-yellow-600'>{localUser.name}</span> These Are The Order You GOT!</h1>
 
         {orders.length === 0 ? (
