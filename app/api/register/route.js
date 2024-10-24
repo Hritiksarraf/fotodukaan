@@ -15,7 +15,8 @@ export const POST = async (req) => {
       address,
       aboutYourself,
       profilePhoto,
-      selectedCategories 
+      selectedCategories,
+      isTermsAccepted
     } = await req.json();
 
     // Check if user already exists
@@ -65,7 +66,8 @@ export const POST = async (req) => {
       address,
       aboutYourself,
       profilePhoto,
-      freelancerDetails: processedCategories
+      freelancerDetails: processedCategories,
+      isTermsAccepted,
     });
 
     // Create new freelancer instance
@@ -79,6 +81,7 @@ export const POST = async (req) => {
       aboutYourself:aboutYourself,
       profilePhoto:profilePhoto,  // If you plan to handle this as a file, ensure you're handling file upload properly
       freelancerDetails:processedCategories ,  // Assuming categories is an array or object
+      isTermsAccepted:isTermsAccepted
     });
 
     // Save freelancer to database

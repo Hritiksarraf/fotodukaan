@@ -80,14 +80,14 @@ const categories = [
     },
     {
     name: 'Crane',
-    subcategories: [ 'All Events'],
+    subcategories: [ 'Events'],
     pricing: {
         fullDayPrice: true,
     },
     },
     {
     name: 'LED wall',
-    subcategories: ['All Events'],
+    subcategories: ['Events'],
     ledDetails: { size: '' },
     pricing: {
         fullDayPrice: true,
@@ -95,7 +95,7 @@ const categories = [
     },
     {
     name: 'LED TV',
-    subcategories: ['All Events'],
+    subcategories: ['Events'],
     ledDetails: { size: '' },
     pricing: {
         fullDayPrice: true,
@@ -130,7 +130,15 @@ export default function page() {
              };
          });
      };
- 
+    const handleButtonClick=(category)=>{
+        setSelectedCategories(prevState=>{
+            const categoryData = prevState[category.name] || { subcategories: [], cameraDetails: {} };
+            return {
+                ...prevState,
+                [category.name]: { ...categoryData, subcategories: category.subcategories }
+            };
+        })
+    }
  
      const handleSubcategoryClick = (category, subcategory) => {
          setSelectedCategories(prevState => {
@@ -300,6 +308,15 @@ export default function page() {
                                         {selectedCategories[category.name] && (
                                             <div className="p-1 ">
                                                 <div className=" flex flex-wrap">
+                                                {(category.name!=="Crane"&&category.name!=="LED wall"&&category.name!=="LED TV")&&(
+                                                        <div className='w-full flex items-center justify-center'>
+                                                            <button
+                                                                className="rounded-md bg-blue-400 w-[30%] p-4"
+                                                                onClick={()=>handleButtonClick(category)}
+                                                            >Select All</button>
+                                                        </div>
+                                                    )
+                                                    }
                                                     {category.subcategories.map((subcategory) => (
 
                                                         <div
@@ -322,6 +339,7 @@ export default function page() {
                                                             </label>
                                                         </div>
                                                     ))}
+                                                    
                                                 </div>
 
                                                 
@@ -516,6 +534,7 @@ export default function page() {
 
                                             </div>
                                         )}
+                                        
                                     </div>
                                 ))}
                             </div>

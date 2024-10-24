@@ -82,14 +82,14 @@ const categories = [
     },
     {
     name: 'Crane',
-    subcategories: [ 'All Events'],
+    subcategories: [ 'Events'],
     pricing: {
         fullDayPrice: true,
     },
     },
     {
     name: 'LED wall',
-    subcategories: ['All Events'],
+    subcategories: ['Events'],
     ledDetails: { size: '' },
     pricing: {
         fullDayPrice: true,
@@ -97,7 +97,7 @@ const categories = [
     },
     {
     name: 'LED TV',
-    subcategories: ['All Events'],
+    subcategories: ['Events'],
     ledDetails: { size: '' },
     pricing: {
         fullDayPrice: true,
@@ -108,7 +108,7 @@ const categories = [
 export default function Page() {
 const router=useRouter()
     const [selectedCategories, setSelectedCategories] = useState({});
-
+    const [isTermsAccepted, setIsTermsAccepted] = useState(false);
     const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
     const [otpValue, setOtpValue] = useState('')
     const [loading, setLoading] = useState(false);
@@ -311,7 +311,10 @@ const router=useRouter()
 
     const handleRegister = async (e) => {
        e.preventDefault()
-      
+       if (!isTermsAccepted) {
+        alert("You must accept the Terms and Conditions to proceed.");
+        return;
+    }
         try {
           // Step 1: Handle profile photo upload to Cloudinary
           let profilePhotoUrl = "";
@@ -339,6 +342,7 @@ const router=useRouter()
             ...formData,
             profilePhoto: profilePhotoUrl, // Add the photo URL here
             selectedCategories,
+            isTermsAccepted:true,
           };
             console.log("step up 2 passed")
           // Step 3: Send the payload to your register API
@@ -409,7 +413,15 @@ const router=useRouter()
           });
       }
 
-
+    const handleButtonClick=(category)=>{
+        setSelectedCategories(prevState=>{
+            const categoryData = prevState[category.name] || { subcategories: [], cameraDetails: {} };
+            return {
+                ...prevState,
+                [category.name]: { ...categoryData, subcategories: category.subcategories }
+            };
+        })
+    }
 
     const handleChange = (e) => {
         setFormData({
@@ -713,6 +725,15 @@ const router=useRouter()
                                         {selectedCategories[category.name] && (
                                             <div className="p-1 ">
                                                 <div className=" flex flex-wrap">
+                                                {(category.name!=="Crane"&&category.name!=="LED wall"&&category.name!=="LED TV")&&(
+                                                        <div className='w-full flex items-center justify-center'>
+                                                            <button
+                                                                className="rounded-md bg-blue-400 w-[30%] p-4"
+                                                                onClick={()=>handleButtonClick(category)}
+                                                            >Select All</button>
+                                                        </div>
+                                                    )
+                                                    }
                                                     {category.subcategories.map((subcategory) => (
 
                                                         <div
@@ -735,6 +756,7 @@ const router=useRouter()
                                                             </label>
                                                         </div>
                                                     ))}
+                                                    
                                                 </div>
 
                                                 
@@ -1053,6 +1075,17 @@ const router=useRouter()
                                                     required
                                                 ></textarea>
                                                 {formErrors.aboutYourself && <p className="text-red-500 text-sm">{formErrors.aboutYourself}</p>}
+                                            </div>
+                                            <div>
+                                                <input 
+                                                    type="checkbox" 
+                                                    id="terms" 
+                                                    checked={isTermsAccepted} 
+                                                    onChange={(e) => setIsTermsAccepted(e.target.checked)} 
+                                                />
+                                                <label htmlFor="terms">
+                                                    I accept the <a href="https://example.com/terms-and-condition" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
+                                                </label>
                                             </div>
 
                                             {/* Buttons */}
