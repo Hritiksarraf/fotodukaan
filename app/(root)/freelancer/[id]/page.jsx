@@ -10,10 +10,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import ReactCardFlip from 'react-card-flip';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 export default function page() {
     const { id } = useParams();
-
+    const [loading, setLoading] = useState(true);
     const [freelancerData, setFreelancerData] = useState({
         freelancerDetails: {}
     });
@@ -28,6 +31,7 @@ export default function page() {
         const data = await response.json();
         console.log(data)
         setFreelancerData(data);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -50,21 +54,39 @@ export default function page() {
         const match = url.match(regExp);
         return match && match[2].length === 11 ? match[2] : null;
     }
-    let minamount=Number.MAX_VALUE;
+    let minamount = Number.MAX_VALUE;
     Object.keys(freelancerData?.freelancerDetails).forEach((key) => {
-    const details = freelancerData?.freelancerDetails[key];
-    const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
-    const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
-    
-    minamount = Math.min(minamount, fullDayPrice, weddingPrice);
+        const details = freelancerData?.freelancerDetails[key];
+        const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
+        const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
+
+        minamount = Math.min(minamount, fullDayPrice, weddingPrice);
     });
+
+
+    const [flippedCardIndex, setFlippedCardIndex] = useState(null);
+
+    const handleCardClick = (index) => {
+        setFlippedCardIndex(flippedCardIndex === index ? null : index);
+    };
+
+
+    if (loading) {
+        return (<div className='min-h-[80vh] w-[100vw]'>
+            <Box sx={{ display: 'flex' }}>
+                <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
+            <CircularProgress color="inherit" size="8rem" />
+            </div>
+          </Box>
+        </div>);
+      }
 
     return (
         <div className='pt-20'>
             <section>
-                <section className="text-gray-600 body-font overflow-hidden shadow-2xl bg-gradient-to-r from-white to-blue-200">
-                    <div className="container p-4 md:p-10 py-10 mx-auto  ">
-                        <div className="lg:w-5/6 mx-auto p-10 flex flex-wrap  shadow-2xl bg-white">
+                <section className="text-gray-600 body-font overflow-hidden  bg-gradient-to-r from-white to-white">
+                    <div className="container lg:w-[75vw] p-4 md:p-10 py-10 mx-auto  bg-white  ">
+                        <div className=" mx-auto p-10 flex flex-wrap   ">
                             <img alt="ecommerce" className="lg:w-1/2 aspect-square w-full lg:h-auto h-64 object-cover object-center rounded" src={freelancerData.profilePhoto} />
                             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                                 <h2 className="text-sm title-font text-gray-700 tracking-widest">Freelancer</h2>
@@ -106,10 +128,21 @@ export default function page() {
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
+
+
+
                     </div>
+
                 </section>
+
+
+
             </section>
+
+
             {/* this is for accordion */}
             {/* <section>
             {freelancerData.freelancerDetails && Object.keys(freelancerData.freelancerDetails).length > 0 ? (
@@ -118,112 +151,130 @@ export default function page() {
               <p>Loading categories...</p>
             )}
         </section> */}
-            <div className="bg-cover  bg-center w-full flex flex-col md:flex-row text-center md:text-left bg-gradient-to-b md:bg-gradient-to-r from-[#0E2041] to-[#0E2041]">
-                <div className="flex bg bg-white rounded-b-[9rem] md:rounded-r-[17rem] justify-center items-center  md:w-[40%]  ">
-                    <div className='h-full'>
-                        <img className='object-cover h-full md:w-[40vw] shadow-2xl rounded-b-[6rem] md:rounded-r-[17rem]' src="https://images.pexels.com/photos/4307935/pexels-photo-4307935.jpeg" alt="" />
-                    </div>
-                </div>
-                <div className="w-full md:w-[60%] px-7 py-10 md:px-20">
-                    <h1 className="text-3xl md:text-5xl  text-left md:pr-32  text-white " style={{
-                        fontFamily: "poppins"
 
-                    }}>
-                        My Skills
-                    </h1>
 
-                    <div className='mt-9'>
-                        {Object.entries(freelancerData.freelancerDetails).map(([category, details], index) => (
-                            <div className='flex mt-8' key={index}>
-                                <div className='bg-[#9558EC] rounded-md h-full inline-block p-1'>
-                                    <CameraAltOutlinedIcon className='text-3xl md:text-4xl text-white' />
-                                </div>
-                                <div className='ml-2'>
-                                    {/* Capitalize the first letter of the category */}
-                                    <h1 className='text-xl md:text-3xl font-serif text-left text-blue-500 '>
+<div className="bg-cover bg-center w-full flex flex-col md:flex-row text-center bg-gradient-to-b md:bg-gradient-to-r  py-5">
+            <div className="flex flex-col items-center w-full justify-center py-10 md:px-20">
+                <h1 className="text-3xl md:text-5xl text-center text-black" style={{ fontFamily: 'Poppins' }}>
+                    CheckOut My Servicess
+                </h1>
+                <div className='flex flex-row flex-wrap items-center justify-center gap-5  w-[90vw] mt-9'>
+                    {Object.entries(freelancerData.freelancerDetails).map(([category, details], index) => (
+                        <ReactCardFlip isFlipped={flippedCardIndex === index} flipDirection="horizontal" key={index}>
+                            {/* Front Side of the Card */}
+                            <div
+                                className='md:flex-row flex flex-col items-center justify-center w-[90vw] md:w-[25vw] h-[45vh]  bg-[#0E2041]   shadow-2xl bg-cover bg-center  m-1 p-7'
+                                onClick={() => handleCardClick(index)}
+                                style={{ backgroundImage: `url()` }}
+                            >
+                                <div className=''>
+                                    <h1 className='text-xl md:text-4xl font-bold text-center text-[#F5AA2B]'>
                                         {category.replace(/\b\w/g, (char) => char.toUpperCase())}
                                     </h1>
-
-                                    {/* Capitalize the first letter of each subcategory */}
-                                    <div className='text-left'>
+                                    <div className=' my-5 flex flex-wrap text-left  justify-center items-center   text-white'>
                                         {details.subcategories.map((sub, idx) => (
-                                            <span key={idx} className="md:text-lg text-left text-white  text-[0.8rem]">{sub.replace(/\b\w/g, (char) => char.toUpperCase())}, </span>
+                                            <span key={idx} className=" px-2 text-sm font-semibold ">
+                                                {sub.replace(/\b\w/g, (char) => char.toUpperCase())}, 
+                                            </span>
                                         ))}
                                     </div>
+                                </div>
+                            </div>
 
-                                    {/* Conditionally render Camera Details, Drone details, etc., based on the category */}
+                            {/* Back Side of the Card */}
+                            <div
+                                className='md:flex-row flex flex-col items-center justify-center w-[90vw] md:w-[25vw] h-[45vh]  bg-[#F5AA2B]   shadow-2xl bg-cover bg-center  m-1 p-7'
+                                onClick={() => handleCardClick(index)}
+                                style={{ backgroundImage: `url(/assets/category${index + 1}.jpg)` }}
+                            >
+                                <div className=''>
                                     {details.cameraDetails && (
-                                        <div className='my-2 text-yellow-500 text-left text-2xl'>
-                                            {category === 'Photography' || category === 'Videography' ? (
-                                                <h1 className='  title-font font-medium mb-1 '>
-                                                    Camera Details
-                                                </h1>
-                                            ) : category === 'Drone' ? (
-                                                <h1 className='  title-font font-medium mb-1 '>
-                                                    Drone Details
-                                                </h1>
-                                            ) : category === 'Video Editing' ? (
-                                                <h1 className='  title-font font-medium mb-1 '>
-                                                    Video Editing Software
-                                                </h1>
-                                            ) : null}
-
-                                            <div className='text-left p-0 m-0'>
+                                        <div className='text-xl md:text-3xl text-center text-[#0E2041] font-bold'>
+                                            {category === 'Photography' || category === 'Videography' || category === 'Candid Photography' || category === 'Cinematography' ? 'Camera Details' : 
+                                             category === 'Drone' ? 'Drone Details' : 
+                                             category === 'Video Editing' ? 'Video Editing Software' : ''}
+                                            <div className='text-center'>
                                                 {Object.entries(details.cameraDetails).map(([key, value]) => (
-                                                    <p className='text-white inline-block  font-bold md:py-1 -py- my-0 px-1 md:text-lg text-sm mx-1    ' key={key}>{`${key.replace(/\b\w/g, (char) => char.toUpperCase())}: ${value}`}</p>
+                                                    <p className='text-white inline-block font-bold md:text-lg text-sm mx-1' key={key}>
+                                                        {`${key.replace(/\b\w/g, (char) => char.toUpperCase())}: ${value}`}
+                                                    </p>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    {details.price && (
+                                        <div className='mt-4'>
+                                            <h1 className='text-xl md:text-3xl text-center text-[#0E2041] font-bold'>Price</h1>
+                                            <div>
+                                                {Object.entries(details.price).map(([key, value]) => (
+                                                    <p className='text-white inline-block font-bold md:text-lg text-sm mx-1' key={key}>
+                                                        {`${key.replace(/\b\w/g, (char) => char.toUpperCase())}: ${value}`}
+                                                    </p>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                    {details.weddingPrice && (
+                                        <div className='mt-4'>
+                                            <h1 className='text-xl md:text-3xl text-center text-[#0E2041] font-bold'>Wedding Price</h1>
+                                            <div>
+                                                {Object.entries(details.weddingPrice).map(([key, value]) => (
+                                                    <p className='text-white inline-block font-bold md:text-lg text-sm mx-1' key={key}>
+                                                        {`${key.replace(/\b\w/g, (char) => char.toUpperCase())}: ${value}`}
+                                                    </p>
                                                 ))}
                                             </div>
                                         </div>
                                     )}
                                 </div>
                             </div>
-                        ))}
-                    </div>
-
-                    <div className="pt-8 flex mx-auto w-full justify-center md:justify-start">
-                        <Link href='/contact' className="bg-blue-500 text-white px-6 py-3 rounded-full mr-4">Book Now</Link>
-
-                    </div>
+                        </ReactCardFlip>
+                    ))}
                 </div>
             </div>
+        </div>
+
+
+
+
 
             {/* image section */}
             <section>
-            <h2 className='text-center text-5xl  font-bold  my-6'>Glimpses of My Work</h2>
-            <h2 className='text-center text-3xl text-blue-500 font-bold mb-6'>Image Gallery</h2>
-  <div className='flex flex-wrap items-center justify-center'>
-    {freelancerData.image?.map((imgSrc, index) => (
-      <img
-        key={index}
-        src={imgSrc} // dynamically load the image from the freelancerData
-        alt={`Freelancer Image ${index + 1}`}
-        className='md:w-[25vw] w-[85vw] object-cover aspect-square m-2 rounded-xl shadow-lg'
-      />
-    ))}
-  </div>
-</section>
+                <h2 className='text-center text-5xl  font-bold  my-6'>Glimpses of My Work</h2>
+                <h2 className='text-center text-3xl text-blue-500 font-bold mb-6'>Image Gallery</h2>
+                <div className='flex flex-wrap mx-auto md:w-[80vw] items-center justify-center'>
+                    {freelancerData.image?.map((imgSrc, index) => (
+                        <img
+                            key={index}
+                            src={imgSrc} // dynamically load the image from the freelancerData
+                            alt={`Freelancer Image ${index + 1}`}
+                            className='md:w-[22vw] w-[85vw] object-cover aspect-square m-4 rounded-xl shadow-lg'
+                        />
+                    ))}
+                </div>
+            </section>
 
 
-{/* Video Section */}
-<section className='mt-10'>
-  <h2 className='text-center text-3xl text-blue-500 font-bold mb-6'>Video Gallery</h2>
-  <div className='flex flex-wrap justify-center'>
-    {freelancerData.video?.map((videoLink, index) => (
-      <div key={index} className=' md:w-[30vw] w-[90vw] p-4'>
-        <div className='relative' style={{ paddingBottom: '70%' }}>
-          <iframe
-            className='absolute top-0 left-0 w-full h-full rounded-3xl'
-            src={`https://www.youtube.com/embed/${getYouTubeVideoId(videoLink)}`}
-            title={`Freelancer Video ${index + 1}`}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      </div>
-    ))}
-  </div>
-</section>
+            {/* Video Section */}
+            <section className='mt-10'>
+                <h2 className='text-center text-3xl  text-blue-500 font-bold mb-6'>Video Gallery</h2>
+                <div className='flex flex-wrap  mx-auto md:w-[80vw] items-center justify-center'>
+                    {freelancerData.video?.map((videoLink, index) => (
+                        <div key={index} className=' md:w-[25vw] w-[90vw] p-4'>
+                            <div className='relative' style={{ paddingBottom: '70%' }}>
+                                <iframe
+                                    className='absolute top-0 left-0 w-full h-full rounded-3xl'
+                                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(videoLink)}`}
+                                    title={`Freelancer Video ${index + 1}`}
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
 
 
         </div>
