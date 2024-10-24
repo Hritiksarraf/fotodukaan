@@ -200,10 +200,10 @@ function OrdersPage() {
           <p className="text-black text-5xl text-center mt-32">You have no orders.</p>
         ) : (
           <div className=''>
-            <div className='md:w-[55vw] mx-auto bg-white flex flex-col flex-wrap'>
+            <div className='md:w-[55vw] mx-auto  flex flex-col flex-wrap'>
               {orders.map((order) => {
                 return (
-                  <section className="text-gray-600 body-font overflow-hidden  bg-gradient-to-r from-white to-white">
+                  <section className="text-gray-600 body-font overflow-hidden my-5  bg-gradient-to-r from-white to-white">
                     <div className="container lg:w-[60vw] p-4 md:p-5 py-2 mx-auto  bg-white  ">
                       <div className=" mx-auto p-5 flex flex-wrap   ">
                         {/* <img alt="ecommerce" className="lg:w-1/2 aspect-square w-full lg:h-auto h-64 object-cover object-center rounded" src={'https://gratisography.com/wp-content/uploads/2024/03/gratisography-funflower-800x525.jpg'} /> */}
@@ -244,12 +244,16 @@ function OrdersPage() {
 
                           </div>
 
+                          {!order.freelancerAproved && <div className='flex gap-2 justify-between'>
 
-
-                          <button href={`/`} className="flex mt-4 mr-auto text-white bg-red-500  border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Cancle</button>
-                          <button onClick={(e) => sendOTP(e, order._id,order.customerPhone)} className="flex mt-4 mr-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
-                            SEND OTP
+                          <button onClick={(e) => sendOTP(e, order._id,order.customerPhone)} className="flex mt-4 mr-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
+                            SEND OTP To Start Work
                           </button>
+                          <button href={`/`} className="flex mt-4 mr-auto text-white bg-red-500 items-center  border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Cancel</button>
+                          
+                          </div>}
+
+                          
 
                         </div>
                         <div>

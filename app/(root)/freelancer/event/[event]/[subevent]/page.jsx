@@ -7,15 +7,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 export default function Page() {
-  const { people, place } = useParams();
+  const { event, subevent } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const decodedpeople=decodeURIComponent(people)
-  const decodedplace=decodeURIComponent(place)
+  const decodecevent=decodeURIComponent(event)
+  const decodecsubevent=decodeURIComponent(subevent)
 
   const getFreelancers = async () => {
+    const decodedevent = decodeURIComponent(event);
+    const decodedsubevent = decodeURIComponent(event);
     try {
-      const response = await fetch(`/api/freelancer/type/${people}/${place}`, {
+      const response = await fetch(`/api/freelancer/event/${event}/${subevent}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -40,7 +42,7 @@ export default function Page() {
 
   useEffect(() => {
     getFreelancers();
-  }, [people, place]);
+  }, [event, subevent]);
 
   if (loading) {
     return (<div className='min-h-[80vh] w-[100vw]'>
@@ -58,9 +60,9 @@ export default function Page() {
             <SearchBar/>
         </div>
       {data.length === 0 ? (
-        <p className='text-center text-2xl md:text-5xl'>No freelancers found for {decodedpeople} in {decodedplace}.</p>
+        <p className='text-center text-2xl md:text-5xl'>No freelancers found for {decodecevent} in {decodecsubevent}.</p>
       ) : ( <>
-       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{decodedpeople}</span> in <span className='text-yellow-500'>{place}. </span></p>
+       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{decodecevent}</span> in <span className='text-yellow-500'>{subevent}. </span></p>
       <div className='flex flex-wrap gap-8'>
          
         {data.map((freelancer) => (

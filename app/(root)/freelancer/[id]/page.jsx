@@ -13,6 +13,9 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import ReactCardFlip from 'react-card-flip';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Slider from "react-slick";
+import Modal from 'react-modal';
+
 
 export default function page() {
     const { id } = useParams();
@@ -20,6 +23,153 @@ export default function page() {
     const [freelancerData, setFreelancerData] = useState({
         freelancerDetails: {}
     });
+    const [readMore, setReadMore] = useState(true)
+
+
+     //review section start here
+  const TestimonialData = [
+    {
+      id: 1,
+      name: "Hritik",
+      text: "The photographers and videographers from this platform truly captured the essence of our event. Their professionalism and creativity exceeded all expectations.",
+      img: "https://www.shutterstock.com/image-photo/young-handsome-business-man-dressed-260nw-1487434763.jpg",
+      star: 5,
+      skills: ['photographer', 'videographer', 'drone']
+    },
+    {
+      id: 2,
+      name: "Mani",
+      text: "Hiring a photographer through this platform was the best decision for our corporate event. The attention to detail and the quality of the photos were outstanding.",
+      img: "https://www.shutterstock.com/image-photo/have-great-idea-handsome-businessman-260nw-1282628038.jpg",
+      star: 4,
+      skills: ['photographer']
+    },
+    {
+      id: 3,
+      name: "Piyush",
+      text: "The drone operator captured breathtaking aerial shots of our wedding. The cinematic quality of the video blew everyone away. Highly recommended!",
+      img: "https://media.gettyimages.com/id/1310980400/photo/portrait-of-burnout-businesswoman-in-an-office.jpg?s=612x612&w=gi&k=20&c=fLkvB7hcl7zWJIOUBamNe0lbKIkc4kWFQ1vpQrVwTXQ=",
+      star: 5,
+      skills: ['videographer', 'drone']
+    },
+    {
+      id: 4,
+      name: "Saurav",
+      text: "From photography to videography, the team was on point. The visuals turned out beautifully, and their professionalism was evident throughout the event.",
+      img: "https://media.gettyimages.com/id/641199822/photo/businesswomen-at-workstation-in-start-up-office.jpg?s=612x612&w=gi&k=20&c=uk6k1ILVRf7yKT26DtfgemzQtOyISm72Egn5xr_XT_4=",
+      star: 4,
+      skills: ['photographer', 'videographer', 'drone']
+    },
+    {
+      id: 5,
+      name: "Aditya",
+      text: "The entire experience, from booking a photographer to getting the final edits, was seamless. The quality and timeliness of the deliverables were impressive.",
+      img: "https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.jpg",
+      star: 5,
+      skills: ['photographer', 'videographer', 'drone']
+    },
+    {
+      id: 6,
+      name: "Riya",
+      text: "The candid photography was superb! They really know how to capture those fleeting moments that matter the most. I couldn’t have asked for better photographers.",
+      img: "https://www.shutterstock.com/image-photo/portrait-happy-woman-smiling-camera-260nw-1531112350.jpg",
+      star: 5,
+      skills: ['photographer', 'candid photography']
+    },
+    {
+      id: 7,
+      name: "Amit",
+      text: "We hired a cinematographer through this platform, and the end result was incredible. The video quality was top-notch, and the storytelling was perfect for our corporate project.",
+      img: "https://www.shutterstock.com/image-photo/portrait-confident-young-man-standing-260nw-767916349.jpg",
+      star: 4,
+      skills: ['cinematographer', 'videographer']
+    },
+    {
+      id: 8,
+      name: "Sanya",
+      text: "The drone footage for our outdoor event was stunning. The wide angles and smooth shots added a cinematic feel to the final video. I highly recommend their drone services!",
+      img: "https://www.shutterstock.com/image-photo/young-woman-holding-paper-coffee-260nw-1172777339.jpg",
+      star: 5,
+      skills: ['drone', 'videographer']
+    },
+    {
+      id: 9,
+      name: "Karthik",
+      text: "The crane operator we hired added an extra layer of professionalism to our event's video production. The dynamic camera movements made our footage stand out. Exceptional service!",
+      img: "https://www.shutterstock.com/image-photo/smiling-handsome-young-man-260nw-729510768.jpg",
+      star: 5,
+      skills: ['crane operator', 'videographer']
+    },
+    {
+      id: 10,
+      name: "Anjali",
+      text: "The LED wall setup transformed our event’s visual experience. It was perfect for showcasing live footage and presentations. We were thrilled with the results.",
+      img: "https://www.shutterstock.com/image-photo/young-woman-glasses-sitting-coffee-260nw-1922522086.jpg",
+      star: 4,
+      skills: ['LED wall', 'event management']
+    }
+];
+
+const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
+
+  const handleReadMoreClick = (review) => {
+    setSelectedReview(review);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedReview(null);
+  };
+
+  const customModalStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '90%',
+      maxWidth: '600px',
+      padding: '20px',
+      borderRadius: '15px',
+      backgroundColor: '#fff',
+      boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+  };
+
+  var settings = {
+
+    infinite: true,
+    speed: 350,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+    pauseOnHover: true,
+
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+
+          infinite: true,
+          speed: 350,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          autoplay: true,
+          autoplaySpeed: 4000,
+          pauseOnHover: true,
+        }
+      },]
+  };
+
+
 
     const getUser = async () => {
         const response = await fetch(`/api/freelancer/${id}`, {
@@ -275,6 +425,81 @@ export default function page() {
                     ))}
                 </div>
             </section>
+
+            <section className='mt-20'>
+      <div className='bg-gradient-to-r from-blue-100 to-blue-300'>
+        <div className='text-center text-3xl lg:text-9xl'>
+          <h3 className='text-center py-5 text-[18px] lg:text-6xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
+            Testimonial
+          </h3>
+        </div>
+            <div className=''>
+            <Slider {...settings}>
+            {TestimonialData.map(({ id, img, name, text, star }) => {
+
+              
+              const truncatedText = text.split(' ').length > 20
+                ? text.split(' ').slice(0, 20).join(' ')
+                : text;
+
+              return (
+                <>
+                  <div key={id} className='relative md:w-[30vw] mx-auto bg-gradient-to-r h-[21rem] md:h-80 from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
+                    <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
+                      <img src={img} alt="" className='rounded-full h-24 w-24' />
+                    </div>
+                    <div className='flex flex-col items-center text-center mt-10'>
+                      <p className='text-sm h-28 md:h-20 text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
+
+                      <div className='h-5 flex'>
+                        {Array(5).fill(0).map((_, index) => (
+                          index < star ? (
+                            <StarIcon key={index} size="small" className="text-yellow-500" />
+                          ) : (
+                            <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                          )
+                        ))}
+                      </div>
+
+                      <p className='text-xl font-bold my-4'>{name}</p>
+                      <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p>
+                    </div>
+                  </div>
+                </>
+              )
+            })}
+          </Slider >
+        </div>
+      </div>
+
+      {/* Modal */}
+      {selectedReview && (
+        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customModalStyles} contentLabel="Review Modal">
+          <div className="text-center">
+            <img src={selectedReview.img} alt={selectedReview.name} className="rounded-full w-24 h-24 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-2">{selectedReview.name}</h2>
+            <div className="flex justify-center mb-4">
+              {Array(5)
+                .fill(0)
+                .map((_, index) =>
+                  index < selectedReview.star ? (
+                    <StarIcon key={index} size="small" className="text-yellow-500" />
+                  ) : (
+                    <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                  )
+                )}
+            </div>
+            <p className="text-gray-700">{selectedReview.text}</p>
+            <button
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </Modal>
+      )}
+    </section>
 
 
         </div>

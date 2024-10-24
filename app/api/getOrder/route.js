@@ -39,6 +39,7 @@ export const POST = async (req) => {
     // Fetch all orders from the Order collection using the booking IDs
     const orders = await Order.find({ _id: { $in: orderIds } });
 
+   
     // Return the orders in the response
     return new Response(
       JSON.stringify({ orders }),

@@ -10,6 +10,7 @@ export default function Page() {
   const { people } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const decodedpeople =decodeURIComponent(people)
 
   const getFreelancers = async () => {
     try {
@@ -59,7 +60,7 @@ export default function Page() {
       {data.length === 0 ? (
         <p className='text-center text-2xl md:text-5xl'>No freelancers found for {people}</p>
       ) : (  <>
-       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{people}</span></p>
+       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{decodedpeople}</span></p>
       <div className='flex flex-wrap gap-8'>
         
         {data.map((freelancer) => (
