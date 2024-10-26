@@ -387,8 +387,8 @@ const router=useRouter()
       
     
 
-    function OTPVerify(e) {
-        e.preventDefault();
+    function OTPVerify() {
+        
         setLoading(true);
         window.confirmationResult
           .confirm(otpValue)
