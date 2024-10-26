@@ -395,7 +395,7 @@ const router=useRouter()
           .then(async (res) => {
             console.log(res);
             
-            handleRegister();
+            handleRegister(e);
           })
           .catch((err) => {
             console.log('Invalid OTP:', err);
