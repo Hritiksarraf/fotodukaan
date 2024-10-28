@@ -70,6 +70,8 @@ export async function POST(req) {
       time:time
     });
     
+
+    
     // Save the order to the database
     await newOrder.save();
 
@@ -78,6 +80,13 @@ export async function POST(req) {
     // Update the user's order array
     const freelancerUserUpdate = await Freelancer.findById(userid);
     if (freelancerUserUpdate) {
+      const obj ={
+        date:date,
+        event:event
+      }
+      const bookedDates=freelancerUserUpdate.blockedDates
+      bookedDates.push(obj)
+      freelancerUserUpdate.bookedDates=bookedDates
       // Freelancer exists, update the freelancer's orders array
       if (!freelancerUserUpdate.booking) {
         freelancerUserUpdate.booking = []; // Initialize orders array if it doesn't exist

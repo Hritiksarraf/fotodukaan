@@ -14,6 +14,7 @@ import {
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import EventIcon from '@mui/icons-material/Event';
 import { useEffect, useState } from "react";
 
 
@@ -42,6 +43,11 @@ const Menu = ({user}) => {
       route: "/yourOrder",
       label: "YourOrder" ,
     },
+    {
+      icon: <EventIcon sx={{ color: "white", fontSize: "26px"}}/>,
+      route: "/calendar",
+      label: "Calendar",
+    }
     
   ];
   

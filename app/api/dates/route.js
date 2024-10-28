@@ -2,22 +2,15 @@ import { connectToDB } from "@/lib/mongodb/mongoose";
 import Freelancer from "@/lib/models/Register";
 import Order from "@/lib/models/order";
 
-
-export const GET = async (req,{params}) => {
+export const POST = async (req, { params }) => {
     try {
         await connectToDB()
-        const freelancer = await Freelancer.findOne({_id:params.id}).populate('orders')
-        if(!freelancer){
-            return new Response( 'Freelancer not found',{ status: 404} )
-        }
-        const blockedDates = freelancer.blockedDates;
-        const orders = await Order.find({ freelancerId: params.id })
-        const bookedDates = orders.map(order => order.date);
-        const unavailableDates = [...blockedDates, ...bookedDates];
-        return new Response(unavailableDates, { status: 200 });
-
+        const { id } = await req.json();
+        console.log("Received ID:", id);
+        const orders = await Order.find({ freelancerId: id });
+        return new Response(JSON.stringify(orders), { status: 200, headers: { 'Content-Type': 'application/json' } });
     } catch (error) {
-        console.log(error);
-        return new Response("failed to get all the dates",{status:400})
+        console.error(error);
+        return new Response("Failed to get all the orders", { status: 400 });
     }
-}
+};
