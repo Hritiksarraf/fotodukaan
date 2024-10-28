@@ -10,36 +10,61 @@ import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import Link from 'next/link';
+import Modal from 'react-modal';
 
 export default function Home () {
 
   const Services = [
     {
-      title: "Photographer",
+      title: "Photography",
       img: "https://www.silkphotos.com/wp-content/uploads/2013/08/Indian-wedding-photographer-05.jpg",
-      link:"/freelancer/type/Photography"
+      link: "/freelancer/event/Photography",
+      des: "Our professional photographers capture the essence of your special moments, from weddings and events to personal and corporate shoots. With a creative eye and attention to detail, we ensure every shot tells your story beautifully."
+    },
+    {
+      title: "Candid Photography",
+      img: "https://www.photojaanic.com/blog/wp-content/uploads/sites/2/2017/03/02.jpg",
+      link: "/freelancer/event/Candid Photography",
+      des: "Specializing in capturing authentic, unposed moments, our candid photography services provide a natural, storytelling approach to documenting your special events."
+    },
+    {
+      title: "Videography",
+      img: "https://www.wedding.film/wp-content/uploads/2023/03/how-long-does-it-take-to-edit-a-wedding-video.jpg",
+      link: "/freelancer/event/Videography",
+      des: "Our videographers create stunning visual narratives that highlight the most important moments of your events, preserving your memories in a cinematic way."
+    },
+    {
+      title: "Cinematography",
+      img: "https://img.freepik.com/free-photo/close-up-influencer-holding-flowers_23-2149172443.jpg",
+      link: "/freelancer/event/Cinematography",
+      des: "Our talented cinematographers specialize in creating high-quality films that evoke emotion and beautifully capture the essence of your events or projects."
     },
     {
       title: "Drone",
       img: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      link:"/freelancer/type/Drone"
-    },
-    {
-      title: "Video Editing",
-      img: "https://lwks.com/hubfs/Editor2-min.webp",
-      link:"/freelancer/type/Video Editing"
+      link: "/freelancer/event/Drone",
+      des: "Our skilled drone operators provide breathtaking aerial photography and videography, offering a unique perspective perfect for large events, real estate, and outdoor shoots."
     },
     {
       title: "Crane",
       img: "https://img.freepik.com/premium-photo/tv-camera-crane-studio_42764-53.jpg?w=2000",
-      link:"/freelancer/type/Crane"
+      link: "/freelancer/type/Crane",
+      des: "Our crane operators bring cinematic movement to your videos, ideal for large-scale productions such as concerts, weddings, and film shoots."
     },
     {
-      title: 'Cinematographer',
-      img: "https://img.freepik.com/free-photo/close-up-influencer-holding-flowers_23-2149172443.jpg",
-      link:"/freelancer/type/Videography"
+      title: "LED wall",
+      img: "https://ledmarketusa.com/wp-content/uploads/2024/02/LED-Wall-for-Banquet-Halls-1.jpg.webp",
+      link: "/freelancer/type/LED wall",
+      des: "Enhance your events with our LED wall services, providing high-quality visual displays perfect for large gatherings, corporate events, and concerts."
+    },
+    {
+      title: "LED TV",
+      img: "https://maduraievents.in/wp-content/uploads/2014/05/wedding-led-tv-videography.jpg",
+      link: "/freelancer/type/LED TV",
+      des: "We provide high-definition LED TVs for events and presentations, ensuring a clear and vibrant display for your content."
     }
-  ]
+];
+
   const Partner = [
     {
       title: "Nikon",
@@ -59,50 +84,126 @@ export default function Home () {
     }
   ]
 
+
+  //review section start here
   const TestimonialData = [
     {
       id: 1,
       name: "Hritik",
-      text: "GreenPack's biodegradable packaging is a game-changer, aligning with my eco-conscious values. GreenPack's biodegradable packaging is a game-changer, aligning with my eco-conscious values.",
+      text: "The photographers and videographers from this platform truly captured the essence of our event. Their professionalism and creativity exceeded all expectations.",
       img: "https://www.shutterstock.com/image-photo/young-handsome-business-man-dressed-260nw-1487434763.jpg",
-      star: 2,
+      star: 5,
       skills: ['photographer', 'videographer', 'drone']
-
     },
     {
-      id: 1,
+      id: 2,
       name: "Mani",
-      text: "GreenPack's commitment to sustainability shines through in their recyclable products, a win-win for my business and the environment.GreenPack's biodegradable packaging is a game-changer, aligning with my eco-conscious values.",
+      text: "Hiring a photographer through this platform was the best decision for our corporate event. The attention to detail and the quality of the photos were outstanding.",
       img: "https://www.shutterstock.com/image-photo/have-great-idea-handsome-businessman-260nw-1282628038.jpg",
       star: 4,
-      skills: ['photographer',]
+      skills: ['photographer']
     },
     {
-      id: 1,
+      id: 3,
       name: "Piyush",
-      text: "GreenPack's compostable solutions are top-notch, helping me reduce my carbon footprint without compromising quality.GreenPack's biodegradable packaging is a game-changer, aligning with my eco-conscious values.",
+      text: "The drone operator captured breathtaking aerial shots of our wedding. The cinematic quality of the video blew everyone away. Highly recommended!",
       img: "https://media.gettyimages.com/id/1310980400/photo/portrait-of-burnout-businesswoman-in-an-office.jpg?s=612x612&w=gi&k=20&c=fLkvB7hcl7zWJIOUBamNe0lbKIkc4kWFQ1vpQrVwTXQ=",
-      star: 3,
+      star: 5,
       skills: ['videographer', 'drone']
     },
     {
-      id: 1,
+      id: 4,
       name: "Saurav",
-      text: " love how GreenPack's packaging options are both environmentally friendly and stylish, perfect for my brand.GreenPack's biodegradable packaging is a game-changer, aligning with my eco-conscious values.",
+      text: "From photography to videography, the team was on point. The visuals turned out beautifully, and their professionalism was evident throughout the event.",
       img: "https://media.gettyimages.com/id/641199822/photo/businesswomen-at-workstation-in-start-up-office.jpg?s=612x612&w=gi&k=20&c=uk6k1ILVRf7yKT26DtfgemzQtOyISm72Egn5xr_XT_4=",
-      star: 0,
+      star: 4,
       skills: ['photographer', 'videographer', 'drone']
     },
     {
-      id: 1,
+      id: 5,
       name: "Aditya",
-      text: "GreenPack's compostable solutions are top-notch, helping me reduce my carbon footprint without compromising quality.GreenPack's biodegradable packaging is a game-changer, aligning with my eco-conscious values.",
+      text: "The entire experience, from booking a photographer to getting the final edits, was seamless. The quality and timeliness of the deliverables were impressive.",
       img: "https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.jpg",
-      star: 3,
-      skills: ['photographer', 'videographer', 'drone', 'photographer', 'videographer',]
+      star: 5,
+      skills: ['photographer', 'videographer', 'drone']
     },
+    {
+      id: 6,
+      name: "Riya",
+      text: "The candid photography was superb! They really know how to capture those fleeting moments that matter the most. I couldn’t have asked for better photographers.",
+      img: "https://www.shutterstock.com/image-photo/portrait-happy-woman-smiling-camera-260nw-1531112350.jpg",
+      star: 5,
+      skills: ['photographer', 'candid photography']
+    },
+    {
+      id: 7,
+      name: "Amit",
+      text: "We hired a cinematographer through this platform, and the end result was incredible. The video quality was top-notch, and the storytelling was perfect for our corporate project.",
+      img: "https://www.shutterstock.com/image-photo/portrait-confident-young-man-standing-260nw-767916349.jpg",
+      star: 4,
+      skills: ['cinematographer', 'videographer']
+    },
+    {
+      id: 8,
+      name: "Sanya",
+      text: "The drone footage for our outdoor event was stunning. The wide angles and smooth shots added a cinematic feel to the final video. I highly recommend their drone services!",
+      img: "https://www.shutterstock.com/image-photo/young-woman-holding-paper-coffee-260nw-1172777339.jpg",
+      star: 5,
+      skills: ['drone', 'videographer']
+    },
+    {
+      id: 9,
+      name: "Karthik",
+      text: "The crane operator we hired added an extra layer of professionalism to our event's video production. The dynamic camera movements made our footage stand out. Exceptional service!",
+      img: "https://www.shutterstock.com/image-photo/smiling-handsome-young-man-260nw-729510768.jpg",
+      star: 5,
+      skills: ['crane operator', 'videographer']
+    },
+    {
+      id: 10,
+      name: "Anjali",
+      text: "The LED wall setup transformed our event’s visual experience. It was perfect for showcasing live footage and presentations. We were thrilled with the results.",
+      img: "https://www.shutterstock.com/image-photo/young-woman-glasses-sitting-coffee-260nw-1922522086.jpg",
+      star: 4,
+      skills: ['LED wall', 'event management']
+    }
+];
 
-  ]
+const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
+
+  const handleReadMoreClick = (review) => {
+    setSelectedReview(review);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedReview(null);
+  };
+
+  const customModalStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '90%',
+      maxWidth: '600px',
+      padding: '20px',
+      borderRadius: '15px',
+      backgroundColor: '#fff',
+      boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
+    },
+    overlay: {
+      backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    },
+  };
+
+  // review setiing ends here
+
   const imgurl = "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
   
@@ -190,7 +291,7 @@ export default function Home () {
   const [text, setText] = useState('');
   const [delta, setDelta] = useState(300 - Math.random() * 100);
   const [index, setIndex] = useState(1);
-  const toRotate = ["Photographer", "Cinematographer", "Drone", "Video Editor", "Crane"];
+  const toRotate = ["Photographer", "Candid Photographer", "Videographer", "Cinematographer", "Drone", "Crane", "LED Wall", "LED TV"];
   const [freelancer, setFreelancer] = useState([])
   const period = 2000;
 
@@ -325,7 +426,7 @@ export default function Home () {
         </div>
         <div className='flex flex-wrap items-center justify-center'>
           
-          {Services.map(({ service, index, img, title, link }) => {
+          {Services.map(({ service, index, img, title, link,des }) => {
 
 
             return (
@@ -337,7 +438,7 @@ export default function Home () {
 
                   <div className='flex flex-col items-center text-center mt-4'>
                     <p className='text-xl font-bold my-1'>{title}</p>
-                    <p className='text-sm mb-8 px-3 '> <span className='font-semibold text-xl'> </span > Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam at pariatur, deleniti itaque suscipit asperiores.  </p>
+                    <p className='text-sm mb-8 px-3 '> <span className='font-semibold text-xl'> </span >{des}</p>
 
 
 
@@ -371,33 +472,35 @@ export default function Home () {
             Hire Us to Turn    <span className="">Your Moments</span> into Masterpieces
           </h1>
           <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-40 font-serif text-left text-black text-[0.6rem]">
-            We are here to help you keep all Lorem, ipsum dolor sit amet consectetur adipisicing elit. Laboriosam laudantium aliquam quidem rem quas earum tenetur amet debitis, totam repellendus officiis enim aspernatur magnam quae velit.
+          We are here to help you capture and preserve life’s most precious moments. Whether it’s a wedding, corporate event, or personal milestone, our expert team ensures that every detail is beautifully immortalized, leaving you with timeless memories.
           </p>
           <div className='mt-9'>
 
             <div className='flex'>
               <div className='bg-[#9558EC] rounded-md h-full inline-block p-1'><CameraAltOutlinedIcon className='text-3xl  md:text-4xl text-white' /></div>
               <div className='ml-2 '>
-                <h1 className='text-xl md:text-3xl font-serif text-left text-black '>Profectional Photographer</h1>
-                <p className="md:text-sm md:pr-64 text-left text-black font-serif text-[0.6rem]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione tenetur, aliquid iusto quisquam maxime nisi iste. Minus quo dolor deserunt laudantium reiciendis tempore tenetur necessitatibus!</p>
-              </div>
-            </div>
-
-            <div className='flex mt-8'>
-              <div className='bg-blue-500 rounded-md h-full  inline-block p-1'><CameraAltOutlinedIcon className='text-3xl md:text-4xl text-white' /></div>
-              <div className='ml-2 '>
-                <h1 className='text-xl md:text-3xl text-left  font-serif '>Profectional Photographer</h1>
-                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione tenetur, aliquid iusto quisquam maxime nisi iste. Minus quo dolor deserunt laudantium reiciendis tempore tenetur necessitatibus!</p>
+                <h1 className='text-xl md:text-3xl font-serif text-left text-black '>For Freelancers</h1>
+                <p className="md:text-sm md:pr-64 text-left text-black font-serif text-[0.6rem]">At Fotodukaan, we empower talented photographers, cinematographers, drone operators, and video editors to showcase their skills and connect with clients. Our platform helps freelancers reach more customers, secure more bookings, and grow their careers effortlessly. With a simple registration process, you can start earning and get hired for exciting projects right away.</p>
               </div>
             </div>
 
             <div className='flex mt-8'>
               <div className='bg-yellow-500 rounded-md h-full inline-block p-1'><CameraAltOutlinedIcon className='text-3xl  md:text-4xl text-white' /></div>
               <div className='ml-2 '>
-                <h1 className='text-xl md:text-3xl font-serif  text-left '>Profectional Photographer</h1>
-                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione tenetur, aliquid iusto quisquam maxime nisi iste. Minus quo dolor deserunt laudantium reiciendis tempore tenetur necessitatibus!</p>
+                <h1 className='text-xl md:text-3xl font-serif  text-left '>For Customers</h1>
+                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">We make it easy for you to find the perfect professionals for any event or project. Whether you're planning a wedding, hosting a corporate event, or working on a creative project, our platform connects you with top-rated freelancers who specialize in capturing your vision. Browse portfolios, book instantly, and let the experts handle the rest.</p>
               </div>
             </div>
+
+            <div className='flex mt-8'>
+              <div className='bg-blue-500 rounded-md h-full  inline-block p-1'><CameraAltOutlinedIcon className='text-3xl md:text-4xl text-white' /></div>
+              <div className='ml-2 '>
+                <h1 className='text-xl md:text-3xl text-left  font-serif '>Our Mission</h1>
+                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">Our mission at Fotodukaan is to bridge the gap between talented freelancers and clients who value the art of visual storytelling. We strive to make high-quality photography and videography accessible to everyone while supporting the creative community. By providing a seamless platform for freelancers and customers, we ensure that every moment is turned into a masterpiece.</p>
+              </div>
+            </div>
+
+            
 
           </div>
           <div className="pt-8 flex mx-auto w-full justify-center md:justify-start">
@@ -520,11 +623,15 @@ export default function Home () {
         </div>
       </section>
 
-      <section className='mt-20' >
-
-        <div className='bg-gradient-to-r  from-blue-100 to-blue-300'>
-          <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-[18px] lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Testimonial</h3></div>
-          <Slider {...settings}>
+      <section className='mt-20'>
+      <div className='bg-gradient-to-r from-blue-100 to-blue-300'>
+        <div className='text-center text-3xl lg:text-9xl'>
+          <h3 className='text-center py-5 text-[18px] lg:text-6xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
+            Testimonial
+          </h3>
+        </div>
+            <div className=''>
+            <Slider {...settings}>
             {TestimonialData.map(({ id, img, name, text, star }) => {
 
               const [readMore, setReadMore] = useState(true)
@@ -539,7 +646,7 @@ export default function Home () {
                       <img src={img} alt="" className='rounded-full h-24 w-24' />
                     </div>
                     <div className='flex flex-col items-center text-center mt-10'>
-                      <p className='text-sm h-28 md:h-20 text-left text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button className='blue1 inline-block'>...read more</button>}</p>
+                      <p className='text-sm h-28 md:h-20 text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
 
                       <div className='h-5 flex'>
                         {Array(5).fill(0).map((_, index) => (
@@ -560,7 +667,36 @@ export default function Home () {
             })}
           </Slider >
         </div>
-      </section>
+      </div>
+
+      {/* Modal */}
+      {selectedReview && (
+        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customModalStyles} contentLabel="Review Modal">
+          <div className="text-center">
+            <img src={selectedReview.img} alt={selectedReview.name} className="rounded-full w-24 h-24 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold mb-2">{selectedReview.name}</h2>
+            <div className="flex justify-center mb-4">
+              {Array(5)
+                .fill(0)
+                .map((_, index) =>
+                  index < selectedReview.star ? (
+                    <StarIcon key={index} size="small" className="text-yellow-500" />
+                  ) : (
+                    <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                  )
+                )}
+            </div>
+            <p className="text-gray-700">{selectedReview.text}</p>
+            <button
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+              onClick={closeModal}
+            >
+              Close
+            </button>
+          </div>
+        </Modal>
+      )}
+    </section>
 
       <section>
         <div className='my-12'>

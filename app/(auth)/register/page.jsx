@@ -395,7 +395,7 @@ const router=useRouter()
           .then(async (res) => {
             console.log(res);
             
-            handleRegister();
+            handleRegister(e);
           })
           .catch((err) => {
             console.log('Invalid OTP:', err);
@@ -773,6 +773,7 @@ const router=useRouter()
                                                                 value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
                                                                 onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
                                                                 className="block w-full bg-blue-100 p-2 border rounded"
+                                                                required
                                                             >
                                                                 <option value="" disabled>Select Camera Brand</option>
                                                                 <option value="Nikon">Nikon</option>
@@ -794,6 +795,7 @@ const router=useRouter()
                                                                 value={selectedCategories[category.name]?.cameraDetails?.model || ''}
                                                                 onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
                                                                 className="block bg-blue-100 w-full p-2 border rounded"
+                                                                required
                                                             />
 
                                                             <label htmlFor="specs" className="block mb-2 mt-4">Camera Lense</label>
@@ -803,6 +805,7 @@ const router=useRouter()
                                                                 value={selectedCategories[category.name]?.cameraDetails?.lanse || ''}
                                                                 onChange={(e) => handleCameraDetailsChange(category.name, 'lanse', e.target.value)}
                                                                 className="block bg-blue-100 w-full p-2 border rounded mt-2"
+                                                                required
                                                             />
                                                             <label htmlFor="Gimble" className="block mb-2 mt-4">Gimble</label>
                                                             <input
@@ -811,6 +814,7 @@ const router=useRouter()
                                                                 value={selectedCategories[category.name]?.cameraDetails?.gimble || ''}
                                                                 onChange={(e) => handleCameraDetailsChange(category.name, 'gimble', e.target.value)}
                                                                 className="block w-full bg-blue-100 p-2 border rounded mt-2"
+                                                                required
                                                             />
                                                         </div>
                                                     </div>
@@ -825,6 +829,7 @@ const router=useRouter()
                                                         value={selectedCategories[category.name].price.fullDayPrice}
                                                         onChange={(e) => handlePriceChange(category.name, 'price', 'fullDayPrice', e.target.value)}
                                                         className="w-full p-2 border rounded"
+                                                        required
                                                     />
                                                     {formErrors[category.name]?.price?.fullDayPrice && (
                                                         <p className="text-red-500 text-xs mt-1">{formErrors[category.name].price.fullDayPrice}</p>
@@ -836,6 +841,7 @@ const router=useRouter()
                                                     <label className="block">Half Day Price:</label>
                                                     <input
                                                         type="number"
+                                                        required
                                                         value={selectedCategories[category.name].price.halfDayPrice}
                                                         onChange={(e) => handlePriceChange(category.name, 'price', 'halfDayPrice', e.target.value)}
                                                         className="w-full p-2 border rounded"
@@ -851,6 +857,7 @@ const router=useRouter()
                                                     <label className="block">Extra Hour Price:</label>
                                                     <input
                                                         type="number"
+                                                        required
                                                         value={selectedCategories[category.name].price.extraHourPrice}
                                                         onChange={(e) => handlePriceChange(category.name, 'price', 'extraHourPrice', e.target.value)}
                                                         className="w-full p-2 border rounded"
@@ -870,6 +877,7 @@ const router=useRouter()
                                                     <label className="block">Wedding Full Day Price:</label>
                                                     <input
                                                         type="number"
+                                                        required
                                                         value={selectedCategories[category.name].weddingPrice.fullDayPrice}
                                                         onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'fullDayPrice', e.target.value)}
                                                         className="w-full p-2 border rounded"
@@ -884,6 +892,7 @@ const router=useRouter()
                                                     <label className="block">Wedding Half Day Price:</label>
                                                     <input
                                                         type="number"
+                                                        required
                                                         value={selectedCategories[category.name].weddingPrice.halfDayPrice}
                                                         onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'halfDayPrice', e.target.value)}
                                                         className="w-full p-2 border rounded"
@@ -898,6 +907,7 @@ const router=useRouter()
                                                     <label className="block">Wedding Extra Hour Price:</label>
                                                     <input
                                                         type="number"
+                                                        required
                                                         value={selectedCategories[category.name].weddingPrice.extraHourPrice}
                                                         onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'extraHourPrice', e.target.value)}
                                                         className="w-full p-2 border rounded"
