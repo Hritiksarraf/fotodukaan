@@ -5,6 +5,12 @@ import jwt from "jsonwebtoken";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import EditBar from '@/components/editBar/EditBar';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { TextField } from '@mui/material';
+import { format } from 'date-fns';
+
 
 export default function OrderForm() {
     const [step, setStep] = useState(1);
@@ -35,7 +41,33 @@ export default function OrderForm() {
   const [events,setEvents]=useState([]);
   const [isRefundPolicyAccepted, setIsRefundPolicyAccepted] = useState(false);
   const [time,setTime]=useState([])
-
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [blockedDates,setBlockedDates] = useState([]);
+  const today = new Date().toISOString().split('T')[0];
+  useEffect(()=>{
+    console.log("id",id)
+      getBlockedDates(id)
+      // console.log(blockedDates)
+  },[])
+  const getBlockedDates=async(Id)=>{
+    const data = await fetch(`/api/dates/${Id}`,{
+      method: 'GET',
+      headers:{
+        'Content-Type': 'application/json',
+      }
+    })
+    const blockedDates2 = await data.json();
+    console.log("f",blockedDates2)
+    const blockedDates1 = []
+    blockedDates2.map((ele)=>blockedDates1.push(ele?.date||""))
+    console.log(blockedDates1)
+    const formattedDates = blockedDates1.map(date => {
+      const d = new Date(date);
+      return d.toISOString().split('T')[0]; // Get only 'yyyy-mm-dd' part
+    });
+    console.log(formattedDates)
+    setBlockedDates(formattedDates);
+  }
   // Fetch freelancer data
   const getFreelancer = async () => {
     try {
@@ -127,7 +159,39 @@ export default function OrderForm() {
       setCouponMessage('Invalid coupon code.');
     }
   };
+  const shouldDisableDate = (date) => {
+    if (!date || !(date instanceof Date)) {
+      return false; // If date is null or not a Date object, do not disable
+    }
+    const formattedDate = date.toISOString().split('T')[0]; // Format date to 'YYYY-MM-DD'
+    console.log("f",formattedDate)
+    return blockedDates.includes(formattedDate);
+  };
+  const handleDateChange = (newDate) => {
+    if (newDate) { // Check if newDate is not null
+      const formattedNewDate = newDate.toISOString().split('T')[0]; // Format selected date
 
+      // Create a new date object for the next day
+      const nextDay = new Date(newDate);
+      nextDay.setDate(nextDay.getDate() + 1); // Increment day by 1
+      console.log("nxt",nextDay)
+      // Check if the selected next day is blocked
+      if (shouldDisableDate(nextDay)) {
+        setSelectedDate(null); // Clear the selected date
+        alert(`The date ${nextDay.toISOString().split('T')[0]} is already booked. Please select another date.`);
+      nextDay.setDate(nextDay.getDate() - 1); // Increment day by 1
+        return
+        
+
+      } else {
+        console.log("A",newDate)
+        setSelectedDate(newDate);
+        // console.log(`Selected date: ${formattedNewDate}`);
+      }
+    } else {
+      setSelectedDate(null); // Handle case when date is cleared
+    }
+  };
   const getUser = async () => {
     if (localUser) {
       const response = await fetch(`/api/freelancer/${localUser.userid}`);
@@ -161,7 +225,21 @@ export default function OrderForm() {
     const discount= originalTokenAmount - tokenAmount
 
 console.log('i am here')
-
+console.log("s",selectedDate)
+if(selectedDate==null){
+  alert('please select a valid date ')
+  return
+}
+const date = new Date(selectedDate);
+console.log("ff",date)
+if(blockedDates.includes(date)){
+  date.setDate(date.getDate() + 1); 
+  alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
+}else{
+  date.setDate(date.getDate() + 1); 
+  console.log("date",date)
+const formattedDate = date.toISOString().split('T')[0];
+console.log(formattedDate)
     const orderDetails = {
       name: orderData.customerName,
       email: localUser?.email || '', // Assuming email is fetched from user token
@@ -169,7 +247,7 @@ console.log('i am here')
       pinCode: orderData.pincode,
       address: orderData.address,
       city: orderData.selectedCity,
-      date: orderData.eventDate,
+      date: formattedDate,
       paidAmount: tokenAmount,
       totalAmount: originalTokenAmount,
       discount: discount,
@@ -204,6 +282,7 @@ console.log('i am here')
       console.error('Error placing order:', error);
       alert('Something went wrong. Please try again later.');
     }
+  }
   };
 
   const handleNext = () => {
@@ -326,15 +405,17 @@ console.log('i am here')
                 {/* Event Date */}
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Event Date</label>
-                  <input
-                    type="date"
-                    name="eventDate"
-                    value={orderData.eventDate}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
-                    min={new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0]}
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      label="Select a date"
+                      name="eventDate"
+                      value={selectedDate}
+                      minDate={new Date()}
+                      onChange={(newDate) => handleDateChange(newDate)}
+                      // shouldDisableDate={shouldDisableDate}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </LocalizationProvider>
                 </div>
 
                 {/* Freelancer Service Dropdown */}
