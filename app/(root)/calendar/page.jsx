@@ -4,11 +4,13 @@
   import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
   import { StaticDatePicker } from '@mui/x-date-pickers';
   import { format } from 'date-fns';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
   import jwt from 'jsonwebtoken'
 
   function BlockedDatesCalendar() {
     const [blockedDates, setBlockedDates] = useState([]);
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState('');
     const [freelancerId, setFreelancerId] = useState(null);
     const [alreadyBlockedDates,setAlreadyBlockedDates] = useState([]);
     const [allEvents, setAllEvents] = useState([])
@@ -70,10 +72,10 @@
       return alreadyBlockedDates.includes(formattedDate);
     };
 
-    const handleInputChange = (e) => {
-      const value = e.target.value;
-      const formattedValue = format(new Date(value), 'yyyy-MM-dd');
-    
+    const handleInputChange = (date) => {
+      
+      const formattedValue = format(new Date(date), 'yyyy-MM-dd');
+      
       if (alreadyBlockedDates.includes(formattedValue)) {
         console.log("Unblocking date:", formattedValue);
     
@@ -175,12 +177,17 @@
           <div className='w-[20%]'>
 
               <label className='text-center'>Select the dates to block/unblock</label>
-              <input 
-                type="date" 
-                min={today}
-                className="block w-full p-2 mb-4 text-sm text-gray-700 bg-gray-50 rounded-lg border border-gray-300 appearance-none "
-                onChange={handleInputChange}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                        label="Select a date"
+                        name="eventDate"
+                        value={selectedDate}
+                        minDate={new Date()}
+                        onChange={(date)=>handleInputChange(date)}
+                        // shouldDisableDate={shouldDisableDate}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+              </LocalizationProvider>
           </div>
         </div>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
