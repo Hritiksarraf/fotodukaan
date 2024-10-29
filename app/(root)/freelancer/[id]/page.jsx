@@ -113,6 +113,9 @@ export default function page() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const handleReadMoreClick = (review) => {
     setSelectedReview(review);
     setModalIsOpen(true);
@@ -239,6 +242,30 @@ export default function page() {
       </Box>
     </div>);
   }
+
+  //for image section
+
+
+
+  const openModal = (index) => {
+    setCurrentImageIndex(index);
+    setIsModalOpen(true);
+};
+
+const closeModalpic = () => setIsModalOpen(false);
+
+const showPreviousImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+        prevIndex > 0 ? prevIndex - 1 : freelancerData.image.length - 1
+    );
+};
+
+const showNextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+        prevIndex < freelancerData.image.length - 1 ? prevIndex + 1 : 0
+    );
+};
+
 
   return (
     <div className='pt-20 overflow-x-hidden'>
@@ -407,23 +434,65 @@ export default function page() {
       {/* image section */}
 
       <section className='w-[100vw] mx-auto md:pr-[25vw] md:pl-[15vw]'>
-        {freelancerData.image.length > 0 && freelancerData.video.length>0 &&  <h2 className='text-center text-4xl md:text-5xl my-6' style={{ fontFamily: 'Poppins' }}>Glimpses of My Work</h2>}
-        {freelancerData.image.length > 0 && (
-          <>
-            <h2 className='text-center text-3xl text-blue-500 font-bold mb-6'>Image Gallery</h2>
-            <div className='flex flex-wrap'>
-              {freelancerData.image.map((imgSrc, index) => (
-                <img
-                  key={index}
-                  src={imgSrc} // dynamically load the image from freelancerData
-                  alt={`Freelancer Image ${index + 1}`}
-                  className='md:w-[12vw] mx-auto  w-[40vw] object-cover aspect-square my-4 md:mx-4 rounded-xl shadow-lg'
-                />
-              ))}
+    {freelancerData.image.length > 0 && freelancerData.video.length > 0 && (
+      <h2 className='text-center text-4xl md:text-5xl my-6' style={{ fontFamily: 'Poppins' }}>
+        Glimpses of My Work
+      </h2>
+    )}
+
+    {freelancerData.image.length > 0 && (
+      <>
+        <h2 className='text-center text-3xl text-blue-500 font-bold mb-6'>Image Gallery</h2>
+        <div className='flex flex-wrap'>
+          {freelancerData.image.map((imgSrc, index) => (
+            <img
+              key={index}
+              src={imgSrc}
+              alt={`Freelancer Image ${index + 1}`}
+              onClick={() => openModal(index)} // Pass index here
+              className='md:w-[12vw] mx-auto w-[40vw] object-cover aspect-square my-4 md:mx-4 rounded-xl shadow-lg'
+            />
+          ))}
+        </div>
+
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+            {/* Close Button */}
+            <button
+              onClick={closeModalpic}
+              className="absolute top-8 right-8 text-white text-5xl font-bold bg-black bg-opacity-70 p-3 rounded-full hover:bg-opacity-90"
+            >
+              &times;
+            </button>
+
+            {/* Image */}
+            <div className="relative max-w-screen-lg flex justify-center items-center">
+              <img
+                src={freelancerData.image[currentImageIndex]}
+                alt={`Gallery ${currentImageIndex + 1}`}
+                className="w-full max-h-[80vh] object-contain"
+              />
             </div>
-          </>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={showPreviousImage}
+              className="absolute bottom-10 left-4 text-white text-3xl font-bold bg-black bg-opacity-70 p-4 rounded-full hover:bg-opacity-90"
+            >
+              &#9664;
+            </button>
+            <button
+              onClick={showNextImage}
+              className="absolute bottom-10 right-4 text-white text-3xl font-bold bg-black bg-opacity-70 p-4 rounded-full hover:bg-opacity-90"
+            >
+              &#9654;
+            </button>
+          </div>
         )}
-      </section>
+      </>
+    )}
+</section>
+
 
 
 
