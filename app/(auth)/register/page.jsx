@@ -506,6 +506,18 @@ const router=useRouter()
         currentStep: 1
     });
 
+    const handlestep2= () => {
+        const isValid = Object.values(selectedCategories).some(
+            (category) => category.subcategories && category.subcategories.length > 0
+        );
+        if (isValid) {
+            console.log("a",selectedCategories)
+            setStep((prevState) => ({ ...prevState, currentStep: 3 }));
+        } else {
+            alert("Please select at least one category and subcategory.");
+        }
+    }
+
     useEffect(() => {
         onCaptchVerify();
       }, []);
@@ -715,6 +727,7 @@ const router=useRouter()
                             <h1 className="text-xl font-bold mt-4 mb-10 leading-tight tracking-tight text-black md:text-4xl ">
                                 Select Your Services
                             </h1>
+                            <form action="" onSubmit={handlestep2}>
                             <div className="flex flex-col bg-white items-start justify-start w-full ">
                                 {categories.map((category) => (
                                     <div key={category.name} className="w-full">
@@ -929,6 +942,7 @@ const router=useRouter()
                                                         Drone Brand
                                                         </label>
                                                         <input
+                                                        required
                                                         type="text"
                                                         placeholder="Enter Drone Brand"
                                                         value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
@@ -941,6 +955,7 @@ const router=useRouter()
                                                         Drone Model
                                                         </label>
                                                         <input
+                                                        required
                                                         type="text"
                                                         placeholder="Enter Drone Model"
                                                         value={selectedCategories[category.name]?.cameraDetails?.model || ''}
@@ -959,6 +974,7 @@ const router=useRouter()
                                                             Size 
                                                         </label>
                                                         <input
+                                                            required
                                                             type="text"
                                                             placeholder="Enter size (e.g., 10x20)"
                                                             value={selectedCategories[category.name]?.ledDetails?.size || ''}
@@ -980,19 +996,10 @@ const router=useRouter()
                             </div>
                             <div className='flex justify-between w-[100%] md:mb-5'>
                                 <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 1 }))} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">back</button>
-                                <button onClick={() => {
-                                    const isValid = Object.values(selectedCategories).some(
-                                        (category) => category.subcategories && category.subcategories.length > 0
-                                    );
-                                    if (isValid) {
-                                        console.log("a",selectedCategories)
-                                        setStep((prevState) => ({ ...prevState, currentStep: 3 }));
-                                    } else {
-                                        alert("Please select at least one category and subcategory.");
-                                    }
-                                }} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
+                                <button type='submit' className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
 
                             </div>
+                            </form>
                         </div>
                     </section>
                 )}
