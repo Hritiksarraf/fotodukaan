@@ -6,10 +6,18 @@ export default function ServiceCard({
   _id,
   profilePhoto,
   name,
-  startingPrice,
+  freelancerDetails,
   stars,
   city
 }) {
+  let minamount=Number.MAX_VALUE;
+  Object.keys(freelancerDetails).forEach((key) => {
+    const details = freelancerDetails[key];
+    const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
+    const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
+  
+    minamount = Math.min(minamount, fullDayPrice, weddingPrice);
+  });
   return (
     <div className=" w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r from-white to-white dark:text-black my-6 shadow-lg flex flex-col bg-primary/10 ">
       <div className="block h-64 w-64 mx-auto rounded-full pt-4">
@@ -23,7 +31,7 @@ export default function ServiceCard({
       <div className="flex flex-col items-center text-center mt-4">
         <p className="text-xl font-bold my-1">{name}</p>
         <p className="text-sm">
-          <span className="font-semibold text-xl">{startingPrice} ₹</span> Starting Price <span>| {city}</span>
+          <span className="font-semibold text-xl">{minamount} ₹</span> Starting Price <span>| {city}</span>
         </p>
 
         <div className="h-5 flex">

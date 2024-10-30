@@ -27,6 +27,7 @@ export default function Page() {
       if (datas.message) {
         setData([]);
       } else {
+        console.log(datas)
         setData(datas);
       }
 
