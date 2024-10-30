@@ -10,6 +10,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextField } from '@mui/material';
 import { format } from 'date-fns';
+import { Typography} from '@mui/material'
+import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
 
 export default function OrderForm() {
@@ -43,7 +45,6 @@ export default function OrderForm() {
   const [time,setTime]=useState([])
   const [selectedDate, setSelectedDate] = useState(null);
   const [blockedDates,setBlockedDates] = useState([]);
-  const today = new Date().toISOString().split('T')[0];
   useEffect(()=>{
     console.log("id",id)
       getBlockedDates(id)
@@ -88,7 +89,7 @@ export default function OrderForm() {
       getFreelancer();
     }
   }, [id]);
-
+  
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -164,9 +165,10 @@ export default function OrderForm() {
       return false; // If date is null or not a Date object, do not disable
     }
     const formattedDate = date.toISOString().split('T')[0]; // Format date to 'YYYY-MM-DD'
-    console.log("f",formattedDate)
-    return blockedDates.includes(formattedDate);
+    // console.log("f",formattedDate)
+    return blockedDates.includes(formattedDate)||date<new Date();
   };
+ 
   const handleDateChange = (newDate) => {
     if (newDate) { // Check if newDate is not null
       const formattedNewDate = newDate.toISOString().split('T')[0]; // Format selected date
@@ -192,6 +194,7 @@ export default function OrderForm() {
       setSelectedDate(null); // Handle case when date is cleared
     }
   };
+  
   const getUser = async () => {
     if (localUser) {
       const response = await fetch(`/api/freelancer/${localUser.userid}`);
@@ -405,7 +408,7 @@ console.log(formattedDate)
                 {/* Event Date */}
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Event Date</label>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                       label="Select a date"
                       name="eventDate"
@@ -414,9 +417,94 @@ console.log(formattedDate)
                       onChange={(newDate) => handleDateChange(newDate)}
                       // shouldDisableDate={shouldDisableDate}
                       renderInput={(params) => <TextField {...params} />}
+                      renderDay={(day, selectedDates, pickersDayProps) => {
+                        
+                        const isDisabled = shouldDisableDate(day); // Check if date is disabled
+      
+                        return (
+                          <Box
+                            {...pickersDayProps}
+                            sx={{
+                              width: '36px',    // Define a fixed width for each day
+                              height: '36px',   // Define a fixed height for each day
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontWeight: isDisabled ? 'normal' : 'bold',
+                              color: isDisabled ? '#ff0000' : '#000', // Gray for disabled, black for enabled
+                              margin: '2px',    // Add a small margin to separate each day
+                            }}
+                          >
+                            <Typography>{day.getDate()}</Typography>
+                          </Box>
+                        );
+                      }}
                     />
-                  </LocalizationProvider>
+                  </LocalizationProvider> */}
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="Select a date"
+        value={selectedDate}
+        onChange={handleDateChange}
+        shouldDisableDate={shouldDisableDate}
+        renderInput={(params) => <TextField {...params} />}
+        renderDay={(day, selectedDates, pickersDayProps) => {
+          const previousDay = new Date(day);
+          previousDay.setDate(previousDay.getDate() + 1);
+    
+          const isDisabled = shouldDisableDate(previousDay)
+          return (
+            <Box
+              {...pickersDayProps} // Pass necessary props to Box
+              sx={{
+                width: '36px',
+                height: '36px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: isDisabled ? 'normal' : 'bold',
+                color: isDisabled ? '#b0b0b0' : '#000', // Gray for disabled, black for enabled
+                margin: '2px',
+                backgroundColor: selectedDates.includes(day) ? '#cfe8fc' : 'transparent', // Highlight selected date
+                cursor:  'pointer', // Change cursor if disabled
+              }}
+              onClick={() => handleDateChange(day) } // Handle click only if not disabled
+            >
+              <Typography>{day.getDate()}</Typography>
+            </Box>
+          );
+        }}
+      />
+    </LocalizationProvider>
                 </div>
+                {/* <StaticDatePicker
+                  displayStaticWrapperAs="desktop"
+                  openTo="day"
+                  value={selectedDate}
+                  onChange={(newDate) => setSelectedDate(newDate)}
+                  shouldDisableDate={shouldDisableDate} // Disable specific dates
+                  renderDay={(day, selectedDates, pickersDayProps) => {
+                  const isDisabled = shouldDisableDate(day); // Check if date is disabled
+
+                  return (
+                    <Box
+                      {...pickersDayProps}
+                      sx={{
+                        width: '36px',    // Define a fixed width for each day
+                        height: '36px',   // Define a fixed height for each day
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: isDisabled ? 'normal' : 'bold',
+                        color: isDisabled ? '#b0b0b0' : '#000', // Gray for disabled, black for enabled
+                        margin: '2px',    // Add a small margin to separate each day
+                      }}
+                    >
+                      <Typography>{day.getDate()}</Typography>
+                      </Box>
+      );
+    }}
+  /> */}
 
                 {/* Freelancer Service Dropdown */}
                 <div>
