@@ -15,6 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Slider from "react-slick";
 import Modal from 'react-modal';
+import PricePicker from '@/components/price/PricePicker';
 
 
 export default function page() {
@@ -298,13 +299,17 @@ const showNextImage = () => {
                   <h1 className='text-xl font-bold'>{freelancerData.city}</h1>
                 </div>
 
-                <p className="leading-relaxed min-h-16 md:min-h-32">{freelancerData.aboutYourself}</p>
+                <p className="leading-relaxed min-h-16 md:min-h-16">{freelancerData.aboutYourself}</p>
+                
 
-                <div className="flex flex-col md:flex-row">
+                <div className="flex flex-col mt-2 md:flex-row">
                   <p className='text-sm'> <span className='font-semibold text-3xl'>{minamount} ₹ </span > Starting Price  </p>
                   <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link>
 
 
+                </div>
+                <div className='mb-2'>
+                <PricePicker freelancerData={freelancerData} />
                 </div>
                 <div className="hidden md:block mt-4">
                   {/* Display Freelancer Categories */}
@@ -347,7 +352,7 @@ const showNextImage = () => {
             <div key={index} className=" border-b-2   rounded-lg">
               <div
                 onClick={() => handleAccordionClick(index)}
-                className="flex items-center justify-between cursor-pointer p-4 text-sm font-semibold text-blue-500  rounded-lg"
+                className="flex items-center justify-between cursor-pointer p-4 text-lg font-semibold text-blue-500  rounded-lg"
               >
                 <div>
                   <p className='text-center'>{category.replace(/\b\w/g, (char) => char.toUpperCase())}</p>
@@ -356,31 +361,31 @@ const showNextImage = () => {
               </div>
 
               {openIndex === index && (
-                <div className="p-4 text-white bg-">
+                <div className=" text-white bg-">
                   <div className="flex flex-col items-start">
                     {/* <h2 className="text-xl font-bold text-[#0E2041]">Subcategories:</h2> */}
-                    <div className="flex items-center justify-center flex-wrap gap-2 mb-4">
+                    <div className="flex items-center   flex-wrap  mb-4">
                       {details.subcategories.map((sub, idx) => (
-                        <span key={idx} className=" px-1 rounded text-sm  font-semibold text-black">
+                        <span key={idx} className="  text-lg  font-semibold border-r-2 px-3 text-gray-600">
                           {sub.replace(/\b\w/g, (char) => char.toUpperCase())}
                         </span>
                       ))}
                     </div>
 
                     {details.cameraDetails && (
-                      <div className="mb-4 flex flex-col mx-auto items-center justify-center">
-                        <h3 className="text-lg text-center font-serife font-bold text-yellow-600">
+                      <div className="mb-4 flex items-center justify-center mx-auto   flex-col   ">
+                        <h3 className="text-xl my-2 text-center   font-serife font-bold text-blue-600">
                           {category === 'Photography' || category === 'Videography' || category === 'Candid Photography' || category === 'Cinematography' ? 'Camera Details' :
                             category === 'Drone' ? 'Drone Details' :
                               category === 'Video Editing' ? 'Video Editing Software' : ''}
                         </h3>
-                        <div className="text-sm flex flex-wrap items-center justify-center  text-[#0E2041]">
+                        <div className="text-sm flex flex-wrap gap-x-5 items-center justify-center  text-[#0E2041]">
                           {Object.entries(details.cameraDetails).map(([key, value]) => (
                             <div className=''>
 
-                              <p key={key} className="font-bold px-1">
-                                <span className='font-bold'>{key.replace(/\b\w/g, (char) => char.toUpperCase())}:</span>
-                                <span className='font-medium'>{value}</span>
+                              <p key={key} className="font-bold  px-1">
+                                <span className='font-bold text-xl text-gray-700'>{key.replace(/\b\w/g, (char) => char.toUpperCase())} : </span>
+                                <span className='font-medium text-xl text-gray-600'>{value}</span>
                               </p>
                             </div>
 
@@ -389,40 +394,7 @@ const showNextImage = () => {
                       </div>
                     )}
 
-                    {details.price && (
-                      <div className="mb-4 flex flex-col mx-auto items-center justify-center">
-                        <h3 className="text-lg text-center font-bold text-yellow-600">Price</h3>
-                        <div className="text-sm flex flex-wrap  items-center justify-center  text-[#0E2041]">
-                          {Object.entries(details.price).map(([key, value]) => (
-                            <div className=''>
-
-                              <p key={key} className="font-bold px-1">
-                                <span className='font-bold'>{key.replace(/\b\w/g, (char) => char.toUpperCase())}:</span>
-                                <span className='font-medium'>{value}</span>
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {details.weddingPrice && (
-                      <div className="mb-4 flex flex-col mx-auto items-center justify-center">
-                        <h3 className="text-lg text-center font-bold text-yellow-600">Wedding Price</h3>
-                        <div className="text-sm flex flex-wrap items-center justify-center  text-[#0E2041]">
-                          {Object.entries(details.weddingPrice).map(([key, value]) => (
-                            <div className=''>
-
-                              <p key={key} className="font-bold px-1">
-                                <span className='font-bold'>{key.replace(/\b\w/g, (char) => char.toUpperCase())}:</span>
-                                <span className='font-medium'>{value}</span>
-                              </p>
-                            </div>
-                          ))}
-
-                        </div>
-                      </div>
-                    )}
+                    
                   </div>
                 </div>
               )}
