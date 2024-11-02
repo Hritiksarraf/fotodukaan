@@ -10,12 +10,12 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextField } from '@mui/material';
 import { format } from 'date-fns';
-import { Typography} from '@mui/material'
+import { Typography } from '@mui/material'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 
 
 export default function OrderForm() {
-    const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1);
   const { id } = useParams();
   const [freelancerData, setFreelancerData] = useState({});
   const [orderData, setOrderData] = useState({
@@ -29,7 +29,7 @@ export default function OrderForm() {
     eventDate: '',
     couponCode: '',
     time: '',
-    event:''
+    event: ''
   });
 
   const [loading, setLoading] = useState(true);
@@ -40,27 +40,27 @@ export default function OrderForm() {
   const [userData, setUserData] = useState({});
   const [couponMessage, setCouponMessage] = useState('');
   const [isCouponValid, setIsCouponValid] = useState(false);
-  const [events,setEvents]=useState([]);
+  const [events, setEvents] = useState([]);
   const [isRefundPolicyAccepted, setIsRefundPolicyAccepted] = useState(false);
-  const [time,setTime]=useState([])
+  const [time, setTime] = useState([])
   const [selectedDate, setSelectedDate] = useState(null);
-  const [blockedDates,setBlockedDates] = useState([]);
-  useEffect(()=>{
-    console.log("id",id)
-      getBlockedDates(id)
-      // console.log(blockedDates)
-  },[])
-  const getBlockedDates=async(Id)=>{
-    const data = await fetch(`/api/dates/${Id}`,{
+  const [blockedDates, setBlockedDates] = useState([]);
+  useEffect(() => {
+    console.log("id", id)
+    getBlockedDates(id)
+    // console.log(blockedDates)
+  }, [])
+  const getBlockedDates = async (Id) => {
+    const data = await fetch(`/api/dates/${Id}`, {
       method: 'GET',
-      headers:{
+      headers: {
         'Content-Type': 'application/json',
       }
     })
     const blockedDates2 = await data.json();
-    console.log("f",blockedDates2)
+    console.log("f", blockedDates2)
     const blockedDates1 = []
-    blockedDates2.map((ele)=>blockedDates1.push(ele?.date||""))
+    blockedDates2.map((ele) => blockedDates1.push(ele?.date || ""))
     console.log(blockedDates1)
     const formattedDates = blockedDates1.map(date => {
       const d = new Date(date);
@@ -89,7 +89,7 @@ export default function OrderForm() {
       getFreelancer();
     }
   }, [id]);
-  
+
   // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -99,29 +99,29 @@ export default function OrderForm() {
       const eventsdata = freelancerData?.freelancerDetails[value]?.subcategories || [];
       setEvents(eventsdata);
       console.log("Subcategories for selected service:", eventsdata);
-      setOrderData((prevData) => ({ ...prevData, eventType: value, time: '',event: '' })); 
+      setOrderData((prevData) => ({ ...prevData, eventType: value, time: '', event: '' }));
       setTime([])
       setTokenAmount(0);
       setOriginalTokenAmount(0);
       if (freelancerData?.freelancerDetails[value]?.price) {
-      const availableTimes = [];
-      if (freelancerData?.freelancerDetails[value]?.price?.fullDayPrice !== '') {
-        availableTimes.push('fullDay');
+        const availableTimes = [];
+        if (freelancerData?.freelancerDetails[value]?.price?.fullDayPrice !== '') {
+          availableTimes.push('fullDay');
+        }
+        if (freelancerData?.freelancerDetails[value]?.price?.halfDayPrice !== '') {
+          availableTimes.push('halfDay');
+        }
+        setTime(availableTimes); // Update the time state with available options
       }
-      if (freelancerData?.freelancerDetails[value]?.price?.halfDayPrice !== '') {
-        availableTimes.push('halfDay');
-      }
-      setTime(availableTimes); // Update the time state with available options
     }
-    }
-    if(name==='event'){
-      setOrderData((prevData) => ({ ...prevData,time: '' })); 
+    if (name === 'event') {
+      setOrderData((prevData) => ({ ...prevData, time: '' }));
       setTokenAmount(0);
       setOriginalTokenAmount(0);
     }
     if (name === 'time') {
       setOrderData((prevData) => ({ ...prevData, time: value }));
-    
+
       // Update token amount based on selected event and time
       if (orderData.event === 'Wedding') {
         if (value === 'halfDay') {
@@ -160,15 +160,17 @@ export default function OrderForm() {
       setCouponMessage('Invalid coupon code.');
     }
   };
+
+  
   const shouldDisableDate = (date) => {
     if (!date || !(date instanceof Date)) {
       return false; // If date is null or not a Date object, do not disable
     }
     const formattedDate = date.toISOString().split('T')[0]; // Format date to 'YYYY-MM-DD'
     // console.log("f",formattedDate)
-    return blockedDates.includes(formattedDate)||date<new Date();
+    return blockedDates.includes(formattedDate) || date < new Date();
   };
- 
+
   const handleDateChange = (newDate) => {
     if (newDate) { // Check if newDate is not null
       const formattedNewDate = newDate.toISOString().split('T')[0]; // Format selected date
@@ -176,17 +178,17 @@ export default function OrderForm() {
       // Create a new date object for the next day
       const nextDay = new Date(newDate);
       nextDay.setDate(nextDay.getDate() + 1); // Increment day by 1
-      console.log("nxt",nextDay)
+      console.log("nxt", nextDay)
       // Check if the selected next day is blocked
       if (shouldDisableDate(nextDay)) {
         setSelectedDate(null); // Clear the selected date
         alert(`The date ${nextDay.toISOString().split('T')[0]} is already booked. Please select another date.`);
-      nextDay.setDate(nextDay.getDate() - 1); // Increment day by 1
+        nextDay.setDate(nextDay.getDate() - 1); // Increment day by 1
         return
-        
+
 
       } else {
-        console.log("A",newDate)
+        console.log("A", newDate)
         setSelectedDate(newDate);
         // console.log(`Selected date: ${formattedNewDate}`);
       }
@@ -194,7 +196,7 @@ export default function OrderForm() {
       setSelectedDate(null); // Handle case when date is cleared
     }
   };
-  
+
   const getUser = async () => {
     if (localUser) {
       const response = await fetch(`/api/freelancer/${localUser.userid}`);
@@ -222,70 +224,70 @@ export default function OrderForm() {
     if (!isRefundPolicyAccepted) {
       alert('You must accept the refund policy to proceed.');
       return;
-  }
+    }
     const userid = userData._id;
     const freelancerid = freelancerData._id;
-    const discount= originalTokenAmount - tokenAmount
+    const discount = originalTokenAmount - tokenAmount
 
-console.log('i am here')
-console.log("s",selectedDate)
-if(selectedDate==null){
-  alert('please select a valid date ')
-  return
-}
-const date = new Date(selectedDate);
-console.log("ff",date)
-if(blockedDates.includes(date)){
-  date.setDate(date.getDate() + 1); 
-  alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
-}else{
-  date.setDate(date.getDate() + 1); 
-  console.log("date",date)
-const formattedDate = date.toISOString().split('T')[0];
-console.log(formattedDate)
-    const orderDetails = {
-      name: orderData.customerName,
-      email: localUser?.email || '', // Assuming email is fetched from user token
-      phone: orderData.mobileNumber,
-      pinCode: orderData.pincode,
-      address: orderData.address,
-      city: orderData.selectedCity,
-      date: formattedDate,
-      paidAmount: tokenAmount,
-      totalAmount: originalTokenAmount,
-      discount: discount,
-      service: orderData.selectedService,
-      event: orderData.event,
-      additionalDetails: [],
-      userid,
-      freelancerid,
-      time: orderData.time,
-      isPolicyAccepted:isRefundPolicyAccepted
-    };
-
-    console.log(orderDetails)
-
-    try {
-      const response = await fetch('/api/order/new', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderDetails),
-      });
-      console.log('i am here3')
-      const result = await response.json();
-      if (response.ok) {
-        alert('Order placed successfully');
-        // Redirect or take other action
-      } else {
-        alert('Error placing order: ' + result.message);
-      }
-    } catch (error) {
-      console.error('Error placing order:', error);
-      alert('Something went wrong. Please try again later.');
+    console.log('i am here')
+    console.log("s", selectedDate)
+    if (selectedDate == null) {
+      alert('please select a valid date ')
+      return
     }
-  }
+    const date = new Date(selectedDate);
+    console.log("ff", date)
+    if (blockedDates.includes(date)) {
+      date.setDate(date.getDate() + 1);
+      alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
+    } else {
+      date.setDate(date.getDate() + 1);
+      console.log("date", date)
+      const formattedDate = date.toISOString().split('T')[0];
+      console.log(formattedDate)
+      const orderDetails = {
+        name: orderData.customerName,
+        email: localUser?.email || '', // Assuming email is fetched from user token
+        phone: orderData.mobileNumber,
+        pinCode: orderData.pincode,
+        address: orderData.address,
+        city: orderData.selectedCity,
+        date: formattedDate,
+        paidAmount: tokenAmount,
+        totalAmount: originalTokenAmount,
+        discount: discount,
+        service: orderData.selectedService,
+        event: orderData.event,
+        additionalDetails: [],
+        userid,
+        freelancerid,
+        time: orderData.time,
+        isPolicyAccepted: isRefundPolicyAccepted
+      };
+
+      console.log(orderDetails)
+
+      try {
+        const response = await fetch('/api/order/new', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderDetails),
+        });
+        console.log('i am here3')
+        const result = await response.json();
+        if (response.ok) {
+          alert('Order placed successfully');
+          // Redirect or take other action
+        } else {
+          alert('Error placing order: ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error placing order:', error);
+        alert('Something went wrong. Please try again later.');
+      }
+    }
   };
 
   const handleNext = () => {
@@ -319,7 +321,52 @@ console.log(formattedDate)
             {/* Step 1 - Basic Details */}
             {step === 1 && (
               <>
+
+                {/* Event Date */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2 text-gray-700">Event Date</label>
+                  
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      label="Select a date"
+                      value={selectedDate}
+                      onChange={handleDateChange}
+                      shouldDisableDate={shouldDisableDate}
+                      renderInput={(params) => <TextField {...params} />}
+                      renderDay={(day, selectedDates, pickersDayProps) => {
+                        const previousDay = new Date(day);
+                        previousDay.setDate(previousDay.getDate() + 1);
+
+                        const isDisabled = shouldDisableDate(previousDay)
+                        return (
+                          <Box
+                            {...pickersDayProps} // Pass necessary props to Box
+                            sx={{
+                              width: '36px',
+                              height: '36px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontWeight: isDisabled ? 'normal' : 'bold',
+                              color: isDisabled ? 'red' : '#000', // Gray for disabled, black for enabled
+                              margin: '2px',
+                              backgroundColor: selectedDates.includes(day) ? '#cfe8fc' : 'transparent', // Highlight selected date
+                              cursor: 'pointer', // Change cursor if disabled
+                            }}
+                            onClick={() => handleDateChange(day)} // Handle click only if not disabled
+                          >
+                            <Typography>{day.getDate()}</Typography>
+                          </Box>
+                        );
+                      }}
+                    />
+                  </LocalizationProvider>
+                </div>
+
+
                 {/* Customer Name */}
+
+
                 <div>
                   <label className="block text-sm font-semibold mb-2  text-gray-700">Customer Name</label>
                   <input
@@ -405,78 +452,7 @@ console.log(formattedDate)
             {/* Step 2 - Additional Details */}
             {step === 2 && (
               <>
-                {/* Event Date */}
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">Event Date</label>
-                  {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      label="Select a date"
-                      name="eventDate"
-                      value={selectedDate}
-                      minDate={new Date()}
-                      onChange={(newDate) => handleDateChange(newDate)}
-                      // shouldDisableDate={shouldDisableDate}
-                      renderInput={(params) => <TextField {...params} />}
-                      renderDay={(day, selectedDates, pickersDayProps) => {
-                        
-                        const isDisabled = shouldDisableDate(day); // Check if date is disabled
-      
-                        return (
-                          <Box
-                            {...pickersDayProps}
-                            sx={{
-                              width: '36px',    // Define a fixed width for each day
-                              height: '36px',   // Define a fixed height for each day
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontWeight: isDisabled ? 'normal' : 'bold',
-                              color: isDisabled ? '#ff0000' : '#000', // Gray for disabled, black for enabled
-                              margin: '2px',    // Add a small margin to separate each day
-                            }}
-                          >
-                            <Typography>{day.getDate()}</Typography>
-                          </Box>
-                        );
-                      }}
-                    />
-                  </LocalizationProvider> */}
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <DatePicker
-        label="Select a date"
-        value={selectedDate}
-        onChange={handleDateChange}
-        shouldDisableDate={shouldDisableDate}
-        renderInput={(params) => <TextField {...params} />}
-        renderDay={(day, selectedDates, pickersDayProps) => {
-          const previousDay = new Date(day);
-          previousDay.setDate(previousDay.getDate() + 1);
-    
-          const isDisabled = shouldDisableDate(previousDay)
-          return (
-            <Box
-              {...pickersDayProps} // Pass necessary props to Box
-              sx={{
-                width: '36px',
-                height: '36px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: isDisabled ? 'normal' : 'bold',
-                color: isDisabled ? '#b0b0b0' : '#000', // Gray for disabled, black for enabled
-                margin: '2px',
-                backgroundColor: selectedDates.includes(day) ? '#cfe8fc' : 'transparent', // Highlight selected date
-                cursor:  'pointer', // Change cursor if disabled
-              }}
-              onClick={() => handleDateChange(day) } // Handle click only if not disabled
-            >
-              <Typography>{day.getDate()}</Typography>
-            </Box>
-          );
-        }}
-      />
-    </LocalizationProvider>
-                </div>
+                
                 {/* <StaticDatePicker
                   displayStaticWrapperAs="desktop"
                   openTo="day"
@@ -532,7 +508,7 @@ console.log(formattedDate)
                   <select
                     name="event"
                     value={orderData.event}
-                    onChange={handleInputChange} 
+                    onChange={handleInputChange}
                     className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   >
@@ -545,7 +521,7 @@ console.log(formattedDate)
                   </select>
                 </div>
 
-                
+
                 {/* Time Selector */}
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Time</label>
@@ -557,7 +533,7 @@ console.log(formattedDate)
                     required
                   >
                     <option value="">Select the time</option>
-                    {time.map((time) =>(
+                    {time.map((time) => (
                       <option key={time} value={time}>
                         {time}
                       </option>
@@ -593,18 +569,18 @@ console.log(formattedDate)
                 </div>
                 {/* Refund Policy Checkbox */}
                 <div className="flex items-center mb-4">
-                    <input
-                        type="checkbox"
-                        id="refundPolicy"
-                        checked={isRefundPolicyAccepted}
-                        onChange={(e) => setIsRefundPolicyAccepted(e.target.checked)}
-                        className="mr-2"
-                        required // Optionally make it required
-                    />
-                    <label htmlFor="refundPolicy" className="text-sm text-gray-700">
-                        I accept the <a href="https://example.com/refund-policy" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund policy</a>
-                    </label>
-                  </div>
+                  <input
+                    type="checkbox"
+                    id="refundPolicy"
+                    checked={isRefundPolicyAccepted}
+                    onChange={(e) => setIsRefundPolicyAccepted(e.target.checked)}
+                    className="mr-2"
+                    required // Optionally make it required
+                  />
+                  <label htmlFor="refundPolicy" className="text-sm text-gray-700">
+                    I accept the <a href="https://example.com/refund-policy" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund policy</a>
+                  </label>
+                </div>
 
                 {/* Amount to be Paid */}
                 <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p>
@@ -631,7 +607,7 @@ console.log(formattedDate)
         </div>
       </div>
     </div>
-  
-  
+
+
   );
 }

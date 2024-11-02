@@ -230,25 +230,34 @@ function OrdersPage() {
 
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Service Type</h2>
-                            <h1 className='text-xl font-bold'>{order.service} - {order.event} - {order.time}</h1>
+                            <h1 className='text-xl font-bold'>{order.service} - {order.event}</h1>
+                          </div>
+                          <div>
+                            <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Service Duration</h2>
+                            <h1 className='text-xl font-bold'>{order.time}</h1>
                           </div>
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Amount</h2>
-                            <h1 className='text-xl font-bold'> <span className='font-normal'> Paid Amount</span> - ₹{order.paidAmount}</h1>
-                            <h1 className='text-xl font-bold'> <span className='font-normal'>discount Amount</span> - ₹{order.discount}</h1>
-                            <h1 className='text-xl font-bold'> <span className='font-normal text-lg'>Amount you will get after completion of work </span> - ₹{(order.totalAmount - order.discount - order.paidAmount).toFixed(2)}</h1>
+                            
+                            <h1 className='text-xl font-bold'> <span className='font-bold text-lg'>Amount you will get after completion of work </span> - ₹{(order.totalAmount - order.discount - order.paidAmount).toFixed(2)}</h1>
                           </div>
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Work Started?</h2>
-                            <h1 className='text-xl font-bold'> <span className='font-normal'> </span> {order.freelancerAproved ? (<span className='text-green-600'>Yes</span>) : (<span className='text-red-500'>No</span>)}</h1>
+                            <h1 className='text-xl font-bold'> <span className='font-normal'> </span> {order.freelancerAproved ? (<div>
+                              <span className='text-green-600'>Yes</span>
 
+                              <button onClick={(e) => sendOTP(e, order._id,order.customerPhone)} className="flex mt-4 mr-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
+                            SEND OTP To Start Work
+                          </button>
+                              </div>
+                          ) : (<span className='text-red-500'>No</span>)}</h1>
                           </div>
 
                           {!order.freelancerAproved && <div className='flex gap-2 justify-between'>
 
-                          <button onClick={(e) => sendOTP(e, order._id,order.customerPhone)} className="flex mt-4 mr-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
+                         {!order.freelancerAproved && <button onClick={(e) => sendOTP(e, order._id,order.customerPhone)} className="flex mt-4 mr-auto text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">
                             SEND OTP To Start Work
-                          </button>
+                          </button>}
                           <button href={`/`} className="flex mt-4 mr-auto text-white bg-red-500 items-center  border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Cancel</button>
                           
                           </div>}

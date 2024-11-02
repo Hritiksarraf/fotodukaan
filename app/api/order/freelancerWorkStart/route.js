@@ -26,6 +26,7 @@ export const POST = async (req) => {
     const orders = await Order.findById(orderIds);
 
     orders.freelancerAproved=true;
+    orders.additionalDetails = { amountPaid: false };
     await orders.save();
 
 

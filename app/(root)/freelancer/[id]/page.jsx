@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 import Slider from "react-slick";
 import Modal from 'react-modal';
 import PricePicker from '@/components/price/PricePicker';
+import ReviewSection from '@/components/review/ReviewSection'
 
 
 export default function page() {
@@ -25,6 +26,24 @@ export default function page() {
     freelancerDetails: {}
   });
   const [readMore, setReadMore] = useState(true)
+  const [userName, setUserName] = useState('');
+  const [userReview, setUserReview] = useState('');
+  const [userRating, setUserRating] = useState(5);
+
+  const handleSubmitReview = () => {
+    // Submit the review data (userName, userReview, userRating) to your backend or state management
+    console.log({
+      name: userName,
+      review: userReview,
+      rating: userRating,
+    });
+    setIsReviewModalOpen(false);
+    setUserName('');
+    setUserReview('');
+    setUserRating(5);
+  };
+
+  
 
 
   //review section start here
@@ -116,6 +135,10 @@ export default function page() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+
 
   const handleReadMoreClick = (review) => {
     setSelectedReview(review);
@@ -308,16 +331,16 @@ const showNextImage = () => {
 
 
                 </div>
-                <div className='mb-2'>
+                <div className='my-5'>
                 <PricePicker freelancerData={freelancerData} />
                 </div>
-                <div className="hidden md:block mt-4">
-                  {/* Display Freelancer Categories */}
+                {/* <div className="hidden md:block mt-4">
+                  
                   <h3 className="text-lg  font-bold mb-2">Categories</h3>
                   <div className='flex gap-4 flex-wrap'>
                     {displayCategories(freelancerData.freelancerDetails)}
                   </div>
-                </div>
+                </div> */}
               </div>
 
             </div>
@@ -473,7 +496,7 @@ const showNextImage = () => {
         <h2 className='text-center text-3xl  text-blue-500 font-bold mb-6'>Video Gallery</h2>
         <div className='flex flex-wrap  '>
           {freelancerData.video?.map((videoLink, index) => (
-            <div key={index} className=' mx-auto md:mx-0 md:w-[20vw] w-[85vw] p-4'>
+            <div key={index} className=' mx-auto md:mx-0 md:w-[20vw] w-[93vw] p-4'>
               <div className='relative' style={{ paddingBottom: '70%' }}>
                 <iframe
                   className='absolute top-0 left-0 w-full h-full rounded-xl'
@@ -489,12 +512,17 @@ const showNextImage = () => {
         </div>
       </section>}
 
-      <section className='mt-20'>
-        <div className='bg-gradient-to-r from-blue-100 to-blue-300'>
-          <div className='text-center text-3xl lg:text-9xl'>
-            <h3 className='text-center py-5 text-[18px] lg:text-6xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
-              Testimonial
+      <section>
+        {/* <ReviewSection/> */}
+      </section>
+
+      <section className=' px-auto md:pr-[25vw] md:pl-[15vw] w-[100vw]'>
+        <div className='bg-gradient-to-r from-white to-white'>
+          <div className=' text-3xl px-5  '>
+            <h3 className='py-5 text-2xl lg:text-4xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
+              Review and Rating
             </h3>
+            <p className='text-lg text-gray-600 '> 5.0 | 30 review</p>
           </div>
           <div className=''>
             <Slider {...settings}>
@@ -507,14 +535,11 @@ const showNextImage = () => {
 
                 return (
                   <>
-                    <div key={id} className='relative md:w-[30vw] mx-auto bg-gradient-to-r h-[21rem] md:h-80 from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                      <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
+                    <div key={id} className='relative w-[90vw] md:w-[18vw] mx-auto bg-gradient-to-r h-[21rem] md:h-full from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
+                    {/* <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
                         <img src={img} alt="" className='rounded-full h-24 w-24' />
-                      </div>
-                      <div className='flex flex-col items-center text-center mt-10'>
-                        <p className='text-sm h-28 md:h-20 text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
-
-                        <div className='h-5 flex'>
+                      </div> */}
+                      <div className='h-5 flex items-end '>
                           {Array(5).fill(0).map((_, index) => (
                             index < star ? (
                               <StarIcon key={index} size="small" className="text-yellow-500" />
@@ -522,10 +547,22 @@ const showNextImage = () => {
                               <StarBorderIcon key={index} size="small" className="text-yellow-500" />
                             )
                           ))}
+                          <p className='text-[0.6rem] px-2'>2/11/2024</p>
                         </div>
+                        <div>
+                          <p className='my-3 font-bold text-xl '>Excellent</p>
+                        </div>
+                      <div className='flex flex-col items-center mt-5'>
+                        <p className='text-sm h-28 md:h-20  text-gray-500'>{truncatedText} {text.split(' ').length > 18 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
 
-                        <p className='text-xl font-bold my-4'>{name}</p>
-                        <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p>
+                        {/* <p className='text-xl font-bold my-4'>{name}</p> */}
+                        {/* <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p> */}
+                      </div>
+                      <div className='flex py-5 items-center gap-x-4'>
+                      <div className='block w-10 h-10 rounded-full '>
+                        <img src={img} alt="" className='rounded-full h-10 w-10 object-cover' />
+                      </div>
+                      <p className='text-xl font-bold my-4'>{name}</p>
                       </div>
                     </div>
                   </>
@@ -539,7 +576,7 @@ const showNextImage = () => {
         {selectedReview && (
           <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customModalStyles} contentLabel="Review Modal">
             <div className="text-center">
-              <img src={selectedReview.img} alt={selectedReview.name} className="rounded-full w-24 h-24 mx-auto mb-4" />
+              <img src={selectedReview.img} alt={selectedReview.name} className="rounded-full  md:w-24 h-24 mx-auto mb-4 object-cover" />
               <h2 className="text-2xl font-bold mb-2">{selectedReview.name}</h2>
               <div className="flex justify-center mb-4">
                 {Array(5)
@@ -562,7 +599,82 @@ const showNextImage = () => {
             </div>
           </Modal>
         )}
+
+<section className="my-5 mx-5 border-y-2">
+      <h1 className="text-2xl py-2 font-bold">Write a review</h1>
+      <div
+        className="my-2 cursor-pointer"
+        onClick={() => {
+          setIsReviewModalOpen(true);
+        }}
+      >
+        <div className="flex gap-x-5 items-center text-2xl">
+          <Rating name="half-rating" defaultValue={5} precision={1} />
+          <p className="cursor-pointer"> {`>`} </p>
+        </div>
+      </div>
+
+      {/* Modal for writing a review */}
+      <Modal
+        isOpen={isReviewModalOpen}
+        onRequestClose={() => {
+          setIsReviewModalOpen(false);
+        }}
+        style={customModalStyles}
+        contentLabel="Review Modal"
+      >
+        <div className="text-center p-4">
+          <h2 className="text-2xl font-bold mb-4">Submit Your Review</h2>
+          
+          {/* Input for Name */}
+          <input
+            type="text"
+            placeholder="Your Name"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            className="w-full mb-4 p-2 border rounded-lg"
+          />
+
+          {/* Text Area for Review */}
+          <textarea
+            placeholder="Write your review here..."
+            value={userReview}
+            onChange={(e) => setUserReview(e.target.value)}
+            className="w-full mb-4 p-2 border rounded-lg"
+            rows="4"
+          />
+
+          {/* Star Rating Selection */}
+          <div className="mb-4">
+            <p className="text-lg mb-2">Rating:</p>
+            <Rating
+              name="user-rating"
+              value={userRating}
+              precision={1}
+              onChange={(e, newValue) => setUserRating(newValue)}
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            onClick={handleSubmitReview}
+            className="mt-4 bg-blue-500 text-white py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition duration-200"
+          >
+            Submit Review
+          </button>
+
+          {/* Close Button */}
+          <button
+            onClick={() => setIsReviewModalOpen(false)}
+            className="mt-2 bg-red-500 mx-2 py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200 text-white hover:text-gray-700"
+          >
+            Cancel
+          </button>
+        </div>
+      </Modal>
+    </section>
       </section>
+      
 
 
 

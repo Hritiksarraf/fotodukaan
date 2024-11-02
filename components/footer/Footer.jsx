@@ -59,9 +59,9 @@ export default function Footer() {
                             <ul className="text-gray-400  font-medium">
                                 <li className="mb-4 flex items-center">
 
-                                    <a href="https://www.instagram.com/fotodukaan?utm_source=qr&igsh=MW9teGpocXNlY2NyNQ%3D%3D" target="_blank" className="hover:underline text-2xl  flex items-center -mx-2 hover:text-red-600 ">
+                                    <a href="https://www.instagram.com/fotodukaan?utm_source=qr&igsh=MW9teGpocXNlY2NyNQ%3D%3D" target="_blank" className="hover:underline text-lg  flex items-center -mx-2 hover:text-red-600 ">
                                         <div className="inline mr-2 pb-2">
-                                            <InstagramIcon className="text-4xl mx" />
+                                            <InstagramIcon className="text-2xl mx" />
                                         </div>
                                         <span className="mb-2 ">
                                             Instagram
@@ -70,9 +70,9 @@ export default function Footer() {
                                 </li>
                                 <li className="mb-4 flex items-center">
 
-                                    <a href="https://www.facebook.com/fotodukaan/" target="_blank" className="hover:underline text-2xl  flex items-center -mx-2 hover:text-red-600 ">
+                                    <a href="https://www.facebook.com/fotodukaan/" target="_blank" className="hover:underline text-lg  flex items-center -mx-2 hover:text-red-600 ">
                                         <div className="inline mr-2 pb-2">
-                                            <FacebookIcon className="text-4xl mx" />
+                                            <FacebookIcon className="text-2xl mx" />
                                         </div>
                                         <span className="mb-2 ">
                                             Facebook
@@ -81,9 +81,9 @@ export default function Footer() {
                                 </li>
                                 <li className="mb-4 flex items-center">
 
-                                    <a href="#" target="_blank" className="hover:underline text-2xl  flex items-center -mx-2 hover:text-red-600 ">
+                                    <a href="#" target="_blank" className="hover:underline text-lg  flex items-center -mx-2 hover:text-red-600 ">
                                         <div className="inline mr-2 pb-2">
-                                            <YouTubeIcon className="text-4xl mx" />
+                                            <YouTubeIcon className="text-2xl mx" />
                                         </div>
                                         <span className="mb-2 ">
                                             YouTube
