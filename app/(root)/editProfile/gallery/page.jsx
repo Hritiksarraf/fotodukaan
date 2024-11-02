@@ -48,33 +48,50 @@ export default function Page() {
         }
     }, []);
 
+    const handleFileChange = (e) => {
+        const files = Array.from(e.target.files);
+        const validFiles = files.filter(file => file.size <= 2 * 1024 * 1024); // 2MB size limit
+
+        if (files.length > 10) {
+            alert("Please select no more than 10 images.");
+        } else if (files.some(file => file.size > 2 * 1024 * 1024)) {
+            alert("Each image must be less than 2MB.");
+        } else {
+            setSelectedFile(validFiles);
+        }
+    };
+
     const handleUpload = async () => {
-        if (!selectedFile) return;
-
+        if (!selectedFile || selectedFile.length === 0) return;
+    
         setUploading(true);
-        let uploadedImageUrl = "";
-
-        // Step 1: Upload to Cloudinary
-        if (selectedFile) {
+        let uploadedImageUrls = [];
+    
+        // Step 1: Upload each file to Cloudinary
+        for (const file of selectedFile) {
             const imgData = new FormData();
-            imgData.append("file", selectedFile);
+            imgData.append("file", file);
             imgData.append("upload_preset", "social");
             imgData.append("cloud_name", "hritiksarraf");
-
-            const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
-                method: "POST",
-                body: imgData,
-            });
-
-            if (imgResponse.ok) {
-                const imgResult = await imgResponse.json();
-                uploadedImageUrl = imgResult.url; // Get the URL from Cloudinary response
-            } else {
-                throw new Error("Image upload failed");
+    
+            try {
+                const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
+                    method: "POST",
+                    body: imgData,
+                });
+    
+                if (imgResponse.ok) {
+                    const imgResult = await imgResponse.json();
+                    uploadedImageUrls.push(imgResult.url); // Add each uploaded URL to the array
+                } else {
+                    throw new Error("Image upload failed");
+                }
+            } catch (error) {
+                console.error("Error uploading image:", error);
             }
         }
-
-        // Step 2: Add new image URL to freelancer's image array and update backend
+    
+        // Step 2: Add new image URLs to freelancer's image array and update backend
         try {
             const response = await fetch('/api/freelancer/updateImage', {
                 method: 'POST',
@@ -83,19 +100,19 @@ export default function Page() {
                 },
                 body: JSON.stringify({
                     userId: localUser.userid,
-                    newImage: uploadedImageUrl // Send the new image URL
+                    newImages: uploadedImageUrls // Send the array of image URLs
                 }),
             });
-
+    
             if (response.ok) {
                 const result = await response.json();
                 setFreelancerData((prev) => ({
                     ...prev,
                     image: result.updatedImages // Update the images array in state
                 }));
-                setSelectedFile(null)
+                setSelectedFile(null);
             } else {
-                console.error("Failed to add image to the array");
+                console.error("Failed to add images to the array");
             }
         } catch (error) {
             console.error("Error updating image array: ", error);
@@ -103,7 +120,7 @@ export default function Page() {
             setUploading(false);
         }
     };
-
+    
     const handleDelete = async () => {
         if (!imageToDelete) return;
 
@@ -227,11 +244,11 @@ export default function Page() {
 
             <label
             htmlFor="photo"
-            className="flex gap-4 items-center text-light-1 cursor-pointer"
+            className="flex md:flex-row flex-col gap-4 items-center text-light-1 cursor-pointer"
           >
             {selectedFile ? (
                 <img
-                  src={URL.createObjectURL(selectedFile)}
+                  src={URL.createObjectURL(selectedFile[0])}
                   alt="post"
                   width={250}
                   height={200}
@@ -243,7 +260,8 @@ export default function Page() {
             )}
             <p className=''>Upload a photo</p>
           </label>
-                <input type="file" id="photo" style={{ display: "none" }} onChange={(e) => setSelectedFile(e.target.files[0])} />
+                <input type="file" id="photo" style={{ display: "none" }}  onChange={handleFileChange}
+                        multiple />
                 </div>
                 <button
                     onClick={handleUpload}

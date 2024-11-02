@@ -46,6 +46,7 @@ export default function page() {
   
 
 
+
   //review section start here
   const TestimonialData = [
     {
@@ -274,29 +275,29 @@ export default function page() {
   const openModal = (index) => {
     setCurrentImageIndex(index);
     setIsModalOpen(true);
-};
+  };
 
-const closeModalpic = () => setIsModalOpen(false);
+  const closeModalpic = () => setIsModalOpen(false);
 
-const showPreviousImage = () => {
+  const showPreviousImage = () => {
     setCurrentImageIndex((prevIndex) =>
-        prevIndex > 0 ? prevIndex - 1 : freelancerData.image.length - 1
+      prevIndex > 0 ? prevIndex - 1 : freelancerData.image.length - 1
     );
-};
+  };
 
-const showNextImage = () => {
+  const showNextImage = () => {
     setCurrentImageIndex((prevIndex) =>
-        prevIndex < freelancerData.image.length - 1 ? prevIndex + 1 : 0
+      prevIndex < freelancerData.image.length - 1 ? prevIndex + 1 : 0
     );
-};
+  };
 
 
   return (
     <div className='pt-20 overflow-x-hidden'>
       <section>
         <section className="text-gray-600 body-font overflow-hidden  bg-gradient-to-r from-white to-white">
-          <div className="container lg:w-[75vw] px-4 md:p-10 pt-10 mx-auto  bg-white  ">
-            <div className=" mx-auto px-10 py-5 shadow-2xl md:p-10 flex flex-wrap   ">
+          <div className="container lg:w-[75vw]  md:p-10 pt-10 mx-auto  bg-white  ">
+            <div className=" mx-auto px-5 py-5 shadow-2xl md:p-10 flex flex-wrap   ">
               <img alt="ecommerce" className="lg:w-1/2 aspect-square w-full lg:h-auto h-64 object-cover object-center rounded" src={freelancerData.profilePhoto} />
               <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
                 <h2 className="text-sm title-font text-gray-700 tracking-widest">Freelancer</h2>
@@ -323,7 +324,7 @@ const showNextImage = () => {
                 </div>
 
                 <p className="leading-relaxed min-h-16 md:min-h-16">{freelancerData.aboutYourself}</p>
-                
+
 
                 <div className="flex flex-col mt-2 md:flex-row">
                   <p className='text-sm'> <span className='font-semibold text-3xl'>{minamount} ₹ </span > Starting Price  </p>
@@ -332,7 +333,7 @@ const showNextImage = () => {
 
                 </div>
                 <div className='my-5'>
-                <PricePicker freelancerData={freelancerData} />
+                  <PricePicker freelancerData={freelancerData} />
                 </div>
                 {/* <div className="hidden md:block mt-4">
                   
@@ -396,19 +397,19 @@ const showNextImage = () => {
                     </div>
 
                     {details.cameraDetails && (
-                      <div className="mb-4 flex items-center justify-center mx-auto   flex-col   ">
-                        <h3 className="text-xl my-2 text-center   font-serife font-bold text-blue-600">
+                      <div className="mb-4 flex ml-4 flex-col   ">
+                        <h3 className="text-xl my-2 text-left   font-serife font-bold text-blue-600">
                           {category === 'Photography' || category === 'Videography' || category === 'Candid Photography' || category === 'Cinematography' ? 'Camera Details' :
                             category === 'Drone' ? 'Drone Details' :
                               category === 'Video Editing' ? 'Video Editing Software' : ''}
                         </h3>
-                        <div className="text-sm flex flex-wrap gap-x-5 items-center justify-center  text-[#0E2041]">
+                        <div className="text-sm  gap-x-5 items-left justify-center  text-[#0E2041]">
                           {Object.entries(details.cameraDetails).map(([key, value]) => (
                             <div className=''>
 
                               <p key={key} className="font-bold  px-1">
-                                <span className='font-bold text-xl text-gray-700'>{key.replace(/\b\w/g, (char) => char.toUpperCase())} : </span>
-                                <span className='font-medium text-xl text-gray-600'>{value}</span>
+                                <span className='font-bold text-xl text-violet-900 '>{key.replace(/\b\w/g, (char) => char.toUpperCase())} : </span>
+                                <span className='font-medium text-xl text-emerald-900'>{value}</span>
                               </p>
                             </div>
 
@@ -417,7 +418,7 @@ const showNextImage = () => {
                       </div>
                     )}
 
-                    
+
                   </div>
                 </div>
               )}
@@ -429,70 +430,70 @@ const showNextImage = () => {
       {/* image section */}
 
       <section className='w-[100vw] mx-auto md:pr-[25vw] md:pl-[15vw]'>
-    {freelancerData.image.length > 0 && freelancerData.video.length > 0 && (
-      <h2 className='text-center text-4xl md:text-5xl my-6' style={{ fontFamily: 'Poppins' }}>
-        Glimpses of My Work
-      </h2>
-    )}
+        {freelancerData.image.length > 0 && freelancerData.video.length > 0 && (
+          <h2 className='text-center text-4xl md:text-5xl my-6' style={{ fontFamily: 'Poppins' }}>
+            Glimpses of My Work
+          </h2>
+        )}
 
-    {freelancerData.image.length > 0 && (
-      <>
-        <h2 className='text-center text-3xl text-blue-500 font-bold mb-6'>Image Gallery</h2>
-        <div className='flex flex-wrap'>
-          {freelancerData.image.map((imgSrc, index) => (
-            <img
-              key={index}
-              src={imgSrc}
-              alt={`Freelancer Image ${index + 1}`}
-              onClick={() => openModal(index)} // Pass index here
-              className='md:w-[12vw] mx-auto w-[40vw] object-cover aspect-square my-4 md:mx-4 rounded-xl shadow-lg'
-            />
-          ))}
-        </div>
-
-        {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
-            {/* Close Button */}
-            <button
-              onClick={closeModalpic}
-              className="absolute top-8 right-8 text-white text-5xl font-bold bg-black bg-opacity-70 p-3 rounded-full hover:bg-opacity-90"
-            >
-              &times;
-            </button>
-
-            {/* Image */}
-            <div className="relative max-w-screen-lg flex justify-center items-center">
-              <img
-                src={freelancerData.image[currentImageIndex]}
-                alt={`Gallery ${currentImageIndex + 1}`}
-                className="w-full max-h-[80vh] object-contain"
-              />
+        {freelancerData.image.length > 0 && (
+          <>
+            <h2 className='text-center text-3xl text-blue-500 font-bold mb-6'>Image Gallery</h2>
+            <div className='flex flex-wrap'>
+              {freelancerData.image.map((imgSrc, index) => (
+                <img
+                  key={index}
+                  src={imgSrc}
+                  alt={`Freelancer Image ${index + 1}`}
+                  onClick={() => openModal(index)} // Pass index here
+                  className='md:w-[12vw] mx-auto w-[40vw] object-cover aspect-square my-4 md:mx-4 rounded-xl shadow-lg'
+                />
+              ))}
             </div>
 
-            {/* Navigation Buttons */}
-            <button
-              onClick={showPreviousImage}
-              className="absolute bottom-10 left-4 text-white text-3xl font-bold bg-black bg-opacity-70 p-4 rounded-full hover:bg-opacity-90"
-            >
-              &#9664;
-            </button>
-            <button
-              onClick={showNextImage}
-              className="absolute bottom-10 right-4 text-white text-3xl font-bold bg-black bg-opacity-70 p-4 rounded-full hover:bg-opacity-90"
-            >
-              &#9654;
-            </button>
-          </div>
+            {isModalOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80">
+                {/* Close Button */}
+                <button
+                  onClick={closeModalpic}
+                  className="absolute top-8 right-8 text-white text-5xl font-bold bg-black bg-opacity-70 p-3 rounded-full hover:bg-opacity-90"
+                >
+                  &times;
+                </button>
+
+                {/* Image */}
+                <div className="relative max-w-screen-lg flex justify-center items-center">
+                  <img
+                    src={freelancerData.image[currentImageIndex]}
+                    alt={`Gallery ${currentImageIndex + 1}`}
+                    className="w-full max-h-[80vh] object-contain"
+                  />
+                </div>
+
+                {/* Navigation Buttons */}
+                <button
+                  onClick={showPreviousImage}
+                  className="absolute bottom-10 left-4 text-white text-3xl font-bold bg-black bg-opacity-70 p-4 rounded-full hover:bg-opacity-90"
+                >
+                  &#9664;
+                </button>
+                <button
+                  onClick={showNextImage}
+                  className="absolute bottom-10 right-4 text-white text-3xl font-bold bg-black bg-opacity-70 p-4 rounded-full hover:bg-opacity-90"
+                >
+                  &#9654;
+                </button>
+              </div>
+            )}
+          </>
         )}
-      </>
-    )}
-</section>
+      </section>
 
 
 
 
       {/* Video Section */}
-      {freelancerData.video.length>0 && <section className='mt-10 px-auto md:pr-[25vw] md:pl-[15vw] w-[100vw]'>
+      {freelancerData.video.length > 0 && <section className='mt-10 px-auto md:pr-[25vw] md:pl-[15vw] w-[100vw]'>
         <h2 className='text-center text-3xl  text-blue-500 font-bold mb-6'>Video Gallery</h2>
         <div className='flex flex-wrap  '>
           {freelancerData.video?.map((videoLink, index) => (
@@ -536,22 +537,22 @@ const showNextImage = () => {
                 return (
                   <>
                     <div key={id} className='relative w-[90vw] md:w-[18vw] mx-auto bg-gradient-to-r h-[21rem] md:h-full from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                    {/* <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
+                      {/* <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
                         <img src={img} alt="" className='rounded-full h-24 w-24' />
                       </div> */}
                       <div className='h-5 flex items-end '>
-                          {Array(5).fill(0).map((_, index) => (
-                            index < star ? (
-                              <StarIcon key={index} size="small" className="text-yellow-500" />
-                            ) : (
-                              <StarBorderIcon key={index} size="small" className="text-yellow-500" />
-                            )
-                          ))}
-                          <p className='text-[0.6rem] px-2'>2/11/2024</p>
-                        </div>
-                        <div>
-                          <p className='my-3 font-bold text-xl '>Excellent</p>
-                        </div>
+                        {Array(5).fill(0).map((_, index) => (
+                          index < star ? (
+                            <StarIcon key={index} size="small" className="text-yellow-500" />
+                          ) : (
+                            <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                          )
+                        ))}
+                        <p className='text-[0.6rem] px-2'>2/11/2024</p>
+                      </div>
+                      <div>
+                        <p className='my-3 font-bold text-xl '>Excellent</p>
+                      </div>
                       <div className='flex flex-col items-center mt-5'>
                         <p className='text-sm h-28 md:h-20  text-gray-500'>{truncatedText} {text.split(' ').length > 18 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
 
@@ -559,10 +560,10 @@ const showNextImage = () => {
                         {/* <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p> */}
                       </div>
                       <div className='flex py-5 items-center gap-x-4'>
-                      <div className='block w-10 h-10 rounded-full '>
-                        <img src={img} alt="" className='rounded-full h-10 w-10 object-cover' />
-                      </div>
-                      <p className='text-xl font-bold my-4'>{name}</p>
+                        <div className='block w-10 h-10 rounded-full '>
+                          <img src={img} alt="" className='rounded-full h-10 w-10 object-cover' />
+                        </div>
+                        <p className='text-xl font-bold my-4'>{name}</p>
                       </div>
                     </div>
                   </>
@@ -600,81 +601,98 @@ const showNextImage = () => {
           </Modal>
         )}
 
-<section className="my-5 mx-5 border-y-2">
-      <h1 className="text-2xl py-2 font-bold">Write a review</h1>
-      <div
-        className="my-2 cursor-pointer"
-        onClick={() => {
-          setIsReviewModalOpen(true);
-        }}
-      >
-        <div className="flex gap-x-5 items-center text-2xl">
-          <Rating name="half-rating" defaultValue={5} precision={1} />
-          <p className="cursor-pointer"> {`>`} </p>
-        </div>
-      </div>
+        <section className="my-5 mx-5 border-y-2">
+          <h1 className="text-2xl py-2 font-bold">Write a review</h1>
+          <div
+            className="my-2 cursor-pointer"
+            onClick={() => {
+              setIsReviewModalOpen(true);
+            }}
+          >
+            <div className="flex flex-col md:flex-row md:gap-x-5 gap-3 md:gap-0 md:items-center text-xl">
+              <div className="">
 
-      {/* Modal for writing a review */}
-      <Modal
-        isOpen={isReviewModalOpen}
-        onRequestClose={() => {
-          setIsReviewModalOpen(false);
-        }}
-        style={customModalStyles}
-        contentLabel="Review Modal"
-      >
-        <div className="text-center p-4">
-          <h2 className="text-2xl font-bold mb-4">Submit Your Review</h2>
-          
-          {/* Input for Name */}
-          <input
-            type="text"
-            placeholder="Your Name"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-            className="w-full mb-4 p-2 border rounded-lg"
-          />
-
-          {/* Text Area for Review */}
-          <textarea
-            placeholder="Write your review here..."
-            value={userReview}
-            onChange={(e) => setUserReview(e.target.value)}
-            className="w-full mb-4 p-2 border rounded-lg"
-            rows="4"
-          />
-
-          {/* Star Rating Selection */}
-          <div className="mb-4">
-            <p className="text-lg mb-2">Rating:</p>
-            <Rating
-              name="user-rating"
-              value={userRating}
-              precision={1}
-              onChange={(e, newValue) => setUserRating(newValue)}
-            />
+                <Rating
+                  name="user-rating"
+                  value={userRating}
+                  precision={1}
+                  onChange={(e, newValue) => setUserRating(newValue)}
+                />
+              </div>
+              <textarea
+                placeholder="Write your review here..."
+                value={userReview}
+                onChange={(e) => setUserReview(e.target.value)}
+                className="w-[88vw] md:w-[35vw] p-2 border text-lg rounded-lg"
+                rows="1"
+              />
+              <div className='w-full text-lg '>
+                <button
+                  onClick={() => {
+                    setIsReviewModalOpen(true);
+                  }}
+                  className=" bg-blue-500 text-white text-sm py-3 px-4   rounded-lg hover:bg-blue-600 transition duration-200"
+                >
+                  Submit Review
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Submit Button */}
-          <button
-            onClick={handleSubmitReview}
-            className="mt-4 bg-blue-500 text-white py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition duration-200"
+          {/* Modal for writing a review */}
+          <Modal
+            isOpen={isReviewModalOpen}
+            onRequestClose={() => {
+              setIsReviewModalOpen(false);
+            }}
+            style={customModalStyles}
+            contentLabel="Review Modal"
           >
-            Submit Review
-          </button>
+            <div className="text-center p-4">
+              <h2 className="text-2xl font-bold mb-4">Submit Your Review</h2>
 
-          {/* Close Button */}
-          <button
-            onClick={() => setIsReviewModalOpen(false)}
-            className="mt-2 bg-red-500 mx-2 py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200 text-white hover:text-gray-700"
-          >
-            Cancel
-          </button>
-        </div>
-      </Modal>
-    </section>
+              
+
+              {/* Text Area for Review */}
+              <textarea
+                placeholder="Write your review here..."
+                value={userReview}
+                onChange={(e) => setUserReview(e.target.value)}
+                className="w-full mb-4 p-2 border rounded-lg"
+                rows="4"
+              />
+
+              {/* Star Rating Selection */}
+              <div className="mb-4">
+                <p className="text-lg mb-2">Rating:</p>
+                <Rating
+                  name="user-rating"
+                  value={userRating}
+                  precision={1}
+                  onChange={(e, newValue) => setUserRating(newValue)}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                onClick={handleSubmitReview}
+                className="mt-4 bg-blue-500 text-white py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition duration-200"
+              >
+                Submit Review
+              </button>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setIsReviewModalOpen(false)}
+                className="mt-2 bg-red-500 mx-2 py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200 text-white hover:text-gray-700"
+              >
+                Cancel
+              </button>
+            </div>
+          </Modal>
+        </section>
       </section>
-      
+
 
 
 

@@ -3,10 +3,10 @@ import Freelancer from "@/lib/models/Register";
 
 export async function POST(req) {
     try {
-        const { userId, newImage } = await req.json();
+        const { userId, newImages } = await req.json();
 
-        if (!userId || !newImage) {
-            return new Response(JSON.stringify({ message: "Missing userId or newImage" }), { status: 400 });
+        if (!userId || !Array.isArray(newImages) || newImages.length === 0) {
+            return new Response(JSON.stringify({ message: "Missing userId or newImages" }), { status: 400 });
         }
 
         // Connect to the database
@@ -19,14 +19,14 @@ export async function POST(req) {
             return new Response(JSON.stringify({ message: "Freelancer not found" }), { status: 404 });
         }
 
-        // Step 2: Add the new image URL to the images array
-        freelancer.image.push(newImage); // Add the new image URL to the `image` array
+        // Step 2: Add the new image URLs to the images array
+        freelancer.image.push(...newImages); // Use the spread operator to add multiple URLs
 
         // Step 3: Save the updated freelancer document
         await freelancer.save();
 
         return new Response(JSON.stringify({
-            message: "Image added successfully",
+            message: "Images added successfully",
             updatedImages: freelancer.image
         }), { status: 200 });
     } catch (error) {

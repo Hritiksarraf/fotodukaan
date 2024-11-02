@@ -6,6 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TextField } from '@mui/material';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import { Padding } from '@mui/icons-material';
 
 export default function PricePicker({ freelancerData }) {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -46,6 +47,7 @@ export default function PricePicker({ freelancerData }) {
                 alert(`The date ${nextDay.toISOString().split('T')[0]} is already booked. Please select another date.`);
             } else {
                 setSelectedDate(newDate);
+                
             }
         } else {
             setSelectedDate(null);
@@ -59,6 +61,7 @@ export default function PricePicker({ freelancerData }) {
             const isWedding = selectedSubcategory === 'Wedding';
             const selectedPrice = isWedding ? weddingPrice : price;
             setPrice(selectedPrice ? selectedPrice[timeOption] : 'Not Available');
+            
         }
     };
 
@@ -70,7 +73,7 @@ export default function PricePicker({ freelancerData }) {
 
     return (
         <div>
-            <h3 className="text-lg font-bold mb-2">Check Exact Price</h3>
+            <h3 className="text-lg font-bold mb-2">Check Sure Price</h3>
             <div className="flex gap-4 flex-wrap flex-row">
                 <select
                     value={selectedCategory}
@@ -78,9 +81,9 @@ export default function PricePicker({ freelancerData }) {
                         setSelectedCategory(e.target.value);
                         setSelectedSubcategory('');
                     }}
-                    className="p-2 border w-[35vw] md:w-36 rounded"
+                    className="px-1 py-2 border w-[40vw] text-sm md:w-40 rounded"
                 >
-                    <option value="">Select Category</option>
+                    <option className='' value="">Select Category</option>
                     {Object.keys(freelancerData.freelancerDetails).map((category) => (
                         <option key={category} value={category}>{category}</option>
                     ))}
@@ -89,7 +92,7 @@ export default function PricePicker({ freelancerData }) {
                 <select
                     value={selectedSubcategory}
                     onChange={(e) => setSelectedSubcategory(e.target.value)}
-                    className="p-2 border w-[30vw] md:w-36 rounded"
+                    className="px-1 py-2 border w-[40vw] text-sm md:w-40 rounded"
                 >
                     <option value="">Select Subcategory</option>
                     {freelancerData.freelancerDetails[selectedCategory]?.subcategories.map((sub, index) => (
@@ -100,7 +103,7 @@ export default function PricePicker({ freelancerData }) {
                 <select
                     value={timeOption}
                     onChange={(e) => setTimeOption(e.target.value)}
-                    className="p-2 border w-[35vw] md:w-36 rounded"
+                    className="px-1 py-2 border w-[40vw] text-sm md:w-36 rounded"
                 >
                     <option value="fullDayPrice">Full Day</option>
                     <option value="halfDayPrice">Half Day</option>
@@ -124,12 +127,13 @@ export default function PricePicker({ freelancerData }) {
 
             <div>
                 <label className="block text-sm font-semibold mt-4 mb-1 text-gray-700">Check Available Dates!</label>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider dateAdapter={AdapterDateFns} sx={{Padding:'0px'}}>
                     <DatePicker
                         label="Select a date"
                         value={selectedDate}
                         onChange={handleDateChange}
                         shouldDisableDate={shouldDisableDate}
+                        sx={{Padding:'0px'}}
                         renderInput={(params) => <TextField {...params} />}
                         renderDay={(day, selectedDates, pickersDayProps) => {
                             const isDisabled = shouldDisableDate(day);
@@ -144,6 +148,8 @@ export default function PricePicker({ freelancerData }) {
                                         justifyContent: 'center',
                                         fontWeight: isDisabled ? 'normal' : 'bold',
                                         color: isDisabled ? 'red' : '#000',
+                                        border: isDisabled ? '1px solid red' : '#000',
+                                        borderRadius: isDisabled ? '7px' : '#000',
                                         margin: '2px',
                                         backgroundColor: selectedDates.includes(day) ? '#cfe8fc' : 'transparent',
                                         cursor: 'pointer',
