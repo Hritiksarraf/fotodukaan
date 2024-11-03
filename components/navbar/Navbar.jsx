@@ -165,6 +165,43 @@ export default function Navbar() {
                                 <option value="LED TV">LED TV</option>
                             </select>
                         </li>
+                        <li>
+                        <select
+    value="policy"
+    className="text-blue-700 font-bold btn-select hover:text-gray-400"
+    onChange={(e) => {
+        const selectedValue = e.target.value;
+        let url = "";
+
+        switch (selectedValue) {
+            case "Privacy Policy":
+                url = "https://drive.google.com/file/d/1SjvEX2Am-j7jXsSw4ZzNUB5JMijFzRuq/view?usp=drive_link";
+                break;
+            case "Cancellation and Refunds":
+                url = "https://drive.google.com/file/d/1cxfJvPp4jmWqIQ_C5LjddX5eAH7p2HRa/view?usp=drive_link";
+                break;
+            case "Terms and Conditions":
+                url = "https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link";
+                break;
+            case "Shipping and Delivery":
+                url = "https://drive.google.com/file/d/17FKCsPc3i_OdG3BH7HKAGeW9c7HFznoc/view?usp=drive_link";
+                break;
+            default:
+                break;
+        }
+
+        if (url) {
+            window.open(url, "_blank", "noopener,noreferrer");
+        }
+    }}
+>
+    <option value="">Company policy</option>
+    <option value="Privacy Policy">Privacy Policy</option>
+    <option value="Cancellation and Refunds">Cancellation and Refunds</option>
+    <option value="Terms and Conditions">Terms and Conditions</option>
+    <option value="Shipping and Delivery">Shipping and Delivery</option>
+</select>
+                        </li>
                     </ul>
                     {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">
