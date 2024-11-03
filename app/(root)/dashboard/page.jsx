@@ -304,7 +304,7 @@ function OrdersPage() {
                                     <span className="text-green-600">Yes</span>
 
                                     {order.freelancerAproved &&
-                                    order.additionalDetails[0].amountPaid ? (
+                                    !order.additionalDetails[0].amountPaid ? (
                                       <button
                                         onClick={()=>{handleAmountPaid(order._id)}}
                                         className="flex mr-auto text-white bg-green-500 border-0 text-sm py-2 px-2 ml-20 focus:outline-none hover:bg-yellow-600 rounded"

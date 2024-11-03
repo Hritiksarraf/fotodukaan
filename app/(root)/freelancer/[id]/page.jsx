@@ -17,6 +17,8 @@ import Slider from "react-slick";
 import Modal from 'react-modal';
 import PricePicker from '@/components/price/PricePicker';
 import ReviewSection from '@/components/review/ReviewSection'
+import DoneIcon from '@mui/icons-material/Done';
+import jwt from "jsonwebtoken";
 
 
 export default function page() {
@@ -29,106 +31,60 @@ export default function page() {
   const [userName, setUserName] = useState('');
   const [userReview, setUserReview] = useState('');
   const [userRating, setUserRating] = useState(5);
+  const [TestimonialData, setTestimonialData] = useState([])
+  const [reviewLoading, setReviewLoading] = useState(true);
 
-  const handleSubmitReview = () => {
+  const handleSubmitReview = async () => {
+    let token = localStorage.getItem('token');
+
+    if (token) {
+      const decodedUser = jwt.decode(token);
+      const name = decodedUser.name
+      const text = userReview
+      const star = userRating
+      try {
+        const response = await fetch(`/api/freelancer/review/${decodedUser.userid}/postReview`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({name,text,star}),
+        });
+        console.log('i am here3')
+        const result = await response.json();
+        if (response.ok) {
+          alert('Review Done');
+          setIsReviewModalOpen(false);
+          setUserReview('');
+          setUserRating(5);
+          // Redirect or take other action
+        } else {
+          alert('Error doing review ' + result.message);
+        }
+      } catch (error) {
+        console.error('Error doing review', error);
+        alert('Something went wrong. Please try again later.');
+      }
+    }
+    else {
+      alert('Please login to submit a review');
+    }
+
     // Submit the review data (userName, userReview, userRating) to your backend or state management
-    console.log({
-      name: userName,
-      review: userReview,
-      rating: userRating,
-    });
-    setIsReviewModalOpen(false);
-    setUserName('');
-    setUserReview('');
-    setUserRating(5);
+
+
   };
 
-  
 
 
-
-  //review section start here
-  const TestimonialData = [
-    {
-      id: 1,
-      name: "Hritik",
-      text: "The photographers and videographers from this platform truly captured the essence of our event. Their professionalism and creativity exceeded all expectations.",
-      img: "https://www.shutterstock.com/image-photo/young-handsome-business-man-dressed-260nw-1487434763.jpg",
-      star: 5,
-      skills: ['photographer', 'videographer', 'drone']
-    },
-    {
-      id: 2,
-      name: "Mani",
-      text: "Hiring a photographer through this platform was the best decision for our corporate event. The attention to detail and the quality of the photos were outstanding.",
-      img: "https://www.shutterstock.com/image-photo/have-great-idea-handsome-businessman-260nw-1282628038.jpg",
-      star: 4,
-      skills: ['photographer']
-    },
-    {
-      id: 3,
-      name: "Piyush",
-      text: "The drone operator captured breathtaking aerial shots of our wedding. The cinematic quality of the video blew everyone away. Highly recommended!",
-      img: "https://media.gettyimages.com/id/1310980400/photo/portrait-of-burnout-businesswoman-in-an-office.jpg?s=612x612&w=gi&k=20&c=fLkvB7hcl7zWJIOUBamNe0lbKIkc4kWFQ1vpQrVwTXQ=",
-      star: 5,
-      skills: ['videographer', 'drone']
-    },
-    {
-      id: 4,
-      name: "Saurav",
-      text: "From photography to videography, the team was on point. The visuals turned out beautifully, and their professionalism was evident throughout the event.",
-      img: "https://media.gettyimages.com/id/641199822/photo/businesswomen-at-workstation-in-start-up-office.jpg?s=612x612&w=gi&k=20&c=uk6k1ILVRf7yKT26DtfgemzQtOyISm72Egn5xr_XT_4=",
-      star: 4,
-      skills: ['photographer', 'videographer', 'drone']
-    },
-    {
-      id: 5,
-      name: "Aditya",
-      text: "The entire experience, from booking a photographer to getting the final edits, was seamless. The quality and timeliness of the deliverables were impressive.",
-      img: "https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.jpg",
-      star: 5,
-      skills: ['photographer', 'videographer', 'drone']
-    },
-    {
-      id: 6,
-      name: "Riya",
-      text: "The candid photography was superb! They really know how to capture those fleeting moments that matter the most. I couldn’t have asked for better photographers.",
-      img: "https://www.shutterstock.com/image-photo/portrait-happy-woman-smiling-camera-260nw-1531112350.jpg",
-      star: 5,
-      skills: ['photographer', 'candid photography']
-    },
-    {
-      id: 7,
-      name: "Amit",
-      text: "We hired a cinematographer through this platform, and the end result was incredible. The video quality was top-notch, and the storytelling was perfect for our corporate project.",
-      img: "https://www.shutterstock.com/image-photo/portrait-confident-young-man-standing-260nw-767916349.jpg",
-      star: 4,
-      skills: ['cinematographer', 'videographer']
-    },
-    {
-      id: 8,
-      name: "Sanya",
-      text: "The drone footage for our outdoor event was stunning. The wide angles and smooth shots added a cinematic feel to the final video. I highly recommend their drone services!",
-      img: "https://www.shutterstock.com/image-photo/young-woman-holding-paper-coffee-260nw-1172777339.jpg",
-      star: 5,
-      skills: ['drone', 'videographer']
-    },
-    {
-      id: 9,
-      name: "Karthik",
-      text: "The crane operator we hired added an extra layer of professionalism to our event's video production. The dynamic camera movements made our footage stand out. Exceptional service!",
-      img: "https://www.shutterstock.com/image-photo/smiling-handsome-young-man-260nw-729510768.jpg",
-      star: 5,
-      skills: ['crane operator', 'videographer']
-    },
-    {
-      id: 10,
-      name: "Anjali",
-      text: "The LED wall setup transformed our event’s visual experience. It was perfect for showcasing live footage and presentations. We were thrilled with the results.",
-      img: "https://www.shutterstock.com/image-photo/young-woman-glasses-sitting-coffee-260nw-1922522086.jpg",
-      star: 4,
-      skills: ['LED wall', 'event management']
-    }
+  const policyPoints = [
+    "Minimum 20% of charge will be require to order",
+    "Notify us 48 hours in advance to reschedule.",
+    "Cancel booking with 48 hours' notice.",
+    "10% fee deducted for cancellations over 48 hours.",
+    "50% fee deducted for late cancellations.",
+    "No refund for no-show without notice.",
+    "Refunds take 7-10 business days to process.",
   ];
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -209,12 +165,32 @@ export default function page() {
     const data = await response.json();
     console.log(data)
     setFreelancerData(data);
+    
     setLoading(false);
+  };
+
+  const getReview = async () => {
+    setReviewLoading(true)
+    const response = await fetch(`/api/freelancer/review/${id}/getReview`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const reviewData = await response.json();
+    setTestimonialData(reviewData.reviews);
+    console.log(reviewData)
+    setReviewLoading(false)
   };
 
   useEffect(() => {
     getUser();
+    getReview();
   }, [id]);
+
+
+ 
+
 
   const displayCategories = (details) => {
     if (!details) return null;
@@ -258,7 +234,7 @@ export default function page() {
   };
 
 
-  if (loading) {
+  if (loading || reviewLoading) {
     return (<div className='min-h-[80vh] w-[100vw]'>
       <Box sx={{ display: 'flex' }}>
         <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
@@ -523,16 +499,35 @@ export default function page() {
             <h3 className='py-5 text-2xl lg:text-4xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
               Review and Rating
             </h3>
-            <p className='text-lg text-gray-600 '> 5.0 | 30 review</p>
+            <p className='text-lg text-gray-600 '> {freelancerData.stars.star} star rating | {freelancerData.stars.noOfPeople} Review</p>
           </div>
           <div className=''>
             <Slider {...settings}>
-              {TestimonialData.map(({ id, img, name, text, star }) => {
+              {Array.isArray(TestimonialData) && TestimonialData?.slice().reverse().map(({ id, profilePhoto, name, text, star,createdAt }) => {
 
 
                 const truncatedText = text.split(' ').length > 20
                   ? text.split(' ').slice(0, 20).join(' ')
                   : text;
+
+                  const formattedDate = new Date(createdAt).toLocaleDateString();
+
+                  const reviewText = (() => {
+                    switch (star) {
+                      case 5:
+                        return 'Excellent';
+                      case 4:
+                        return 'Nice';
+                      case 3:
+                        return 'Good';
+                      case 2:
+                        return 'Bad';
+                      case 1:
+                        return 'Worst';
+                      default:
+                        return ''; // In case of an unexpected star value
+                    }
+                  })();
 
                 return (
                   <>
@@ -548,20 +543,22 @@ export default function page() {
                             <StarBorderIcon key={index} size="small" className="text-yellow-500" />
                           )
                         ))}
-                        <p className='text-[0.6rem] px-2'>2/11/2024</p>
+                        <p className='text-[0.6rem] px-2'>{formattedDate}</p>
+
+                        
                       </div>
                       <div>
-                        <p className='my-3 font-bold text-xl '>Excellent</p>
+                        <p className='my-3 font-bold text-xl '>{reviewText}</p>
                       </div>
                       <div className='flex flex-col items-center mt-5'>
-                        <p className='text-sm h-28 md:h-20  text-gray-500'>{truncatedText} {text.split(' ').length > 18 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
+                        <p className='text-sm h-28 md:h-20  text-gray-500'>{truncatedText} {text.split(' ').length > 18 && <button onClick={() => handleReadMoreClick({ profilePhoto, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
 
                         {/* <p className='text-xl font-bold my-4'>{name}</p> */}
                         {/* <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p> */}
                       </div>
                       <div className='flex py-5 items-center gap-x-4'>
                         <div className='block w-10 h-10 rounded-full '>
-                          <img src={img} alt="" className='rounded-full h-10 w-10 object-cover' />
+                          <img src={profilePhoto} alt="" className='rounded-full h-10 w-10 object-cover' />
                         </div>
                         <p className='text-xl font-bold my-4'>{name}</p>
                       </div>
@@ -577,7 +574,7 @@ export default function page() {
         {selectedReview && (
           <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customModalStyles} contentLabel="Review Modal">
             <div className="text-center">
-              <img src={selectedReview.img} alt={selectedReview.name} className="rounded-full  md:w-24 h-24 mx-auto mb-4 object-cover" />
+              <img src={selectedReview.profilePhoto} alt={selectedReview.name} className="rounded-full  md:w-24 h-24 mx-auto mb-4 object-cover" />
               <h2 className="text-2xl font-bold mb-2">{selectedReview.name}</h2>
               <div className="flex justify-center mb-4">
                 {Array(5)
@@ -651,7 +648,7 @@ export default function page() {
             <div className="text-center p-4">
               <h2 className="text-2xl font-bold mb-4">Submit Your Review</h2>
 
-              
+
 
               {/* Text Area for Review */}
               <textarea
@@ -691,7 +688,22 @@ export default function page() {
             </div>
           </Modal>
         </section>
+
+        <section className='my-2'>
+          <div>
+            <h1 className='pl-5 mx-5 text-3xl text-gray-700 font-bold'>Policies</h1>
+          </div>
+          <div>
+            <ul className='pl-5'>
+              {policyPoints.map((point, index) => (
+                <li key={index} className='text-gray-600 py-3 font-bold text-sm'> <span><DoneIcon className='text-green-900 ' /></span> {point}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
       </section>
+
+
 
 
 

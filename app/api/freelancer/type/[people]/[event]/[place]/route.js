@@ -2,23 +2,22 @@ import { connectToDB } from "@/lib/mongodb/mongoose";
 import Freelancer from "@/lib/models/Register"; // Assuming Register is your Freelancer model
 
 export const GET = async (req, { params }) => {
-  let { people, place } = params;
+  let { people, event, place } = params;
 
   try {
-    // Log the incoming query for debugging
-    console.log("Category and place query received:", people, place);
+    // Decode URL-encoded spaces and other characters
+    people = decodeURIComponent(people);
+    event = decodeURIComponent(event);
+    place = decodeURIComponent(place);
 
-    // Ensure the parameters are strings
-    people = String(people);
-    place = String(place);
-
+    
     // Connect to the database
     await connectToDB();
 
     // Use regex for case-insensitive search in both freelancerDetails and place (city)
     const searchedFreelancers = await Freelancer.find({
-      [`freelancerDetails.${people}`]: { $exists: true },  // Check if the category exists in freelancerDetails
-      city: { $regex: place, $options: "i" }  // case-insensitive search for city/place
+      [`freelancerDetails.${people}.subcategories`]: { $in: [event] },  // Check if event is in subcategories array
+      city: { $regex: place, $options: "i" }  // Case-insensitive search for city/place
     });
 
     // Check if no freelancers were found
@@ -30,7 +29,7 @@ export const GET = async (req, { params }) => {
     console.log("Searched freelancers by category and place:", searchedFreelancers);
     return new Response(JSON.stringify(searchedFreelancers), { status: 200 });
   } catch (err) {
-    console.log(err);
+    console.error("Error fetching freelancers:", err);
     return new Response("Failed to get freelancers by category and place", { status: 500 });
   }
 };

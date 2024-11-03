@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
 export default function Page() {
-  const { people, place } = useParams();
+  const { people,event, place } = useParams();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const decodedpeople=decodeURIComponent(people)
@@ -15,7 +15,7 @@ export default function Page() {
 
   const getFreelancers = async () => {
     try {
-      const response = await fetch(`/api/freelancer/type/${people}/${place}`, {
+      const response = await fetch(`/api/freelancer/type/${people}/${event}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

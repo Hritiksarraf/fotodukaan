@@ -11,8 +11,9 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import Link from 'next/link';
 import Modal from 'react-modal';
+import SearchBar from '@/components/searchBar/SearchBar';
 
-export default function Home () {
+export default function Home() {
 
   const Services = [
     {
@@ -63,7 +64,7 @@ export default function Home () {
       link: "/freelancer/type/LED TV",
       des: "We provide high-definition LED TVs for events and presentations, ensuring a clear and vibrant display for your content."
     }
-];
+  ];
 
   const Partner = [
     {
@@ -167,9 +168,9 @@ export default function Home () {
       star: 4,
       skills: ['LED wall', 'event management']
     }
-];
+  ];
 
-const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedReview, setSelectedReview] = useState(null);
 
   const handleReadMoreClick = (review) => {
@@ -206,7 +207,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const imgurl = "https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
-  
+
   var settings2 = {
 
     infinite: true,
@@ -302,7 +303,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
     console.log('getting freelancer')
     const response = await fetch("/api/freelancer");
     const data = await response.json();
-    console.log('got freelancer',data)
+    console.log('got freelancer', data)
     setFreelancer(data);
   };
 
@@ -343,7 +344,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
   useEffect(() => {
     getFeelancer()
   }, [])
-  
+
   const isSearchDisabled = !category;
 
 
@@ -362,40 +363,40 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
           {/* <p className='text-gray-300 border-l-2 px-2 text-left font-light hidden md:block  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Or are you a freelancer ready to showcase your talent and get hired for exciting projects? Our platform connects creative professionals with those who need them, making it easier than ever to hire the right person for the job.</p>
           <p className='text-gray-300 border-l-2 px-2 text-left font-light md:hidden  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p> */}
           <p className='py-8 text-white text-lg'> Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p>
-          <div className="mt-10 sm:mt-8 flex ">
-          <div className="bg-white rounded-md shadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-9 space-y-4 sm:space-y-0 sm:space-x-4">
-      <select
-        value={category}
-        onChange={(e)=>{setCategory(e.target.value)}}
-        className="w-full sm:w-auto border-gray-300 rounded-md p-2"
-      >
-        <option value="">Select Category</option>
-        <option>Photography</option>
-        <option>Videography</option>
-        <option>Drone</option>
-        <option>Video Editing</option>
-        <option>Crane</option>
-      </select>
+          <div className="mt-10 sm:mt-8  ">
+            <div className="bg-white rounded-md shadow-lg  w-full sm:w-[45vw] f gap-9 space-y-4  space-x-4">
+              {/* <select
+                value={category}
+                onChange={(e) => { setCategory(e.target.value) }}
+                className="w-full sm:w-auto border-gray-300 rounded-md p-2"
+              >
+                <option value="">Select Category</option>
+                <option>Photography</option>
+                <option>Videography</option>
+                <option>Drone</option>
+                <option>Video Editing</option>
+                <option>Crane</option>
+              </select>
 
-      <select
-        value={place}
-        onChange={(e)=>{setPlace(e.target.value)}}
-        className="w-full sm:w-auto border-gray-300 rounded-md p-2"
-      >
-        <option value="">Select Place</option>
-        <option>patna</option>
-        <option>muzaffarpur</option>
-      </select>
+              <select
+                value={place}
+                onChange={(e) => { setPlace(e.target.value) }}
+                className="w-full sm:w-auto border-gray-300 rounded-md p-2"
+              >
+                <option value="">Select Place</option>
+                <option>patna</option>
+                <option>muzaffarpur</option>
+              </select>
 
-      <Link
-        href={isSearchDisabled ? "#" : `/freelancer/type/${category}/${place}`}
-        className={`w-full sm:w-auto px-4 py-2 rounded-md text-white ${
-          isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
-        }`}
-      >
-        Find Freelancer →
-      </Link>
-    </div>
+              <Link
+                href={isSearchDisabled ? "#" : `/freelancer/type/${category}/${place}`}
+                className={`w-full sm:w-auto px-4 py-2 rounded-md text-white ${isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
+                  }`}
+              >
+                Find Freelancer →
+              </Link> */}
+              <SearchBar/>
+            </div>
           </div>
           <div className="mt-8 flex mx-auto w-[100%] justify-center md:justify-start">
 
@@ -425,8 +426,8 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
           >Services we provide</h1>
         </div>
         <div className='flex flex-wrap items-center justify-center'>
-          
-          {Services.map(({ service, index, img, title, link,des }) => {
+
+          {Services.map(({ service, index, img, title, link, des }) => {
 
 
             return (
@@ -472,7 +473,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
             Hire Us to Turn    <span className="">Your Moments</span> into Masterpieces
           </h1>
           <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-40 font-serif text-left text-black text-[0.6rem]">
-          We are here to help you capture and preserve life’s most precious moments. Whether it’s a wedding, corporate event, or personal milestone, our expert team ensures that every detail is beautifully immortalized, leaving you with timeless memories.
+            We are here to help you capture and preserve life’s most precious moments. Whether it’s a wedding, corporate event, or personal milestone, our expert team ensures that every detail is beautifully immortalized, leaving you with timeless memories.
           </p>
           <div className='mt-9'>
 
@@ -500,7 +501,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
               </div>
             </div>
 
-            
+
 
           </div>
           <div className="pt-8 flex mx-auto w-full justify-center md:justify-start">
@@ -521,18 +522,18 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
         </div>
         <div className='bg-gradient-to-r w-[100vw]  from-white to-white'>
           <Slider {...settings2}>
-            {freelancer.map(({ _id, profilePhoto, name,startingPrice, stars,freelancerDetails }) => {
+            {freelancer.map(({ _id, profilePhoto, name, startingPrice, stars, freelancerDetails }) => {
 
               // const [readMore, setReadMore] = useState(true)
               // const truncatedText = text.split(' ').length > 20
               //   ? text.split(' ').slice(0, 20).join(' ')
               //   : text;
-              let minamount=Number.MAX_VALUE;
+              let minamount = Number.MAX_VALUE;
               Object.keys(freelancerDetails).forEach((key) => {
                 const details = freelancerDetails[key];
                 const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
                 const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
-              
+
                 minamount = Math.min(minamount, fullDayPrice, weddingPrice);
               });
 
@@ -624,86 +625,86 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
       </section>
 
       <section className='mt-20'>
-      <div className='bg-gradient-to-r from-blue-100 to-blue-300'>
-        <div className='text-center text-3xl lg:text-9xl'>
-          <h3 className='text-center py-5 text-[18px] lg:text-6xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
-            Testimonial
-          </h3>
-        </div>
-            <div className=''>
-            <Slider {...settings}>
-            {TestimonialData.map(({ id, img, name, text, star }) => {
-
-              const [readMore, setReadMore] = useState(true)
-              const truncatedText = text.split(' ').length > 20
-                ? text.split(' ').slice(0, 20).join(' ')
-                : text;
-
-              return (
-                <>
-                  <div key={id} className='relative md:w-[30vw] mx-auto bg-gradient-to-r h-[21rem] md:h-80 from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                    <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
-                      <img src={img} alt="" className='rounded-full h-24 w-24' />
-                    </div>
-                    <div className='flex flex-col items-center text-center mt-10'>
-                      <p className='text-sm h-28 md:h-20 text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
-
-                      <div className='h-5 flex'>
-                        {Array(5).fill(0).map((_, index) => (
-                          index < star ? (
-                            <StarIcon key={index} size="small" className="text-yellow-500" />
-                          ) : (
-                            <StarBorderIcon key={index} size="small" className="text-yellow-500" />
-                          )
-                        ))}
-                      </div>
-
-                      <p className='text-xl font-bold my-4'>{name}</p>
-                      <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p>
-                    </div>
-                  </div>
-                </>
-              )
-            })}
-          </Slider >
-        </div>
-      </div>
-
-      {/* Modal */}
-      {selectedReview && (
-        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customModalStyles} contentLabel="Review Modal">
-          <div className="text-center">
-            <img src={selectedReview.img} alt={selectedReview.name} className="rounded-full w-24 h-24 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold mb-2">{selectedReview.name}</h2>
-            <div className="flex justify-center mb-4">
-              {Array(5)
-                .fill(0)
-                .map((_, index) =>
-                  index < selectedReview.star ? (
-                    <StarIcon key={index} size="small" className="text-yellow-500" />
-                  ) : (
-                    <StarBorderIcon key={index} size="small" className="text-yellow-500" />
-                  )
-                )}
-            </div>
-            <p className="text-gray-700">{selectedReview.text}</p>
-            <button
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-              onClick={closeModal}
-            >
-              Close
-            </button>
+        <div className='bg-gradient-to-r from-blue-100 to-blue-300'>
+          <div className='text-center text-3xl lg:text-9xl'>
+            <h3 className='text-center py-5 text-[18px] lg:text-6xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
+              Testimonial
+            </h3>
           </div>
-        </Modal>
-      )}
-    </section>
+          <div className=''>
+            <Slider {...settings}>
+              {TestimonialData.map(({ id, img, name, text, star }) => {
+
+                const [readMore, setReadMore] = useState(true)
+                const truncatedText = text.split(' ').length > 20
+                  ? text.split(' ').slice(0, 20).join(' ')
+                  : text;
+
+                return (
+                  <>
+                    <div key={id} className='relative md:w-[30vw] mx-auto bg-gradient-to-r h-[21rem] md:h-80 from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
+                      <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
+                        <img src={img} alt="" className='rounded-full h-24 w-24' />
+                      </div>
+                      <div className='flex flex-col items-center text-center mt-10'>
+                        <p className='text-sm h-28 md:h-20 text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
+
+                        <div className='h-5 flex'>
+                          {Array(5).fill(0).map((_, index) => (
+                            index < star ? (
+                              <StarIcon key={index} size="small" className="text-yellow-500" />
+                            ) : (
+                              <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                            )
+                          ))}
+                        </div>
+
+                        <p className='text-xl font-bold my-4'>{name}</p>
+                        <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p>
+                      </div>
+                    </div>
+                  </>
+                )
+              })}
+            </Slider >
+          </div>
+        </div>
+
+        {/* Modal */}
+        {selectedReview && (
+          <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customModalStyles} contentLabel="Review Modal">
+            <div className="text-center">
+              <img src={selectedReview.img} alt={selectedReview.name} className="rounded-full w-24 h-24 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold mb-2">{selectedReview.name}</h2>
+              <div className="flex justify-center mb-4">
+                {Array(5)
+                  .fill(0)
+                  .map((_, index) =>
+                    index < selectedReview.star ? (
+                      <StarIcon key={index} size="small" className="text-yellow-500" />
+                    ) : (
+                      <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                    )
+                  )}
+              </div>
+              <p className="text-gray-700">{selectedReview.text}</p>
+              <button
+                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+                onClick={closeModal}
+              >
+                Close
+              </button>
+            </div>
+          </Modal>
+        )}
+      </section>
 
       <section>
         <div className='my-12'>
-        <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-[18px] lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Our Partners</h3></div>
+          <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-[18px] lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Our Partners</h3></div>
           <div className='bg-gradient-to-r  from-white to-white'>
             <Slider {...partnerSettings}>
-              {Partner.map(({ id, img,  title,  }) => {
+              {Partner.map(({ id, img, title, }) => {
 
                 const [readMore, setReadMore] = useState(true)
                 const truncatedText = text.split(' ').length > 20
@@ -721,7 +722,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
                         <p className='text-xl font-bold my-1'>{title}</p>
 
 
-                       
+
 
                       </div>
                     </div>
@@ -734,98 +735,98 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
       </section>
 
       <section className='bg-gradient-to-tr from-white   to-blue-400'>
-      <div  id="contact" className="flex flex-col items-center lg:h-96 justify-center pt-10   text-black dark:text-black">
-        <div className="text-black pb-12">
-        <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-4xl lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Get in touch with us</h3></div>
-        </div>
-        <div useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="flex flex-col lg:flex-row  items-center justify-center  text-white">
-          <div className="flex flex-col items-center border-blue-600 lg:border-r md:h-48 p-5">
-          <PermPhoneMsgIcon className='text-blue-600 text-5xl'/>
-            
-            <p className="text-blue-700 ">Phone no</p>
-            <div className='flex items-center'>
-            
-            <p className='text-black dark:text-black mx-2'>+917258866055</p>
+        <div id="contact" className="flex flex-col items-center lg:h-96 justify-center pt-10   text-black dark:text-black">
+          <div className="text-black pb-12">
+            <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-4xl lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Get in touch with us</h3></div>
+          </div>
+          <div useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="flex flex-col lg:flex-row  items-center justify-center  text-white">
+            <div className="flex flex-col items-center border-blue-600 lg:border-r md:h-48 p-5">
+              <PermPhoneMsgIcon className='text-blue-600 text-5xl' />
+
+              <p className="text-blue-700 ">Phone no</p>
+              <div className='flex items-center'>
+
+                <p className='text-black dark:text-black mx-2'>+917258866055</p>
+              </div>
+
             </div>
-            
-          </div>
-          <div  data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="flex border-green-600  flex-col items-center whitespace-nowrap lg:border-r md:h-48 w-80 p-5">
-            {/* <i class="fa-solid text-green-600 mb-4 fa-2xl fa-location-dot"></i> */}
-            <EmailIcon className='text-blue-600 text-5xl'/>
-            <p className="text-blue-600 text-xl">Email</p>
-            <p className='text-xl text-black dark:text-black'>info@fotodukaan.com
+            <div data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="flex border-green-600  flex-col items-center whitespace-nowrap lg:border-r md:h-48 w-80 p-5">
+              {/* <i class="fa-solid text-green-600 mb-4 fa-2xl fa-location-dot"></i> */}
+              <EmailIcon className='text-blue-600 text-5xl' />
+              <p className="text-blue-600 text-xl">Email</p>
+              <p className='text-xl text-black dark:text-black'>info@fotodukaan.com
 
-</p>
-            
-          </div>
-          <div data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="flex flex-col items-center  md:h-48 p-5">
-            {/* <i class="fa-regular mb-4 text-green-600 fa-2xl fa-clock"></i> */}
-            <LocationOnIcon className='text-blue-600 text-5xl'/>
-            <p className="text-blue-700 ">Location</p>
-            <p className=' mt-3 px-5 text-center md:w-[10vw] text-black'>154,1st Floor,Maharaja Kameshwar Complex Fraser Road Patna</p>
-           
+              </p>
+
+            </div>
+            <div data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="flex flex-col items-center  md:h-48 p-5">
+              {/* <i class="fa-regular mb-4 text-green-600 fa-2xl fa-clock"></i> */}
+              <LocationOnIcon className='text-blue-600 text-5xl' />
+              <p className="text-blue-700 ">Location</p>
+              <p className=' mt-3 px-5 text-center md:w-[10vw] text-black'>154,1st Floor,Maharaja Kameshwar Complex Fraser Road Patna</p>
+
+            </div>
           </div>
         </div>
-      </div>
-      <div className="" style={{ height: "80vh" }}>
-        <form
-          action="https://formspree.io/f/mgvewagv"
-          method="post"
-          className="flex flex-col items-center justify-center "
-        >
-          <h1 
-            useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
-            className=" lg:text-5xl text-black text-4xl lg:mt-8 dark:text-black"
-            style={{ fontFamily: "Roboto Condensed" }}
+        <div className="" style={{ height: "80vh" }}>
+          <form
+            action="https://formspree.io/f/mgvewagv"
+            method="post"
+            className="flex flex-col items-center justify-center "
           >
-            If you have any question{" "}
-          </h1>
-          <h1
-            useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
-            className=" lg:text-4xl text-2xl text-center text-black  my-4"
-            style={{ fontFamily: "Roboto Condensed" }}
-          >
-            Please do not hesitate to send us a message
-          </h1>
+            <h1
+              useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
+              className=" lg:text-5xl text-black text-4xl lg:mt-8 dark:text-black"
+              style={{ fontFamily: "Roboto Condensed" }}
+            >
+              If you have any question{" "}
+            </h1>
+            <h1
+              useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
+              className=" lg:text-4xl text-2xl text-center text-black  my-4"
+              style={{ fontFamily: "Roboto Condensed" }}
+            >
+              Please do not hesitate to send us a message
+            </h1>
 
-          <input
-            useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
-            className="w-4/5 lg:w-1/3  bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Your name"
-            required
-          />
-          <input
-          useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
-            className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
-            type="text"
-            id="email"
-            name="email"
-            placeholder="Email"
-          />
-          <input
-          useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
-            className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
-            type="text"
-            id="phone"
-            name="phone"
-            placeholder="Your Phone No"
-            required
-          />
-          <textarea
-          useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
-            className="w-4/5 lg:w-1/3  border-yellow-600 border-2 rounded-md  bg-blue-100 dark:text-black text-black   h-48 p-2 my-2 "
-            name="message"
-            id="message"
-            placeholder="How can we help you"
-          ></textarea>
-          <button useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="w-40 h-12 my-2   bg-blue-600 text-white" type="submit">
-            MESSAGE
-          </button>
-        </form>
-      </div>
+            <input
+              useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
+              className="w-4/5 lg:w-1/3  bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Your name"
+              required
+            />
+            <input
+              useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
+              className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
+              type="text"
+              id="email"
+              name="email"
+              placeholder="Email"
+            />
+            <input
+              useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
+              className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
+              type="text"
+              id="phone"
+              name="phone"
+              placeholder="Your Phone No"
+              required
+            />
+            <textarea
+              useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
+              className="w-4/5 lg:w-1/3  border-yellow-600 border-2 rounded-md  bg-blue-100 dark:text-black text-black   h-48 p-2 my-2 "
+              name="message"
+              id="message"
+              placeholder="How can we help you"
+            ></textarea>
+            <button useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="w-40 h-12 my-2   bg-blue-600 text-white" type="submit">
+              MESSAGE
+            </button>
+          </form>
+        </div>
       </section>
 
 

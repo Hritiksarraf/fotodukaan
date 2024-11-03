@@ -6,10 +6,10 @@ import { connectToDB } from "@/lib/mongodb/mongoose";
 export const POST = async (req) => {
   try {
     await connectToDB();
-    
-    // Parse the request body to get the user or freelancer ID
+
+    // Parse the request body to get the order ID
     const { id } = await req.json();
-    
+
     if (!id) {
       return new Response(
         JSON.stringify({ error: "ID not provided" }),
@@ -17,30 +17,30 @@ export const POST = async (req) => {
       );
     }
 
-    
+    // Use findByIdAndUpdate to update the order directly
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { "additionalDetails.0.amountPaid": true }, // Update the first element's amountPaid to true
+      { new: true } // Option to return the updated document
+    );
 
-    // Retrieve all the order IDs from the 'booking' array
-    const orderIds = id;
+    if (!updatedOrder) {
+      return new Response(
+        JSON.stringify({ error: "Order not found" }),
+        { status: 404 }
+      );
+    }
 
-    // Fetch all orders from the Order collection using the booking IDs
-    const orders = await Order.findById(orderIds);
-    
-    orders.additionalDetails[0].amountPaid=true;
-    
-    console.log('ia am here')
-    await orders.save();
-    console.log('ia am here22')
-
-    // Return the orders in the response
+    // Return the updated order in the response
     return new Response(
-      JSON.stringify({ orders }),
+      JSON.stringify({ order: updatedOrder }),
       { status: 200 }
     );
 
   } catch (err) {
-    console.log(err);
+    console.error("Error in POST:", err);
     return new Response(
-      JSON.stringify({ error: "Error retrieving orders" }),
+      JSON.stringify({ error: "Error updating order" }),
       { status: 500 }
     );
   }
