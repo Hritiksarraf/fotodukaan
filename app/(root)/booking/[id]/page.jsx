@@ -35,6 +35,7 @@ export default function OrderForm() {
   const [loading, setLoading] = useState(true);
   const [tokenAmount, setTokenAmount] = useState(0);
   const [originalTokenAmount, setOriginalTokenAmount] = useState(0);
+  const [discount, setDiscount] = useState(0)
   const [couponApplied, setCouponApplied] = useState(false);
   const [localUser, setLocalUser] = useState(null);
   const [userData, setUserData] = useState({});
@@ -125,20 +126,20 @@ export default function OrderForm() {
       // Update token amount based on selected event and time
       if (orderData.event === 'Wedding') {
         if (value === 'halfDay') {
-          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0);
-          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0);
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0)*0.2));
+          setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0));
         } else if (value === 'fullDay') {
-          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0);
-          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0);
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0)*0.2));
+          setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0));
         }
       } else {
         // Non-wedding event pricing
         if (value === 'halfDay') {
-          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
-          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0);
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0)*0.2));
+          setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0));
         } else {
-          setTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
-          setOriginalTokenAmount(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0);
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0)*0.2));
+          setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0));
         }
       }
     }
@@ -148,20 +149,19 @@ export default function OrderForm() {
   // Apply coupon logic
   const applyCoupon = () => {
     if (orderData.couponCode === "TRYFIRST" && freelancerData.booking.length === 0) {
-      const discountedAmount = tokenAmount * 0.1; // 90% discount
-      setTokenAmount(discountedAmount);
+      setDiscount(Math.round(tokenAmount * 0.5)); // 90% discount
+      setTokenAmount(Math.round(tokenAmount * 0.5));
       setCouponApplied(true);
       setIsCouponValid(true);
-      setCouponMessage('Coupon applied successfully!');
+      setCouponMessage('Coupon applied successfully You got 50% off!');
     } else {
-      setTokenAmount(originalTokenAmount); // Reset token amount if invalid coupon
       setCouponApplied(true);
       setIsCouponValid(false);
       setCouponMessage('Invalid coupon code.');
     }
   };
 
-  
+
   const shouldDisableDate = (date) => {
     if (!date || !(date instanceof Date)) {
       return false; // If date is null or not a Date object, do not disable
@@ -227,7 +227,7 @@ export default function OrderForm() {
     }
     const userid = userData._id;
     const freelancerid = freelancerData._id;
-    const discount = originalTokenAmount - tokenAmount
+    const discounts = discount;
 
     console.log('i am here')
     console.log("s", selectedDate)
@@ -255,7 +255,7 @@ export default function OrderForm() {
         date: formattedDate,
         paidAmount: tokenAmount,
         totalAmount: originalTokenAmount,
-        discount: discount,
+        discount: discounts,
         service: orderData.selectedService,
         event: orderData.event,
         additionalDetails: [],
@@ -578,7 +578,7 @@ export default function OrderForm() {
                     required // Optionally make it required
                   />
                   <label htmlFor="refundPolicy" className="text-sm text-gray-700">
-                    I accept the <a href="https://example.com/refund-policy" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund policy</a>
+                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund & cancellation policy</a>
                   </label>
                 </div>
 

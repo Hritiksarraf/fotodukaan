@@ -1101,7 +1101,7 @@ const router=useRouter()
                                                     onChange={(e) => setIsTermsAccepted(e.target.checked)} 
                                                 />
                                                 <label htmlFor="terms">
-                                                    I accept the <a href="https://example.com/terms-and-condition" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
+                                                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
                                                 </label>
                                             </div>
 
