@@ -1,125 +1,125 @@
+import crypto from "crypto";
 import { connectToDB } from "@/lib/mongodb/mongoose";
 import Order from "@/lib/models/order";
 import User from "@/lib/models/User";
 import Freelancer from "@/lib/models/Register";
-import { ObjectId } from "mongodb";
+
+// Secret from Razorpay dashboard (keep this secure)
+const RAZORPAY_WEBHOOK_SECRET = "FotoDukaan@RazorPay@WebHook@Secret";
 
 export async function POST(req) {
   await connectToDB();
 
+  // Step 1: Verify the Razorpay webhook signature
+  const signature = req.headers["x-razorpay-signature"];
+  const body = await req.text(); // Get the raw body for signature verification
+
+  const expectedSignature = crypto
+    .createHmac("sha256", RAZORPAY_WEBHOOK_SECRET)
+    .update(body)
+    .digest("hex");
+
+  if (expectedSignature !== signature) {
+    return new Response(
+      JSON.stringify({ error: "Invalid webhook signature" }),
+      { status: 400 }
+    );
+  }
+
+  // Step 2: Parse the JSON data from Razorpay webhook payload
+  const payload = JSON.parse(body);
+
+  // Check if it's the `order.paid` event
+  if (payload.event !== "order.paid") {
+    return new Response(
+      JSON.stringify({ error: "Not an order.paid event" }),
+      { status: 400 }
+    );
+  }
+
   try {
+    // Extract necessary details from the payload
     const {
-      name,
       email,
-      phone,
+      contact,
+      notes: {
+        name,
+        pinCode,
+        address,
+        city,
+        date,
+        totalAmount,
+        discount,
+        service,
+        event,
+        additionalDetails = [],
+        userid,
+        freelancerid,
+        time,
+        isPolicyAccepted,
+        orderId
+      }
+    } = payload.payload.payment.entity;
+
+    // Fetch freelancer details
+    const freelancer = await Freelancer.findById(freelancerid);
+    if (!freelancer) {
+      return new Response(
+        JSON.stringify({ error: "Freelancer not found" }),
+        { status: 404 }
+      );
+    }
+
+    // Step 3: Create the order based on the data received
+    const newOrder = new Order({
+      customerName: name,
+      freelancerName: freelancer.name,
+      customerEmail: email,
+      freelancerEmail: freelancer.email,
+      customerPhone: Number(contact),
+      freelancerPhone: Number(freelancer.phone),
       pinCode,
       address,
       city,
       date,
-      paidAmount,
-      totalAmount,
+      paidAmount: payload.payload.payment.entity.amount / 100, // Amount in INR
+      totalAmount: Number(totalAmount),
       discount,
       service,
       event,
       additionalDetails,
-      userid,
-      freelancerid,
-      time,
-      isPolicyAccepted
-    } = await req.json();
-
-    
-    // Validation (ensure required fields are present)
-    if (!name || !email || !phone || !pinCode || !address || !city || !date || !paidAmount || !totalAmount || !service || !event || !userid || !freelancerid ||!isPolicyAccepted) {
-      return new Response(
-        JSON.stringify({ error: "All required fields must be filled." }),
-        { status: 400 }
-      );
-    }
-    const freelancer = await Freelancer.findById(freelancerid)
-    if(!freelancer){
-      return new Response(
-        JSON.stringify({ error: "Freelancer not found" }),
-        { status: 404 }
-      )
-    }
-
-  
-
-    // Create a new order object
-    const newOrder = new Order({
-      customerName:name,
-      freelancerName:freelancer?.name,
-      customerEmail:email,
-      freelancerEmail:freelancer?.email,
-      customerPhone:Number(phone),
-      freelancerPhone:Number(freelancer?.phone),
-      pinCode,
-      address,
-      city,
-      date,
-      paidAmount:Number(paidAmount),
-      totalAmount:Number(totalAmount),
-      discount,
-      service,
-      event,
-      additionalDetails: additionalDetails || [],
       userId: userid,
       freelancerId: freelancerid,
       isPolicyAccepted,
-      time:time
+      time,
+      orderId
     });
-    
 
-    
     // Save the order to the database
     await newOrder.save();
 
-    const orderId = newOrder._id;
-
-    // Update the user's order array
+    // Update the user's booking and blocked dates in Freelancer and User collections
+    const newOrderId = newOrder._id;
     const freelancerUserUpdate = await Freelancer.findById(userid);
-    if (freelancerUserUpdate) {
-      const obj ={
-        date:date,
-        event:event
-      }
-      const bookedDates=freelancerUserUpdate.blockedDates
-      bookedDates.push(obj)
-      freelancerUserUpdate.bookedDates=bookedDates
-      // Freelancer exists, update the freelancer's orders array
-      if (!freelancerUserUpdate.booking) {
-        freelancerUserUpdate.booking = []; // Initialize orders array if it doesn't exist
-      }
-      freelancerUserUpdate.booking.push(orderId);
-      await freelancerUserUpdate.save();
-    } else {
-      // If the freelancer is not found, check in the User collection
-      const userUpdate = await User.findById(userid);
-      if (!userUpdate) {
-        return new Response(
-          JSON.stringify({ error: "User not found" }),
-          { status: 404 }
-        );
-      }
 
-      // User exists, update the user's orders array
-      if (!userUpdate.booking) {
-        userUpdate.booking = []; // Initialize orders array if it doesn't exist
-      }
-      userUpdate.booking.push(orderId);
+    // Update blocked dates and booking in the Freelancer
+    const bookingEntry = { date, event };
+    freelancerUserUpdate.blockedDates.push(bookingEntry);
+    freelancerUserUpdate.booking.push(newOrderId);
+    await freelancerUserUpdate.save();
+
+    // Update booking in User collection if not found in Freelancer
+    const userUpdate = await User.findById(userid);
+    if (userUpdate) {
+      userUpdate.booking.push(newOrderId);
       await userUpdate.save();
     }
 
-    // Update the freelancer's order array
-    const freelancerUpdate = await Freelancer.findById(freelancerid);
-    if (!freelancerUpdate.orders) {
-      freelancerUpdate.orders = [];
-    }
-    freelancerUpdate.orders.push(orderId);
-    await freelancerUpdate.save();
+    // Update freelancer's order list
+    freelancer.orders.push(newOrderId);
+    await freelancer.save();
 
-    // Return success response with the new order
+    // Respond with a success message
     return new Response(
       JSON.stringify({ message: "Order created successfully", order: newOrder }),
       { status: 201 }

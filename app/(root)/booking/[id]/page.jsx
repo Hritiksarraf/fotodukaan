@@ -12,6 +12,8 @@ import { TextField } from '@mui/material';
 import { format } from 'date-fns';
 import { Typography } from '@mui/material'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import Script from 'next/script';
+import Razorpay from 'razorpay';
 
 
 export default function OrderForm() {
@@ -46,6 +48,7 @@ export default function OrderForm() {
   const [time, setTime] = useState([])
   const [selectedDate, setSelectedDate] = useState(null);
   const [blockedDates, setBlockedDates] = useState([]);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   useEffect(() => {
     console.log("id", id)
     getBlockedDates(id)
@@ -219,7 +222,7 @@ export default function OrderForm() {
   }, []);
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,razorpayOrder) => {
     e.preventDefault();
     if (!isRefundPolicyAccepted) {
       alert('You must accept the refund policy to proceed.');
@@ -247,7 +250,7 @@ export default function OrderForm() {
       console.log(formattedDate)
       const orderDetails = {
         name: orderData.customerName,
-        email: localUser?.email || '', // Assuming email is fetched from user token
+        email: localUser?.email || '',
         phone: orderData.mobileNumber,
         pinCode: orderData.pincode,
         address: orderData.address,
@@ -262,7 +265,8 @@ export default function OrderForm() {
         userid,
         freelancerid,
         time: orderData.time,
-        isPolicyAccepted: isRefundPolicyAccepted
+        isPolicyAccepted: isRefundPolicyAccepted,
+        orderId:razorpayOrder.orderId
       };
 
       console.log(orderDetails)
@@ -298,6 +302,71 @@ export default function OrderForm() {
     setStep(1); // Go back to the first step
   };
 
+
+  const handlePayment= async(e)=>{
+    e.preventDefault();
+    setIsProcessingPayment(true);
+
+   
+
+    try {
+
+      const response = await fetch('/api/razorpay', {
+        method:"POST",
+      })
+  
+      const razorpayOrder=response.json();
+      const userid = userData._id;
+    const freelancerid = freelancerData._id;
+    const discounts = discount;
+
+
+      var options = {
+        "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+        "amount": 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "Foto Dukaan", //your business name
+        "description": "Order Transaction",
+        "image": "https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png",
+        "order_id": razorpayOrder.orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+          handleSubmit(e,razorpayOrder);
+        },
+        "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+            "name": orderData.customerName, //your customer's name
+            "contact": orderData.mobileNumber,
+        },
+        "notes": {
+          email: localUser?.email || '',
+          pinCode: orderData.pincode,
+          address: orderData.address,
+          city: orderData.selectedCity,
+          date: formattedDate,
+          totalAmount: originalTokenAmount,
+          discount: discounts,
+          service: orderData.selectedService,
+          event: orderData.event,
+          additionalDetails: [],
+          userid,
+          freelancerid,
+          time: orderData.time,
+          isPolicyAccepted: isRefundPolicyAccepted,
+          orderId:razorpayOrder.orderId
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+        
+    };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+    } catch (error) {
+      console.log("razorPayerror", error)
+      
+    }
+
+  }
+
   if (loading) {
     return (
       <div className='min-h-[80vh] w-[100vw]'>
@@ -311,12 +380,13 @@ export default function OrderForm() {
   }
   return (
     <div className="pt-32 min-h-[80vh] bg-gray-50">
+      <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
       <div className="container mx-auto px-4 max-w-lg">
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           Place Your Order
         </h2>
         <div className="bg-white p-8 shadow-lg rounded-lg mb-10">
-          <form onSubmit={handleSubmit} className="space-y-6 ">
+          <form onSubmit={handlePayment} className="space-y-6 ">
 
             {/* Step 1 - Basic Details */}
             {step === 1 && (
