@@ -316,9 +316,29 @@ export default function OrderForm() {
       })
   
       const razorpayOrder=response.json();
+      if (!isRefundPolicyAccepted) {
+        alert('You must accept the refund policy to proceed.');
+        return;
+      }
       const userid = userData._id;
-    const freelancerid = freelancerData._id;
-    const discounts = discount;
+      const freelancerid = freelancerData._id;
+      const discounts = discount;
+  
+     
+      if (selectedDate == null) {
+        alert('please select a valid date ')
+        return
+      }
+      const date = new Date(selectedDate);
+      console.log("ff", date)
+      if (blockedDates.includes(date)) {
+        date.setDate(date.getDate() + 1);
+        alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
+        return;
+      }
+      date.setDate(date.getDate() + 1);
+      console.log("date", date)
+      const formattedDate = date.toISOString().split('T')[0];
 
 
       var options = {

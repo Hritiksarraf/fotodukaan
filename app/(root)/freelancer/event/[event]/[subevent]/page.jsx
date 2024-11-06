@@ -30,7 +30,8 @@ export default function Page() {
       if (datas.message) {
         setData([]);
       } else {
-        setData(datas);
+        const sortedData = datas.sort((a, b) => b.stars.star - a.stars.star);
+        setData(sortedData);
       }
 
       setLoading(false);
@@ -60,9 +61,9 @@ export default function Page() {
             <SearchBar/>
         </div>
       {data.length === 0 ? (
-        <p className='text-center text-2xl md:text-5xl'>No freelancers found for {decodecevent} in {decodecsubevent}.</p>
+        <p className='text-center text-2xl md:text-5xl'>No freelancers found for {decodecevent} for {decodecsubevent}.</p>
       ) : ( <>
-       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{decodecevent}</span> in <span className='text-yellow-500'>{subevent}. </span></p>
+       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{decodecevent}</span> for <span className='text-yellow-500'>{subevent}. </span></p>
       <div className='flex flex-wrap gap-8'>
          
         {data.map((freelancer) => (

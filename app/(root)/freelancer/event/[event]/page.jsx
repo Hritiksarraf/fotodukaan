@@ -28,7 +28,7 @@ const subcategoryImages = {
 // Categories with subcategories
 const categories = [
   {
-    name: 'Photography',
+    name: 'Traditional Photography',
     subcategories: ['Wedding', 'Corporate', 'Tour & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
   },
   {
@@ -36,7 +36,7 @@ const categories = [
     subcategories: ['Wedding', 'Corporate', 'Tour & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
   },
   {
-    name: 'Videography',
+    name: 'Traditional Videography',
     subcategories: ['Wedding', 'Tour & Travel', 'Pre wedding', 'Birthday', 'Anniversary', 'Engagement', 'Event', 'New Born Baby', 'Corporate', 'Brand Promotion', 'Fashion', 'Other'],
   },
   {
@@ -89,7 +89,7 @@ export default function Page() {
       
       {filteredCategory ? (
         <>
-          <p className='text-center font-bold text-2xl md:text-5xl my-4'>
+          <p className='text-center font-bold  text-2xl md:text-5xl my-4'>
             Freelancers for <span className='text-blue-600'>{filteredCategory.name}</span>
           </p>
           <div className='flex flex-wrap gap-8 justify-center'>

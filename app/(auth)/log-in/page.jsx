@@ -53,7 +53,6 @@ function LoginPage() {
     }
 
     const data = { phone, password };
-    console.log(phone, password);
     setLoading(true);
     
     try {
@@ -98,7 +97,6 @@ function LoginPage() {
       
     } catch (error) {
       setLoading(false);
-      console.log(error);
       toast.error('Failed to log in', {
         position: 'top-left',
         autoClose: 5000,
