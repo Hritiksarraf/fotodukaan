@@ -28,14 +28,10 @@ export async function POST(req) {
 
   // Step 2: Parse the JSON data from Razorpay webhook payload
   const payload = JSON.parse(body);
+  console.log(payload);
 
   // Check if it's the `order.paid` event
-  if (payload.event !== "order.paid") {
-    return new Response(
-      JSON.stringify({ error: "Not an order.paid event" }),
-      { status: 400 }
-    );
-  }
+  
 
   try {
     // Extract necessary details from the payload
