@@ -12,7 +12,7 @@ import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import Link from 'next/link';
 import Modal from 'react-modal';
 import SearchBar from '@/components/searchBar/SearchBar';
-
+import jwt from 'jsonwebtoken'
 export default function Home() {
 
   const Services = [
@@ -295,6 +295,7 @@ export default function Home() {
   const toRotate = ["Photographer", "Candid Photographer", "Videographer", "Cinematographer", "Drone", "Crane", "LED Wall", "LED TV"];
   const [freelancer, setFreelancer] = useState([])
   const period = 2000;
+  const [user, setUser] = useState(null)
 
   const [category, setCategory] = useState("");
   const [place, setPlace] = useState("");
@@ -306,6 +307,17 @@ export default function Home() {
     console.log('got freelancer', data)
     setFreelancer(data);
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        console.log("token")
+        const decodedUser = jwt.decode(token);
+        if(decodedUser){
+          setUser(decodedUser)
+        }
+    }
+
+    }, [])
 
 
   useEffect(() => {
@@ -351,6 +363,13 @@ export default function Home() {
 
   return (
     <div className="bg-gradient-to-r from-white overflow-x-hidden  to-white ">
+        {/* {(user&&(user?.freelancer)&&!(user.isVerifiedByAdmin)) &&
+          <div className="w-full text-5xl font-bold min-h-screen text-center">
+            PLEASE WAIT TILL ADMIN VERIFIES YOUR PROFILE
+          </div>
+          
+        } */}
+
       <section>
 
       </section>

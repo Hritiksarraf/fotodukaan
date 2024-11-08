@@ -28,6 +28,8 @@ export const POST = async (req) => {
             email: freelancer.email,
             profilePhoto: freelancer.profilePhoto,
             freelancer: true,
+            isAdmin:false,
+            isVerifiedByAdmin:freelancer.isVerifiedByAdmin
           },
           "jwtfotoDukaan@Mani2003"
         );

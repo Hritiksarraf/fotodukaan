@@ -13,10 +13,11 @@ export default function Navbar() {
     const [state, setState] = useState(false)
     const [user, setUser] = useState({})
     const [userLogin, setUserLogin] = useState(false)
+    const [admin,setAdmin]=useState(false)
     const router = useRouter();
     const [profileState, setProfileState] = useState(false)
     const [category, setCategory] = useState("");
-
+    const [order, setOrder] = useState(null)
     // Replace javascript:void(0) paths with your paths
     const navigation = [
         { title: "Home", path: "/" },
@@ -34,13 +35,20 @@ export default function Navbar() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
+            console.log("token")
             const decodedUser = jwt.decode(token);
+            console.log("d",decodedUser)
             setUser(decodedUser);
             setUserLogin(true)
+            if(decodedUser?.isAdmin){
+                setAdmin(decodedUser?.isAdmin)
+            }
             console.log(decodedUser)
-        }
-
+        }   
     }, [])
+    useEffect(() => {
+        console.log("Updated admin state:", admin);
+    }, [admin]);
 
     function handleLogout() {
         localStorage.removeItem('token');
@@ -55,13 +63,21 @@ export default function Navbar() {
             router.push(`/freelancer/type/${selectedCategory}`); // Adjust the path to match your dynamic route
         }
     };
+    const handleOrderChange=(e)=>{
+        if(e.target.value=='orders'){
+            router.push('/orders')
+        }else{
+            router.push(`/orders/${e.target.value}`)
+            
+        }
+    }
 
 
     return (
         <nav className={`bg-white shadow-xl z-50 fixed  w-[100vw] p-3  md:text-sm ${state ? "shadow-lg rounded-xl border mx-2 mt-2 md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
             <div className="gap-x-14 items-center max-w-screen-xxl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between  md:block">
-                    <Link href="/">
+                    <Link href={admin?"/home":"/"}>
                         <img
                             src="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png"
                             width={150}
@@ -69,13 +85,15 @@ export default function Navbar() {
                             alt="fotodukaan logo"
                         />
                     </Link>
+                    
                     <div className="md:hidden flex gap-4">
+                        
                         <div className="flex ">
-                            {userLogin && <div>
+                            {!admin && userLogin && <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>}
-                            {profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                            {!admin && profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -135,75 +153,114 @@ export default function Navbar() {
                         </button>
                     </div>
                 </div>
+                <div className={` ${admin?"ml-72":""}`}>
+                    {admin&&(
+                            <div className="flex items-center justify-between w-full gap-40">
+                                <Link href="/freelancers" className="block text-blue-600 hover:text-gray-400">
+                                    Freelancers
+                                </Link>
+                                <Link href="/users" className="block text-blue-600 hover:text-gray-400">
+                                    Users
+                                </Link>
+                                <select
+                                        value={order}
+                                        onChange={handleOrderChange}
+                                        className="text-blue-600 font-bold btn-select hover:text-gray-400"
+                                    >
+                                        <option value="">Orders</option>
+                                        <option value="usercancel">Canceled by user</option>
+                                        <option value="admincancel">Canceled by admin</option>
+                                        <option value="notapproved">not approved by freelancer</option>
+                                        <option value="freelancerapprove">approved by freelancer</option>
+                                        <option value="adminapprove">approved by admin</option>
+                                        <option value="orders">All Orders</option>
+                                    </select>
+                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                        Logout
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                        </svg>
+                                </button>
+                            </div>
+                    )}
+                    </div>
                 <div className={`flex-1 items-center mt-8 md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
-                    <ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
-                        {
-                            navigation.map((item, idx) => {
-                                return (
-                                    <li key={idx} className="text-blue-700 font-bold       hover:text-gray-400">
-                                        <Link href={item.path} className="block">
-                                            {item.title}
-                                        </Link>
-                                    </li>
-                                )
-                            })
+                    {!admin&&<ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+                        {!admin&&
+                            <div className="flex gap-5">
+                                {navigation.map((item, idx) => {
+                                    return (
+                                        <li key={idx} className="text-blue-700 font-bold       hover:text-gray-400">
+                                            <Link href={item.path} className="block">
+                                                {item.title}
+                                            </Link>
+                                        </li>
+                                    )
+                                })}
+                            </div>
+                            
                         }
-                        <li>
-                            <select
-                                value={category}
-                                onChange={handleCategoryChange}
-                                className="text-blue-700 font-bold btn-select      hover:text-gray-400"
+                        {!admin&&
+                            <>
+                                <li>
+                                    <select
+                                        value={category}
+                                        onChange={handleCategoryChange}
+                                        className="text-blue-700 font-bold btn-select      hover:text-gray-400"
+                                    >
+                                        <option value="">Select Category</option>
+                                        <option value="Photography">Photography</option>
+                                        <option value="Candid Photography">Candid Photography</option>
+                                        <option value="Videography">Videography</option>
+                                        <option value="Cinematography">Cinematography</option>
+                                        <option value="Drone">Drone</option>
+                                        <option value="Crane">Crane</option>
+                                        <option value="LED wall">LED wall</option>
+                                        <option value="LED TV">LED TV</option>
+                                    </select>
+                                </li>
+                                <li>
+                                <select
+                                value="policy"
+                                className="text-blue-700 font-bold btn-select hover:text-gray-400"
+                                onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    let url = "";
+
+                                    switch (selectedValue) {
+                                        case "Privacy Policy":
+                                            url = "https://drive.google.com/file/d/1SjvEX2Am-j7jXsSw4ZzNUB5JMijFzRuq/view?usp=drive_link";
+                                            break;
+                                        case "Cancellation and Refunds":
+                                            url = "https://drive.google.com/file/d/1cxfJvPp4jmWqIQ_C5LjddX5eAH7p2HRa/view?usp=drive_link";
+                                            break;
+                                        case "Terms and Conditions":
+                                            url = "https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link";
+                                            break;
+                                        case "Shipping and Delivery":
+                                            url = "https://drive.google.com/file/d/17FKCsPc3i_OdG3BH7HKAGeW9c7HFznoc/view?usp=drive_link";
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                    if (url) {
+                                        window.open(url, "_blank", "noopener,noreferrer");
+                                    }
+                                }}
                             >
-                                <option value="">Select Category</option>
-                                <option value="Photography">Photography</option>
-                                <option value="Candid Photography">Candid Photography</option>
-                                <option value="Videography">Videography</option>
-                                <option value="Cinematography">Cinematography</option>
-                                <option value="Drone">Drone</option>
-                                <option value="Crane">Crane</option>
-                                <option value="LED wall">LED wall</option>
-                                <option value="LED TV">LED TV</option>
-                            </select>
-                        </li>
-                        <li>
-                        <select
-    value="policy"
-    className="text-blue-700 font-bold btn-select hover:text-gray-400"
-    onChange={(e) => {
-        const selectedValue = e.target.value;
-        let url = "";
-
-        switch (selectedValue) {
-            case "Privacy Policy":
-                url = "https://drive.google.com/file/d/1SjvEX2Am-j7jXsSw4ZzNUB5JMijFzRuq/view?usp=drive_link";
-                break;
-            case "Cancellation and Refunds":
-                url = "https://drive.google.com/file/d/1cxfJvPp4jmWqIQ_C5LjddX5eAH7p2HRa/view?usp=drive_link";
-                break;
-            case "Terms and Conditions":
-                url = "https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link";
-                break;
-            case "Shipping and Delivery":
-                url = "https://drive.google.com/file/d/17FKCsPc3i_OdG3BH7HKAGeW9c7HFznoc/view?usp=drive_link";
-                break;
-            default:
-                break;
-        }
-
-        if (url) {
-            window.open(url, "_blank", "noopener,noreferrer");
-        }
-    }}
->
-    <option value="">Company policy</option>
-    <option value="Privacy Policy">Privacy Policy</option>
-    <option value="Cancellation and Refunds">Cancellation and Refunds</option>
-    <option value="Terms and Conditions">Terms and Conditions</option>
-    <option value="Shipping and Delivery">Shipping and Delivery</option>
-</select>
-                        </li>
-                    </ul>
-                    {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
+                                <option value="">Company policy</option>
+                                <option value="Privacy Policy">Privacy Policy</option>
+                                <option value="Cancellation and Refunds">Cancellation and Refunds</option>
+                                <option value="Terms and Conditions">Terms and Conditions</option>
+                                <option value="Shipping and Delivery">Shipping and Delivery</option>
+                                </select>
+                                </li>
+                            </>
+                        }       
+                    </ul>}
+                    {userLogin ? (
+                        !admin && <div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">
                             <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
@@ -257,10 +314,14 @@ export default function Navbar() {
                                 </div>
                             </div>}
                         </div>
-                    </div>) :
+                    </div>
+                        ) :
                         (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                             <Link href="/log-in" className="block text-blue-600 hover:text-gray-400">
                                 Log in
+                            </Link>
+                            <Link href="/login" className="block text-blue-600 hover:text-gray-400">
+                                Log in as admin
                             </Link>
                             <Link href="sign-up" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
                                 Sign up
@@ -279,6 +340,5 @@ export default function Navbar() {
                 </div>
             </div>
         </nav>
-
     )
 }
