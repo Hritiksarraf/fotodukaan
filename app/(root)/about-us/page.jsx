@@ -8,9 +8,9 @@ export default function page() {
   return (
     <>
       <div className="pt-20 ">
-        <div className='w-[100vw] h-[80vh] bg-[#F5AA2B] bg-cover bg-center pt-20 bg-[url("/assets/about-pic.png")]'>
+        <div className='w-[100vw] h-[80vh] bg-[#9b5810] bg-cover bg-center pt-20 bg-[url("/assets/about-pic.png")]'>
           <div className="md:w-[60vw]">
-            <h1 className="px-3 md:px-10 py-5 text-5xl md:text-8xl font-bold text-left text-blue-800">Want's to Know</h1>
+            <h1 className="px-3 md:px-10 py-5 text-5xl md:text-8xl font-bold text-left text-blue-500">Want's to Know</h1>
             <h1 className="px-3 md:px-10 pt-5 text-5xl md:text-8xl font-bold text-left text-white">What We Are Doing?</h1>
             <h1 className="px-3 md:px-10 pt-8 md:pt-0 pb-12 text-5xl md:text-8xl font-bold text-left text-white">What's Our story?</h1>
             <h1 className="px-3 md:px-10 text-xl md:text-4xl font-bold text-left text-black">Scrolle down for the answer <KeyboardArrowDownIcon className='text-3xl text-blue-700' /> </h1>
@@ -162,8 +162,8 @@ export default function page() {
 
           <div className="bg-cover  bg-center w-full my-8  flex flex-col md:flex-row text-center md:text-left bg-gradient-to-b md:bg-gradient-to-r from-[#0E2041] to-[#0E2041]">
             <div className="flex bg bg-white rounded-b-[9rem] md:rounded-r-[17rem] justify-center items-center  md:w-[55%]  ">
-              <div className='h-full'>
-                <img className='object-cover h-full md:w-[50vw] shadow-2xl rounded-b-[6rem] md:rounded-r-[17rem]' src="https://fotodukaan.com/images/myimg/aboo.jpg" alt="" />
+              <div className='my-auto'>
+                <img className='  md:w-[50vw] my-auto rounded-b-[6rem] md:rounded-r-[17rem]' src="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png" alt="" />
               </div>
             </div>
             <div className="w-full md:w-[60%] px-7 py-10 md:px-20 text-white md:py-20">

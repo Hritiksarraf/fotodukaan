@@ -95,12 +95,12 @@ export default function Pages() {
     window.confirmationResult
       .confirm(otpValue)
       .then(async (res) => {
-        console.log(res);
+        // console.log(res);
         
         handleSignUp();
       })
       .catch((err) => {
-        console.log('Invalid OTP:', err);
+        // console.log('Invalid OTP:', err);
         setLoading(false);
         toast.error('Invalid OTP. Please try again.', {
           position: 'top-left',
@@ -118,7 +118,7 @@ export default function Pages() {
   const handleSignUp = async () => {
     
     const data = { name, email, phone, password };
-    console.log(name, email, phone, password )
+    // console.log(name, email, phone, password )
     try {
       let res = await fetch('/api/sign-up', {
         method: 'POST',
@@ -165,7 +165,7 @@ export default function Pages() {
       
       
     } catch (error) {
-      console.log(error)
+      // console.log(error)
       toast.error('Signup Failed', {
         position: 'top-left',
         autoClose: 5000,

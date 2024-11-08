@@ -6,6 +6,8 @@ import { StaticDatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
 import { TextField } from '@mui/material';
 import { Typography, Box, Paper, useMediaQuery } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
@@ -22,6 +24,7 @@ function BlockedDatesCalendar() {
   const [events, setEvents] = useState(null);
   const [input, setInput] = useState(null);
   const today = new Date().toISOString().split('T')[0];
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -45,8 +48,10 @@ function BlockedDatesCalendar() {
       const data = await response.json();
       console.log("Events data:", data);
       setEvents(data);
+      setLoading(false)
     } catch (error) {
       console.error("Error fetching events:", error);
+      setLoading(false)
     }
   };
   const getBlockedDates = async (Id) => {
@@ -174,203 +179,216 @@ function BlockedDatesCalendar() {
 
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
+
+  if (loading) {
+    return (<div className='min-h-[80vh] w-[100vw]'>
+        <Box sx={{ display: 'flex' }}>
+            <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
+        <CircularProgress color="inherit" size="8rem" />
+        </div>
+      </Box>
+    </div>);
+  }
+
   return (
     <div className=' pt-20'>
       {/* <div className='w-full text-center  text-xl font-bold mb-5'>
         Mange Your Calender Here
       </div> */}
       <div className='flex md:flex-row flex-col'>
-      <div className='md:w-[35vw] h-[100vh]  '>
-      <div className='md:w-[32vw] h-[100vh] md:fixed md:bg-blue-200'>
-        <div className='flex flex-col  md:w-[30vw] md:absolute  '>
+        <div className='md:w-[35vw] h-[90vh] md:h-[100vh]  '>
+          <div className='md:w-[32vw] h-[90vh] md:h-[100vh] md:fixed md:bg-blue-200'>
+            <div className='flex flex-col  md:w-[30vw] md:absolute  '>
+              <h1 className='text-3xl font-semibold text-center mt-10'>Your calender</h1>
 
-          <div className="flex justify-center items-center my-auto p-6">
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <Paper
-                elevation={4}
-                sx={{
-                  width: isSmallScreen ? '90vw' : '70vw', // Adjust width for small screens
-                  padding: '10px',
-                  height: isSmallScreen ? '80vh' : '70vh', // Adjust height for small screens
-                  borderRadius: '12px',
-                  // backgroundColor: '#f5f7fa',
-                  backgroundColor: '#f5f7fa',
-                  overflow: 'hidden', // Prevents internal scrolling
-                }}
-              >
-                <StaticDatePicker
-                  displayStaticWrapperAs="desktop"
-                  openTo="day"
-                  value={selectedDate}
-                  onChange={(newDate) => setSelectedDate(newDate)}
-                  shouldDisableDate={shouldDisableDate}
-                  sx={{
-                    '& .MuiCalendarPicker-root': {
-                      height: isSmallScreen ? '70vh' : '950px', // Adjust height for small screens
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-between',
-                      Color: 'blue'
-                    },
-                    '& .MuiPickersCalendarHeader-root': {
-                      marginBottom: '5px', // Space around header
-                    },
-                    '& .MuiDayPicker-weekContainer': {
-                      margin: '1px 0', // Space between weeks to prevent overlap
-                    },
-                  }}
-                  renderDay={(day, selectedDates, pickersDayProps) => {
-                    const isDisabled = shouldDisableDate(day);
-                    return (
-                      <Box
-                        {...pickersDayProps}
-                        sx={{
-                          width: isSmallScreen ? '2rem' : '2rem',  // Smaller size for phone screens
-                          height: isSmallScreen ? '2rem' : '2rem',
+              <div className="flex justify-center items-center my-auto p-6">
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Paper
+                    elevation={4}
+                    sx={{
+                      width: isSmallScreen ? '90vw' : '70vw', // Adjust width for small screens
+                      padding: '10px',
+                      height: isSmallScreen ? '80vh' : '70vh', // Adjust height for small screens
+                      borderRadius: '12px',
+                      // backgroundColor: '#f5f7fa',
+                      backgroundColor: '#f5f7fa',
+                      overflow: 'hidden', // Prevents internal scrolling
+                    }}
+                  >
+                    <StaticDatePicker
+                      displayStaticWrapperAs="desktop"
+                      openTo="day"
+                      value={selectedDate}
+                      onChange={(newDate) => setSelectedDate(newDate)}
+                      shouldDisableDate={shouldDisableDate}
+                      sx={{
+                        '& .MuiCalendarPicker-root': {
+                          height: isSmallScreen ? '70vh' : '950px', // Adjust height for small screens
                           display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontWeight: isDisabled ? 'normal' : 'bold',
-                          color: isDisabled ? 'red' : '#1e90ff',
-                          backgroundColor: isDisabled ? '#f0f0f0' : '#e6f2ff',
-                          borderRadius: '8px',
-                          border: isDisabled ? '1px solid #ddd' : '1px solid #1e90ff',
-                          margin: '3px', // Adjusted for spacing on smaller screens
-                          transition: 'background-color 0.3s, color 0.3s',
-                          '&:hover': {
-                            backgroundColor: isDisabled ? '#f0f0f0' : '#cce7ff',
-                          },
-                        }}
-                      >
-                        <Typography variant={isSmallScreen ? 'body2' : 'body1'}>
-                          {day.getDate()}
-                        </Typography>
-                      </Box>
-                    );
-                  }}
-                />
-                <div>
-                  <div className='w-full flex items-center justify-center flex-col py-4 px-3 md:px-10 md:py-4'>
-
-                    <label className='text-center text-lg md:text-xl pb-2'>Select Available/Unavailable Dates.</label>
-
-                    <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <DatePicker
-                        label="Select a date"
-                        name="eventDate"
-                        value={selectedDate}
-                        minDate={new Date()}
-                        onChange={(date) => handleInputChange(date)}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
+                          Color: 'blue'
+                        },
+                        '& .MuiPickersCalendarHeader-root': {
+                          marginBottom: '5px', // Space around header
+                        },
+                        '& .MuiDayPicker-weekContainer': {
+                          margin: '1px 0', // Space between weeks to prevent overlap
+                        },
+                      }}
+                      renderDay={(day, selectedDates, pickersDayProps) => {
+                        const isDisabled = shouldDisableDate(day);
+                        return (
+                          <Box
+                            {...pickersDayProps}
                             sx={{
-                              width: '100%',
-                              '& .MuiInputBase-root': {
-                                // Default height for medium and larger devices
-                                height: '56px',
-                                '@media (max-width:600px)': {
-                                  // Reduced height for small devices
-                                  height: '56px',
-                                },
+                              width: isSmallScreen ? '2rem' : '2rem',  // Smaller size for phone screens
+                              height: isSmallScreen ? '2rem' : '2rem',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontWeight: isDisabled ? 'normal' : 'bold',
+                              color: isDisabled ? 'red' : '#1e90ff',
+                              backgroundColor: isDisabled ? '#f0f0f0' : '#e6f2ff',
+                              borderRadius: '8px',
+                              border: isDisabled ? '1px solid #ddd' : '1px solid #1e90ff',
+                              margin: '3px', // Adjusted for spacing on smaller screens
+                              transition: 'background-color 0.3s, color 0.3s',
+                              '&:hover': {
+                                backgroundColor: isDisabled ? '#f0f0f0' : '#cce7ff',
                               },
                             }}
+                          >
+                            <Typography variant={isSmallScreen ? 'body2' : 'body1'}>
+                              {day.getDate()}
+                            </Typography>
+                          </Box>
+                        );
+                      }}
+                    />
+                    <div>
+                      <div className='w-full flex items-center justify-center flex-col py-4 px-3 md:px-10 md:py-4'>
+
+                        <label className='text-center text-lg md:text-xl pb-2'>Select Available/Unavailable Dates.</label>
+
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                            label="Select a date"
+                            name="eventDate"
+                            value={selectedDate}
+                            minDate={new Date()}
+                            onChange={(date) => handleInputChange(date)}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                sx={{
+                                  width: '100%',
+                                  '& .MuiInputBase-root': {
+                                    // Default height for medium and larger devices
+                                    height: '56px',
+                                    '@media (max-width:600px)': {
+                                      // Reduced height for small devices
+                                      height: '56px',
+                                    },
+                                  },
+                                }}
+                              />
+                            )}
                           />
-                        )}
-                      />
-                    </LocalizationProvider>
+                        </LocalizationProvider>
 
 
-                  </div>
-                </div>
-
-                <div className='w-full flex items-center justify-center'>
-
-                  <div className=' flex-col justify-center '>
-                    <div className=''>
-                      <label className='text-center'>Reason for Unavailablelity</label>
-                      <input
-                        type="text"
-                        className="block md:w-[22rem] w-[80vw] h-16 p-2 mb-4 text-xl text-gray-700 bg-white rounded-lg"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                      />
+                      </div>
                     </div>
+
                     <div className='w-full flex items-center justify-center'>
 
-                      <button className='bg-blue-400 rounded-3xl p-4 text-white' onClick={handleSubmit}>
-                        Update Calender
-                      </button>
+                      <div className=' flex-col justify-center '>
+                        <div className=''>
+                          <label className='text-center'>Reason for Unavailablelity</label>
+                          <input
+                            type="text"
+                            className="block md:w-[22rem] w-[80vw] h-16 p-2 mb-4 text-xl text-gray-700 bg-white rounded-lg"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                          />
+                        </div>
+                        <div className='w-full flex items-center justify-center'>
+
+                          <button className='bg-blue-400 rounded-3xl p-4 text-white' onClick={handleSubmit}>
+                            Update Calender
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Paper>
-            </LocalizationProvider>
-          </div>
+                  </Paper>
+                </LocalizationProvider>
+              </div>
 
-        </div>
-        </div>
-      </div>
-
-
-      
-      <div className='h-full w-[60vw]'>
-      <div className=' mt-24'>
-        <div className=' flex-col items-center justify-center'>
-          {
-            allEvents?.map((item, index) => (
-              item && typeof item === 'object' ? ( // Check if item is an object
-                <div key={index}>
-                  <p>Date - {item.date ? new Date(item.date).toISOString().split('T')[0] : "N/A"}</p>
-                  <p>Event - {item.event || "No event information available"}</p>
-                </div>
-              ) : null // Skip if item is not an object
-            ))
-          }
-        </div>
-      </div>
-
-      <div className='h-full mt-24'>
-        <div className='text-2xl font-bold text-center mb-5'>
-          My Events
-        </div>
-        <div className='w-full h-[100vh] flex items-start justify-center'>
-          <div className='w-[80%] grid grid-cols-3 gap-2'>
-            {
-              events?.map((event) => (
-                <div key={events.id} className='bg-gray-300 p-4 rounded-lg shadow-md flex items-center flex-col'>
-                  <div className='text-lg font-bold'>{event?.event || ""}</div>
-                  <div className='text-lg font-bold'>{event?.service || ""}</div>
-                  <div className='text-lg font-bold'>
-                    {event.date ? event.date.split('T')[0] : ""}
-                  </div>
-                  <div className='text-lg font-bold'>
-                    <div>Location:</div>
-                    <div>city:{event?.city || ""}</div>
-                    <div>pincode:{event?.pinCode || ""}</div>
-                    <div>address:{event?.address || ""}</div>
-                  </div>
-                  <div>
-                    total amount:{event?.totalAmount || ""}
-                  </div>
-                  <div>
-                    paid amount:{event?.paidAmount || ""}
-                  </div>
-                  <div>
-                    time:{event?.time || ""}
-                  </div>
-                  <div>
-                    customer:{event?.customerName || ""}
-                  </div>
-
-
-                </div>
-              ))
-            }
+            </div>
           </div>
         </div>
-      </div>
-      </div>
+
+
+
+        <div className='h-full my-10 md:my-0 md:w-[60vw]'>
+          <div className='  md:mt-16'>
+            <h1 className='text-3xl font-semibold text-center md:mb-10'>Your Events</h1>
+            <div className=' flex flex-wrap gap-x-10 gap-y-5  items-center justify-center'>
+              {
+                allEvents?.map((item, index) => (
+                  item && typeof item === 'object' ? ( // Check if item is an object
+                    <div key={index} className='p-5 md:w-[25vw] w-[90vw] border-2 bg-blue-200 rounded-xl'>
+                      <p>Date - {item.date ? new Date(item.date).toISOString().split('T')[0] : "N/A"}</p>
+                      <p>Event - {item.event || "No event information available"}</p>
+                    </div>
+                  ) : null // Skip if item is not an object
+                ))
+              }
+            </div>
+          </div>
+
+          {/* <div className='h-full mt-24'>
+            <div className='text-2xl font-bold text-center mb-5'>
+              My Events
+            </div>
+            <div className='w-full h-[100vh] flex items-start justify-center'>
+              <div className='w-[80%] grid grid-cols-3 gap-2'>
+                {
+                  events?.map((event) => (
+                    <div key={events.id} className='bg-gray-300 p-4 rounded-lg shadow-md flex items-center flex-col'>
+                      <div className='text-lg font-bold'>{event?.event || ""}</div>
+                      <div className='text-lg font-bold'>{event?.service || ""}</div>
+                      <div className='text-lg font-bold'>
+                        {event.date ? event.date.split('T')[0] : ""}
+                      </div>
+                      <div className='text-lg font-bold'>
+                        <div>Location:</div>
+                        <div>city:{event?.city || ""}</div>
+                        <div>pincode:{event?.pinCode || ""}</div>
+                        <div>address:{event?.address || ""}</div>
+                      </div>
+                      <div>
+                        total amount:{event?.totalAmount || ""}
+                      </div>
+                      <div>
+                        paid amount:{event?.paidAmount || ""}
+                      </div>
+                      <div>
+                        time:{event?.time || ""}
+                      </div>
+                      <div>
+                        customer:{event?.customerName || ""}
+                      </div>
+
+
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div> */}
+        </div>
       </div>
     </div>
   );

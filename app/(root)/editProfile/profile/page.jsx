@@ -7,6 +7,52 @@ import AddPhotoAlternateOutlined from '@mui/icons-material/AddPhotoAlternateOutl
 import jwt from "jsonwebtoken";
 import EditBar from '@/components/editBar/EditBar';
 
+
+const cityArray = [
+    "Mumbai, Maharashtra",
+    "Delhi, National Capital Territory",
+    "Bangalore (Bengaluru), Karnataka",
+    "Hyderabad, Telangana",
+    "Ahmedabad, Gujarat",
+    "Chennai, Tamil Nadu",
+    "Kolkata, West Bengal",
+    "Pune, Maharashtra",
+    "Jaipur, Rajasthan",
+    "Surat, Gujarat",
+    "Lucknow, Uttar Pradesh",
+    "Kanpur, Uttar Pradesh",
+    "Nagpur, Maharashtra",
+    "Indore, Madhya Pradesh",
+    "Patna, Bihar",
+    "Bhopal, Madhya Pradesh",
+    "Vadodara, Gujarat",
+    "Ludhiana, Punjab",
+    "Agra, Uttar Pradesh",
+    "Nashik, Maharashtra",
+    "Coimbatore, Tamil Nadu",
+    "Kochi (Cochin), Kerala",
+    "Visakhapatnam, Andhra Pradesh",
+    "Ghaziabad, Uttar Pradesh",
+    "Thiruvananthapuram, Kerala",
+    "Varanasi, Uttar Pradesh",
+    "Rajkot, Gujarat",
+    "Meerut, Uttar Pradesh",
+    "Faridabad, Haryana",
+    "Amritsar, Punjab",
+    "Jodhpur, Rajasthan",
+    "Madurai, Tamil Nadu",
+    "Raipur, Chhattisgarh",
+    "Aurangabad, Maharashtra",
+    "Gwalior, Madhya Pradesh",
+    "Ranchi, Jharkhand",
+    "Guwahati, Assam",
+    "Bhubaneswar, Odisha",
+    "Mysore, Karnataka",
+    "Jabalpur, Madhya Pradesh",
+    "Goa, Maharashtra",
+    "Muzaffarpur, Bihar"
+];
+
 export default function ProfileUpdateForm() {
     const [loading, setLoading] = useState(true);
     const [freelancerData, setFreelancerData] = useState({
@@ -23,34 +69,34 @@ export default function ProfileUpdateForm() {
 
     // Fetch freelancer data
     const getFreelancerData = async () => {
-      if(localUser){
-        const response = await fetch(`/api/freelancer/${localUser.userid}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        const data = await response.json();
-        setFreelancerData(data);
-        
-      }
+        if (localUser) {
+            const response = await fetch(`/api/freelancer/${localUser.userid}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json();
+            setFreelancerData(data);
+
+        }
     };
 
     useEffect(() => {
         getFreelancerData();
     }, [localUser]);
     useEffect(() => {
-      const token = localStorage.getItem("token");
-      if (token) {
-          const decodedUser = jwt.decode(token);
-          setLocalUser(decodedUser);
-          setLoading(false);
-      }
-  }, []);
+        const token = localStorage.getItem("token");
+        if (token) {
+            const decodedUser = jwt.decode(token);
+            setLocalUser(decodedUser);
+            setLoading(false);
+        }
+    }, []);
 
-  useEffect(() => {
-    setLoading(false);
-  }, [freelancerData])
+    useEffect(() => {
+        setLoading(false);
+    }, [freelancerData])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -77,7 +123,7 @@ export default function ProfileUpdateForm() {
         let profilePhotoUrl = freelancerData.profilePhoto;
 
         // If new file is selected, upload to Cloudinary
-        const id=freelancerData._id;
+        const id = freelancerData._id;
         if (selectedFile) {
             const formData = new FormData();
             formData.append("file", selectedFile);
@@ -122,6 +168,8 @@ export default function ProfileUpdateForm() {
         setUploading(false);
     };
 
+    const uniqueSortedCities = [...new Set(cityArray.map(city => city.split(",")[0]))].sort();
+
     if (loading) {
         return (
             <Box sx={{ display: 'flex' }}>
@@ -133,115 +181,119 @@ export default function ProfileUpdateForm() {
     }
 
     return (
-      <div className='min-h-75vh] pt-32 overflow-x-hidden'>
-        <div>
-          <EditBar/>
-        </div>
-        <div className="min-h-screen flex justify-center items-center p-10">
-            <form className="w-full max-w-lg p-8 rounded-lg shadow-lg bg-blue-100" onSubmit={handleSubmit}>
-                <h2 className="text-2xl font-bold mb-6">Edit Profile</h2>
+        <div className='min-h-75vh] pt-32 overflow-x-hidden'>
+            <div>
+                <EditBar />
+            </div>
+            <div className="min-h-screen flex justify-center items-center p-10">
+                <form className="w-full max-w-lg p-8 rounded-lg shadow-lg bg-blue-100" onSubmit={handleSubmit}>
+                    <h2 className="text-2xl font-bold mb-6">Edit Profile</h2>
 
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={freelancerData.name}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 p-2 rounded-lg"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={freelancerData.email}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 p-2 rounded-lg"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-    <label className="block text-sm font-bold mb-2">City</label>
-    <select
-        name="city"
-        value={freelancerData.city}
-        onChange={handleInputChange}
-        className="w-full border border-gray-300 p-2 rounded-lg"
-        required
-    >
-        <option value={freelancerData.city}>{freelancerData.city}</option> {/* Placeholder option */}
-        <option value="Patna">Patna</option>
-        <option value="Muzaffarpur">muzaffarpur</option>
-    </select>
-</div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">Address</label>
-                    <input
-                        type="text"
-                        name="address"
-                        value={freelancerData.address}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 p-2 rounded-lg"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">About Yourself</label>
-                    <textarea
-                        name="aboutYourself"
-                        value={freelancerData.aboutYourself}
-                        onChange={handleInputChange}
-                        className="w-full border border-gray-300 p-2 rounded-lg"
-                        required
-                    />
-                </div>
-
-                <div className="mb-4">
-                    <label className="block text-sm font-bold mb-2">Profile Photo</label>
-                    <div className="flex items-center">
-                        {selectedFile ? (
-                            <img
-                                src={URL.createObjectURL(selectedFile)}
-                                alt="Selected"
-                                width={100}
-                                height={100}
-                                className="object-cover rounded-lg"
-                            />
-                        ) : freelancerData.profilePhoto ? (
-                            <img
-                                src={freelancerData.profilePhoto}
-                                alt="Profile"
-                                width={100}
-                                height={100}
-                                className="object-cover rounded-lg"
-                            />
-                        ) : (
-                            <AddPhotoAlternateOutlined sx={{ fontSize: "50px", color: "black" }} />
-                        )}
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2">Name</label>
                         <input
-                            type="file"
-                            onChange={handleFileChange}
-                            className="ml-4"
+                            type="text"
+                            name="name"
+                            value={freelancerData.name}
+                            onChange={handleInputChange}
+                            className="w-full border border-gray-300 p-2 rounded-lg"
+                            required
                         />
                     </div>
-                </div>
 
-                <button
-                    type="submit"
-                    disabled={uploading}
-                    className="w-full bg-blue-500 text-white py-2 rounded-lg"
-                >
-                    {uploading ? "Updating..." : "Update Profile"}
-                </button>
-            </form>
-        </div>
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2">Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            value={freelancerData.email}
+                            onChange={handleInputChange}
+                            className="w-full border border-gray-300 p-2 rounded-lg"
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2">City</label>
+                        <select
+                            name="city"
+                            id="city"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                            onChange={handleInputChange}
+                            value={freelancerData.city}
+                            required
+                        >
+                            <option value="">Select City</option>
+                            {uniqueSortedCities.map((city) => (
+                                <option key={city} value={city}>
+                                    {city}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2">Address</label>
+                        <input
+                            type="text"
+                            name="address"
+                            value={freelancerData.address}
+                            onChange={handleInputChange}
+                            className="w-full border border-gray-300 p-2 rounded-lg"
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2">About Yourself</label>
+                        <textarea
+                            name="aboutYourself"
+                            value={freelancerData.aboutYourself}
+                            onChange={handleInputChange}
+                            className="w-full border border-gray-300 p-2 rounded-lg"
+                            required
+                        />
+                    </div>
+
+                    <div className="mb-4">
+                        <label className="block text-sm font-bold mb-2">Profile Photo</label>
+                        <div className="flex items-center">
+                            {selectedFile ? (
+                                <img
+                                    src={URL.createObjectURL(selectedFile)}
+                                    alt="Selected"
+                                    width={100}
+                                    height={100}
+                                    className="object-cover rounded-lg"
+                                />
+                            ) : freelancerData.profilePhoto ? (
+                                <img
+                                    src={freelancerData.profilePhoto}
+                                    alt="Profile"
+                                    width={100}
+                                    height={100}
+                                    className="object-cover rounded-lg"
+                                />
+                            ) : (
+                                <AddPhotoAlternateOutlined sx={{ fontSize: "50px", color: "black" }} />
+                            )}
+                            <input
+                                type="file"
+                                onChange={handleFileChange}
+                                className="ml-4"
+                            />
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={uploading}
+                        className="w-full bg-blue-500 text-white py-2 rounded-lg"
+                    >
+                        {uploading ? "Updating..." : "Update Profile"}
+                    </button>
+                </form>
+            </div>
         </div>
     );
 }

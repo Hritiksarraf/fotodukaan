@@ -13,7 +13,7 @@ import Image from 'next/image';
 
 const categories = [
     {
-    name: 'Photography',
+    name: 'Traditional Photography',
     subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
     pricing: {
         fullDayPrice: true,
@@ -41,7 +41,7 @@ const categories = [
         },
     },
     {
-    name: 'Videography',
+    name: 'Traditional Videography',
     subcategories: ['Wedding', 'Toure & Travel', 'Pre wedding', 'Birthday', 'Anniversary', 'Engagement', 'Event', 'New Born Baby', 'Corporate', 'Brand Promotion', 'Fashion', 'Other'],
     pricing: {
         fullDayPrice: true,

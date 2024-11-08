@@ -14,7 +14,7 @@ export default function Page() {
 
   const getFreelancers = async () => {
     try {
-      const response = await fetch(`/api/freelancer/type/${people}`, {
+      const response = await fetch(`/api/freelancer/type/${decodedpeople}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -27,10 +27,10 @@ export default function Page() {
       if (datas.message) {
         setData([]);
       } else {
-        console.log(datas)
-        setData(datas);
-      }
+        const sortedData = datas.sort((a, b) => b.stars.star - a.stars.star);
+        setData(sortedData);
 
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching freelancers:', error);
@@ -59,9 +59,9 @@ export default function Page() {
             <SearchBar/>
         </div>
       {data.length === 0 ? (
-        <p className='text-center text-2xl md:text-5xl'>No freelancers found for {people}</p>
+        <p className='text-center text-2xl mt-10 md:text-5xl'>No freelancers found for {decodedpeople}</p>
       ) : (  <>
-       <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{decodedpeople}</span></p>
+       <p className='text-center font-bold text-2xl md:text-5xl my-10'>Freelancers for <span className='text-blue-600'>{decodedpeople}</span></p>
       <div className='flex flex-wrap gap-8'>
         
         {data.map((freelancer) => (

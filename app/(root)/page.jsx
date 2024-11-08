@@ -17,25 +17,25 @@ export default function Home() {
 
   const Services = [
     {
-      title: "Photography",
+      title: "Traditional Photographer",
       img: "https://www.silkphotos.com/wp-content/uploads/2013/08/Indian-wedding-photographer-05.jpg",
-      link: "/freelancer/event/Photography",
+      link: "/freelancer/event/Traditional Photography",
       des: "Our professional photographers capture the essence of your special moments, from weddings and events to personal and corporate shoots. With a creative eye and attention to detail, we ensure every shot tells your story beautifully."
     },
     {
-      title: "Candid Photography",
+      title: "Candid Photographer",
       img: "https://www.photojaanic.com/blog/wp-content/uploads/sites/2/2017/03/02.jpg",
       link: "/freelancer/event/Candid Photography",
       des: "Specializing in capturing authentic, unposed moments, our candid photography services provide a natural, storytelling approach to documenting your special events."
     },
     {
-      title: "Videography",
+      title: "Traditional Videographer",
       img: "https://www.wedding.film/wp-content/uploads/2023/03/how-long-does-it-take-to-edit-a-wedding-video.jpg",
-      link: "/freelancer/event/Videography",
+      link: "/freelancer/event/Traditional Videography",
       des: "Our videographers create stunning visual narratives that highlight the most important moments of your events, preserving your memories in a cinematic way."
     },
     {
-      title: "Cinematography",
+      title: "Cinematographer",
       img: "https://img.freepik.com/free-photo/close-up-influencer-holding-flowers_23-2149172443.jpg",
       link: "/freelancer/event/Cinematography",
       des: "Our talented cinematographers specialize in creating high-quality films that evoke emotion and beautifully capture the essence of your events or projects."
