@@ -14,10 +14,57 @@ import { Typography } from '@mui/material'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import Script from 'next/script';
 import Razorpay from 'razorpay';
+import { useRouter } from 'next/navigation';
 
-
+const cityArray = [
+  "Mumbai, Maharashtra",
+  "Delhi, National Capital Territory",
+  "Bangalore (Bengaluru), Karnataka",
+  "Hyderabad, Telangana",
+  "Ahmedabad, Gujarat",
+  "Chennai, Tamil Nadu",
+  "Kolkata, West Bengal",
+  "Pune, Maharashtra",
+  "Jaipur, Rajasthan",
+  "Surat, Gujarat",
+  "Lucknow, Uttar Pradesh",
+  "Kanpur, Uttar Pradesh",
+  "Nagpur, Maharashtra",
+  "Indore, Madhya Pradesh",
+  "Patna, Bihar",
+  "Bhopal, Madhya Pradesh",
+  "Vadodara, Gujarat",
+  "Ludhiana, Punjab",
+  "Agra, Uttar Pradesh",
+  "Nashik, Maharashtra",
+  "Coimbatore, Tamil Nadu",
+  "Kochi (Cochin), Kerala",
+  "Visakhapatnam, Andhra Pradesh",
+  "Ghaziabad, Uttar Pradesh",
+  "Thiruvananthapuram, Kerala",
+  "Varanasi, Uttar Pradesh",
+  "Rajkot, Gujarat",
+  "Meerut, Uttar Pradesh",
+  "Faridabad, Haryana",
+  "Amritsar, Punjab",
+  "Jodhpur, Rajasthan",
+  "Madurai, Tamil Nadu",
+  "Raipur, Chhattisgarh",
+  "Aurangabad, Maharashtra",
+  "Gwalior, Madhya Pradesh",
+  "Ranchi, Jharkhand",
+  "Guwahati, Assam",
+  "Bhubaneswar, Odisha",
+  "Mysore, Karnataka",
+  "Jabalpur, Madhya Pradesh",
+  "Goa, Maharashtra",
+  "Muzaffarpur, Bihar"
+];
+{/* City */ }
 
 export default function OrderForm() {
+  const uniqueSortedCities = [...new Set(cityArray.map(city => city.split(",")[0]))].sort();
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const { id } = useParams();
   const [freelancerData, setFreelancerData] = useState({});
@@ -50,6 +97,7 @@ export default function OrderForm() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [blockedDates, setBlockedDates] = useState([]);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
+  const [fullPayment, setFullPayment] = useState(false)
   useEffect(() => {
     console.log("id", id)
     getBlockedDates(id)
@@ -81,8 +129,8 @@ export default function OrderForm() {
       const data = await response.json();
       setFreelancerData(data);
       // Set the token amount based on the full day price initially
-      setTokenAmount(data.startingPrice);
-      setOriginalTokenAmount(data.startingPrice);
+      setTokenAmount(0);
+      setOriginalTokenAmount(0);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching freelancer data:', error);
@@ -131,19 +179,19 @@ export default function OrderForm() {
       // Update token amount based on selected event and time
       if (orderData.event === 'Wedding') {
         if (value === 'halfDay') {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0));
         } else if (value === 'fullDay') {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0));
         }
       } else {
         // Non-wedding event pricing
         if (value === 'halfDay') {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0));
         } else {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0));
         }
       }
@@ -221,10 +269,14 @@ export default function OrderForm() {
       setLocalUser(decodedUser);
       setLoading(false);
     }
+    else {
+      alert('please login before making an order')
+      router.push('/log-in')
+    }
   }, []);
 
   // Handle form submission
-  const handleSubmit = async (e,razorpayOrder) => {
+  const handleSubmit = async (e, razorpayOrder) => {
     e.preventDefault();
     if (!isRefundPolicyAccepted) {
       alert('You must accept the refund policy to proceed.');
@@ -268,7 +320,7 @@ export default function OrderForm() {
         freelancerid,
         time: orderData.time,
         isPolicyAccepted: isRefundPolicyAccepted,
-        orderId:razorpayOrder.orderId
+        orderId: razorpayOrder.orderId
       };
 
       console.log(orderDetails)
@@ -297,7 +349,11 @@ export default function OrderForm() {
   };
 
   const handleNext = () => {
-    setStep(2); // Move to the next step
+    if (orderData.mobileNumber.length != 10) {
+      alert('mobile number must be of 10 digit');
+      return;
+    }
+    setStep(2);
   };
 
   const handleBack = () => {
@@ -305,25 +361,25 @@ export default function OrderForm() {
   };
 
 
-  const handlePayment= async(e)=>{
+  const handlePayment = async (e) => {
     e.preventDefault();
     setIsProcessingPayment(true);
 
-   
+
 
     try {
-     const  amount=tokenAmount
+      const amount = tokenAmount
       console.log(amount)
       const payload = { payAmount: tokenAmount };
-const response = await fetch('/api/razorpay', {
-  method: "POST",
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(payload),  // Convert payload to JSON string
-});
-  
-      const razorpayOrder=response.json();
+      const response = await fetch('/api/razorpay', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),  // Convert payload to JSON string
+      });
+
+      const razorpayOrder = response.json();
       if (!isRefundPolicyAccepted) {
         alert('You must accept the refund policy to proceed.');
         return;
@@ -331,9 +387,9 @@ const response = await fetch('/api/razorpay', {
       const userid = userData._id;
       const freelancerid = freelancerData._id;
       const discounts = discount;
-      const razorpayOrderId=razorpayOrder.orderId;
-  
-     console.log(orderData.mobileNumber)
+      const razorpayOrderId = razorpayOrder.orderId;
+
+      console.log(orderData.mobileNumber)
       if (selectedDate == null) {
         alert('please select a valid date ')
         return
@@ -352,23 +408,24 @@ const response = await fetch('/api/razorpay', {
 
       var options = {
         "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
-        "amount": tokenAmount*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "amount": tokenAmount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
         "name": "Foto Dukaan", //your business name
         "description": "Order Transaction",
         "image": "https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png",
         "order_id": razorpayOrder.orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "handler": function (response){
+        "handler": function (response) {
           // handleSubmit(e,razorpayOrder);
-          alert('sucess')
+          alert('Your order has been placed')
+          router.push('.yourOrder')
         },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-            "name": orderData.customerName, //your customer's name
-            
+          "name": orderData.customerName, //your customer's name
+
         },
         "notes": {
-          name:orderData.customerName,
-          customerPhone:orderData.mobileNumber,
+          name: orderData.customerName,
+          customerPhone: orderData.mobileNumber,
           pinCode: orderData.pincode,
           address: orderData.address,
           city: orderData.selectedCity,
@@ -377,23 +434,23 @@ const response = await fetch('/api/razorpay', {
           discount: discounts,
           service: orderData.selectedService,
           event: orderData.event,
-          
+
           userid,
           freelancerid,
           time: orderData.time,
-          
-          orderId:razorpayOrderId
+
+          orderId: razorpayOrderId
         },
         "theme": {
-            "color": "#3399cc"
+          "color": "#3399cc"
         }
-        
-    };
-    const rzp1 = new window.Razorpay(options);
-    rzp1.open();
+
+      };
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
     } catch (error) {
       console.log("razorPayerror", error)
-      
+
     }
 
   }
@@ -426,7 +483,7 @@ const response = await fetch('/api/razorpay', {
                 {/* Event Date */}
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Event Date</label>
-                  
+
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                       label="Select a date"
@@ -521,12 +578,32 @@ const response = await fetch('/api/razorpay', {
                     placeholder="Enter your mobile number"
                     required
                     pattern="^[0-9]{10}$"  // Only allows exactly 10 digits
-    title="Please enter a 10-digit mobile number"  // Tooltip for invalid input
+                    title="Please enter a 10-digit mobile number"  // Tooltip for invalid input
                   />
                 </div>
 
                 {/* City Dropdown */}
                 <div>
+                  <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                    City
+                  </label>
+                  <select
+                    name="selectedCity"
+                    value={orderData.selectedCity}
+                    onChange={handleInputChange}
+                    className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
+                  >
+                    <option value="">Select City</option>
+                    {uniqueSortedCities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+
+                </div>
+                {/* <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">City</label>
                   <select
                     name="selectedCity"
@@ -539,7 +616,7 @@ const response = await fetch('/api/razorpay', {
                     <option value="Patna">Patna</option>
                     <option value="Muzzferpur">Muzzferpur</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* Next Button */}
                 <button
@@ -555,7 +632,7 @@ const response = await fetch('/api/razorpay', {
             {/* Step 2 - Additional Details */}
             {step === 2 && (
               <>
-                
+
                 {/* <StaticDatePicker
                   displayStaticWrapperAs="desktop"
                   openTo="day"
@@ -671,6 +748,35 @@ const response = await fetch('/api/razorpay', {
                   )}
                 </div>
                 {/* Refund Policy Checkbox */}
+
+
+                {originalTokenAmount > 0 && <div>
+                  <div>
+                    <h1 className='text-sm text-green-600'>You can just pay a token amount of 20% or do full payment</h1>
+                  </div>
+                  <div className="flex items-center ">
+                    <input
+                      type="checkbox"
+                      id="fullPayment"
+                      checked={fullPayment}
+                      onChange={(e) => {
+
+                        !fullPayment ? setTokenAmount(originalTokenAmount) : setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0) * 0.2))
+                        setFullPayment(!fullPayment)
+                      }}
+                      className="mr-2 text-sm"
+                    />
+                    <label htmlFor="refundPolicy" className="text-lg text-gray-700">
+                      Pay full amount {originalTokenAmount}
+                    </label>
+
+                  </div>
+
+
+                  {/* Amount to be Paid */}
+                  <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p></div>}
+
+                {/* Submit Button */}
                 <div className="flex items-center mb-4">
                   <input
                     type="checkbox"
@@ -684,11 +790,6 @@ const response = await fetch('/api/razorpay', {
                     I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund & cancellation policy</a>
                   </label>
                 </div>
-
-                {/* Amount to be Paid */}
-                <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p>
-
-                {/* Submit Button */}
                 <button
                   type="submit"
                   className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold hover:bg-blue-600 transition-all"
