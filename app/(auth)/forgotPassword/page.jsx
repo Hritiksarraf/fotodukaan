@@ -132,7 +132,7 @@ export default function Pages() {
       console.log(response);
       if(response.success){
         console.log(response);
-        toast.success('Signup Successful', {
+        toast.success('Password Reset Successful', {
           position: 'top-left',
           autoClose: 5000,
           hideProgressBar: false,
@@ -163,7 +163,7 @@ export default function Pages() {
       
     } catch (error) {
       // console.log(error)
-      toast.error('Signup Failed', {
+      toast.error('Password Reset Failed', {
         position: 'top-left',
         autoClose: 5000,
         hideProgressBar: false,
