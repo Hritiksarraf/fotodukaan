@@ -417,7 +417,7 @@ export default function OrderForm() {
         "handler": function (response) {
           // handleSubmit(e,razorpayOrder);
           alert('Your order has been placed')
-          router.push('.yourOrder')
+          router.push('/yourOrder')
         },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
           "name": orderData.customerName, //your customer's name
