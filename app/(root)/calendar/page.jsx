@@ -46,8 +46,8 @@ function BlockedDatesCalendar() {
       });
 
       const data = await response.json();
-      console.log("Events data:", data);
-      setEvents(data);
+      // console.log("Events data:", data);
+      setEvents(data.reverse());
       setLoading(false)
     } catch (error) {
       console.error("Error fetching events:", error);

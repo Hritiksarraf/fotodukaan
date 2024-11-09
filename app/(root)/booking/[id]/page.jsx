@@ -16,6 +16,7 @@ import Script from 'next/script';
 import Razorpay from 'razorpay';
 
 
+
 export default function OrderForm() {
   const [step, setStep] = useState(1);
   const { id } = useParams();
@@ -96,6 +97,7 @@ export default function OrderForm() {
 
   // Handle input changes
   const handleInputChange = (e) => {
+    console.log(orderData.mobileNumber)
     const { name, value } = e.target;
     setOrderData({ ...orderData, [name]: value });
     if (name === 'selectedService') {
@@ -278,7 +280,7 @@ export default function OrderForm() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(orderDetails),
-        });
+        })
         console.log('i am here3')
         const result = await response.json();
         if (response.ok) {
@@ -310,10 +312,16 @@ export default function OrderForm() {
    
 
     try {
-
-      const response = await fetch('/api/razorpay', {
-        method:"POST",
-      })
+     const  amount=tokenAmount
+      console.log(amount)
+      const payload = { payAmount: tokenAmount };
+const response = await fetch('/api/razorpay', {
+  method: "POST",
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(payload),  // Convert payload to JSON string
+});
   
       const razorpayOrder=response.json();
       if (!isRefundPolicyAccepted) {
@@ -323,8 +331,9 @@ export default function OrderForm() {
       const userid = userData._id;
       const freelancerid = freelancerData._id;
       const discounts = discount;
+      const razorpayOrderId=razorpayOrder.orderId;
   
-     
+     console.log(orderData.mobileNumber)
       if (selectedDate == null) {
         alert('please select a valid date ')
         return
@@ -343,7 +352,7 @@ export default function OrderForm() {
 
       var options = {
         "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
-        "amount": 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "amount": tokenAmount*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
         "name": "Foto Dukaan", //your business name
         "description": "Order Transaction",
@@ -355,10 +364,11 @@ export default function OrderForm() {
         },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
             "name": orderData.customerName, //your customer's name
-            "contact": orderData.mobileNumber,
+            
         },
         "notes": {
-          email: localUser?.email || '',
+          name:orderData.customerName,
+          customerPhone:orderData.mobileNumber,
           pinCode: orderData.pincode,
           address: orderData.address,
           city: orderData.selectedCity,
@@ -367,12 +377,12 @@ export default function OrderForm() {
           discount: discounts,
           service: orderData.selectedService,
           event: orderData.event,
-          additionalDetails: [],
+          
           userid,
           freelancerid,
           time: orderData.time,
-          isPolicyAccepted: isRefundPolicyAccepted,
-          orderId:razorpayOrder.orderId
+          
+          orderId:razorpayOrderId
         },
         "theme": {
             "color": "#3399cc"
@@ -510,6 +520,8 @@ export default function OrderForm() {
                     className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Enter your mobile number"
                     required
+                    pattern="^[0-9]{10}$"  // Only allows exactly 10 digits
+    title="Please enter a 10-digit mobile number"  // Tooltip for invalid input
                   />
                 </div>
 
