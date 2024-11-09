@@ -56,9 +56,6 @@ export default function Pages() {
   function onSignup(e) {
     e.preventDefault();
     let formErrors = {};
-    if (name.length < 3) {
-      formErrors.name = 'Name must be at least 3 characters long.';
-    }
     if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
       formErrors.phone = 'Phone number must be 10 digits.';
     }
@@ -285,12 +282,12 @@ export default function Pages() {
                 <button
                 type="submit"
                   onClick={onSignup}
-                  className="bg-blue-600 w-full px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
+                  className="bg-blue-600 w-full  flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
                   {verifyLoading && (
                     <CgSpinner size={20} className="mt-1 animate-spin" />
                   )}
-                  <span> Sign Up</span>
+                  <span>Update Password</span>
                 </button>
                 
                 <p className="text-sm font-light text-gray-500 dark:text-black">
