@@ -155,10 +155,10 @@ export default function Navbar() {
                                 className="text-[#0E2041] font-bold btn-select      hover:text-gray-400"
                             >
                                 <option value="">Select Category</option>
-                                <option value="Traditional Photography">Traditional Photography</option>
-                                <option value="Candid Photography">Candid Photography</option>
-                                <option value="Traditional Videography">Traditional Videography</option>
-                                <option value="Cinematography">Cinematography</option>
+                                <option value="Traditional Photography">Traditional Photographer</option>
+                                <option value="Candid Photography">Candid Photographer</option>
+                                <option value="Traditional Videography">Traditional Videographer</option>
+                                <option value="Cinematography">Cinematographer</option>
                                 <option value="Drone">Drone</option>
                                 <option value="Crane">Crane</option>
                                 <option value="LED wall">LED wall</option>
