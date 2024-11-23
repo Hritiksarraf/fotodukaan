@@ -75,14 +75,14 @@ export default function Navbar() {
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>}
-                            {profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                            {profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-[#0E2041] w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
                                 </div>
                                 <h1 className="text-white font-bold">{user.name}</h1>
                                 <div className="flex flex-col gap-5">
-                                    <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                                    <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-[#0E2041] rounded-full md:inline-flex">
                                         Bookings
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                             <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
@@ -97,7 +97,7 @@ export default function Navbar() {
 
                                 </div>
                             </div>}
-                            {profileState && user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                            {profileState && user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-[#0E2041] w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -140,7 +140,7 @@ export default function Navbar() {
                         {
                             navigation.map((item, idx) => {
                                 return (
-                                    <li key={idx} className="text-blue-700 font-bold       hover:text-gray-400">
+                                    <li key={idx} className="text-[#0E2041] font-bold       hover:text-gray-400">
                                         <Link href={item.path} className="block">
                                             {item.title}
                                         </Link>
@@ -152,7 +152,7 @@ export default function Navbar() {
                             <select
                                 value={category}
                                 onChange={handleCategoryChange}
-                                className="text-blue-700 font-bold btn-select      hover:text-gray-400"
+                                className="text-[#0E2041] font-bold btn-select      hover:text-gray-400"
                             >
                                 <option value="">Select Category</option>
                                 <option value="Traditional Photography">Traditional Photography</option>
@@ -168,7 +168,7 @@ export default function Navbar() {
                         <li>
                         <select
     value="policy"
-    className="text-blue-700 font-bold btn-select hover:text-gray-400"
+    className="text-[#0E2041] font-bold btn-select hover:text-gray-400"
     onChange={(e) => {
         const selectedValue = e.target.value;
         let url = "";
@@ -209,12 +209,12 @@ export default function Navbar() {
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>
-                            <button onClick={() => { setProfileState(!profileState) }} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 font-medium text-blue-700 hover:text-yellow-700 active:bg-blue-600 rounded-full md:inline-flex">
+                            <button onClick={() => { setProfileState(!profileState) }} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 font-medium text-[#0E2041] hover:text-yellow-700 active:bg-[#0E2041] rounded-full md:inline-flex">
                                 {user.name}
                             </button>
                         </div>
 
-                        {profileState && !user.freelancer && <div className="absolute md:translate-y-32 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                        {profileState && !user.freelancer && <div className="absolute md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                             <div>
                                 <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -237,7 +237,7 @@ export default function Navbar() {
                             </div>
                         </div>}
                         <div>
-                            {profileState && user.freelancer && <div className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
+                            {profileState && user.freelancer && <div className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -259,7 +259,7 @@ export default function Navbar() {
                         </div>
                     </div>) :
                         (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
-                            <Link href="/log-in" className="block text-blue-600 hover:text-gray-400">
+                            <Link href="/log-in" className="block text-[#0E2041] hover:text-gray-400">
                                 Log in
                             </Link>
                             <Link href="sign-up" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
@@ -268,7 +268,7 @@ export default function Navbar() {
                                     <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                                 </svg>
                             </Link>
-                            <Link href="/register" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                            <Link href="/register" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-[#0E2041] rounded-full md:inline-flex">
                                 Register as Photographer
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                     <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />

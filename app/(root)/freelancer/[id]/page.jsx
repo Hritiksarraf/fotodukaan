@@ -344,7 +344,7 @@ export default function page() {
         </section> */}
 
       <div className="w-full px-4 pt-5 ">
-        <h1 className="text-3xl md:text-5xl text-center text-black mb-8" style={{ fontFamily: 'Poppins' }}>
+        <h1 className="text-3xl md:text-5xl text-center text-black mb-8" >
           Check Out My Services
         </h1>
         <div className="md:w-[50vw] md:mx-[15vw] bg-gradient-to-b  md:p-4 rounded-lg ">
@@ -407,7 +407,7 @@ export default function page() {
 
       <section className='w-[100vw] mx-auto md:pr-[25vw] md:pl-[15vw]'>
         {freelancerData.image.length > 0 && freelancerData.video.length > 0 && (
-          <h2 className='text-center text-4xl md:text-5xl my-6' style={{ fontFamily: 'Poppins' }}>
+          <h2 className='text-center text-3xl md:text-5xl my-6' >
             Glimpses of My Work
           </h2>
         )}
@@ -496,7 +496,7 @@ export default function page() {
       <section className=' px-auto md:pr-[25vw] md:pl-[15vw] w-[100vw]'>
         <div className='bg-gradient-to-r from-white to-white'>
           <div className=' text-3xl px-5  '>
-            <h3 className='py-5 text-2xl lg:text-4xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
+            <h3 className='py-5 text-2xl lg:text-4xl font-semibold' >
               Review and Rating
             </h3>
             <p className='text-lg text-gray-600 '> {freelancerData.stars.star} star rating | {freelancerData.stars.noOfPeople} Review</p>
@@ -691,12 +691,12 @@ export default function page() {
 
         <section className='my-2'>
           <div>
-            <h1 className='pl-5 mx-5 text-3xl text-gray-700 font-bold'>Policies</h1>
+            <h1 className='pl-5  text-2xl text-gray-700 font-bold'>Policies</h1>
           </div>
           <div>
             <ul className='pl-5'>
               {policyPoints.map((point, index) => (
-                <li key={index} className='text-gray-600 py-3 font-bold text-sm'> <span><DoneIcon className='text-green-900 ' /></span> {point}</li>
+                <li key={index} className='text-gray-600 py-1 font-bold text-sm'> <span><DoneIcon className='text-green-900 ' /></span> {point}</li>
               ))}
             </ul>
           </div>

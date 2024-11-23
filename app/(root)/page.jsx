@@ -20,7 +20,7 @@ export default function Home() {
       title: "Traditional Photographer",
       img: "https://www.silkphotos.com/wp-content/uploads/2013/08/Indian-wedding-photographer-05.jpg",
       link: "/freelancer/event/Traditional Photography",
-      des: "Our professional photographers capture the essence of your special moments, from weddings and events to personal and corporate shoots. With a creative eye and attention to detail, we ensure every shot tells your story beautifully."
+      des: "Our professional photographers capture the essence of your special moments, from weddings and events to personal and corporate shoots."
     },
     {
       title: "Candid Photographer",
@@ -418,11 +418,8 @@ export default function Home() {
       </section>
       <section>
         <div>
-          <h1 className="text-4xl md:text-6xl py-10 font-serif text-center text-gradient-to-r from-white to-blue-100"
-            style={{
-              fontFamily: "poppins"
-
-            }}
+          <h1 className="text-4xl md:text-6xl py-10 text-center text-gradient-to-r from-white to-blue-100"
+            
           >Services we provide</h1>
         </div>
         <div className='flex flex-wrap items-center justify-center'>
@@ -432,14 +429,14 @@ export default function Home() {
 
             return (
               <Link href={link}>
-                <div key={index} className='relative border-[0.4rem] md:w-[26vw] mx-6 bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10  '>
-                  <div className='block md:h-[21rem] md:w-[21rem] mx-6 md:mx-auto rounded-full pt-6'>
+                <div key={index} className='relative border-[0.4rem] md:w-[21vw] mx-6 bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10  '>
+                  <div className='block md:h-[17rem] md:w-[17rem] mx-6 md:mx-auto rounded-full pt-6'>
                     <img src={img} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
                   </div>
 
                   <div className='flex flex-col items-center text-center mt-4'>
                     <p className='text-xl font-bold my-1'>{title}</p>
-                    <p className='text-sm mb-8 px-3 '> <span className='font-semibold text-xl'> </span >{des}</p>
+                    <p className='text-sm mb-8 px-3 '> <span className='font-semibold text-lg'> </span >{des}</p>
 
 
 
@@ -451,7 +448,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-cover  bg-center w-full py-14  flex flex-col md:flex-row text-center md:text-left bg-gradient-to-b md:bg-gradient-to-r from-white to-blue-300">
+      <section className="bg-cover  bg-center w-full py-8  flex flex-col md:flex-row text-center md:text-left bg-gradient-to-b md:bg-gradient-to-r from-white to-blue-300">
         <div className="flex bg bg-white rounded-b-[9rem] p-5 md:p-0 md:rounded-r-[17rem] justify-center items-center  md:w-[40%]  ">
           <div className="md:w-[500px] md:h-[500px] rounded-t-[10rem]   flex justify-center  relative">
             <Image
@@ -465,11 +462,8 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="w-full md:w-[60%] px-7 py-10 md:px-20">
-          <h1 className="text-3xl md:text-5xl  text-left md:pr-32  text-black " style={{
-            fontFamily: "poppins"
-
-          }}>
+        <div className="w-full md:w-[60%] px-7  md:px-20">
+          <h1 className="text-3xl md:text-4xl  text-left md:pr-32  text-black " >
             Hire Us to Turn    <span className="">Your Moments</span> into Masterpieces
           </h1>
           <p className="  md:text-sm mt-2  md:mt-5 m-auto md:pr-40 font-serif text-left text-black text-[0.6rem]">
@@ -478,26 +472,26 @@ export default function Home() {
           <div className='mt-9'>
 
             <div className='flex'>
-              <div className='bg-[#9558EC] rounded-md h-full inline-block p-1'><CameraAltOutlinedIcon className='text-3xl  md:text-4xl text-white' /></div>
+              <div className='bg-[#9558EC] rounded-md h-full inline-block p-1'><CameraAltOutlinedIcon className='text-2xl  md:text-4xl text-white' /></div>
               <div className='ml-2 '>
-                <h1 className='text-xl md:text-3xl font-serif text-left text-black '>For Freelancers</h1>
-                <p className="md:text-sm md:pr-64 text-left text-black font-serif text-[0.6rem]">At Fotodukaan, we empower talented photographers, cinematographers, drone operators, and video editors to showcase their skills and connect with clients. Our platform helps freelancers reach more customers, secure more bookings, and grow their careers effortlessly. With a simple registration process, you can start earning and get hired for exciting projects right away.</p>
+                <h1 className='text-xl md:text-2xl  text-left text-black '>For Freelancers</h1>
+                <p className="md:text-sm md:pr-64 text-left text-black font-serif text-[0.6rem]">At Fotodukaan, we empower talented freelancer to showcase their skills and connect with clients. Our platform helps freelancers reach more customers, secure more bookings, and grow their careers effortlessly.</p>
               </div>
             </div>
 
             <div className='flex mt-8'>
-              <div className='bg-yellow-500 rounded-md h-full inline-block p-1'><CameraAltOutlinedIcon className='text-3xl  md:text-4xl text-white' /></div>
+              <div className='bg-yellow-500 rounded-md h-full inline-block p-1'><CameraAltOutlinedIcon className='text-2xl  md:text-4xl text-white' /></div>
               <div className='ml-2 '>
-                <h1 className='text-xl md:text-3xl font-serif  text-left '>For Customers</h1>
-                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">We make it easy for you to find the perfect professionals for any event or project. Whether you're planning a wedding, hosting a corporate event, or working on a creative project, our platform connects you with top-rated freelancers who specialize in capturing your vision. Browse portfolios, book instantly, and let the experts handle the rest.</p>
+                <h1 className='text-xl md:text-2xl   text-left '>For Customers</h1>
+                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">We make it easy for you to find the perfect professionals for any event or project. Whether you're planning a wedding, hosting a corporate event, or working on a creative project, our platform connects you with top-rated freelancers who specialize in capturing your vision.</p>
               </div>
             </div>
 
             <div className='flex mt-8'>
-              <div className='bg-blue-500 rounded-md h-full  inline-block p-1'><CameraAltOutlinedIcon className='text-3xl md:text-4xl text-white' /></div>
+              <div className='bg-blue-500 rounded-md h-full  inline-block p-1'><CameraAltOutlinedIcon className='text-2xl md:text-4xl text-white' /></div>
               <div className='ml-2 '>
-                <h1 className='text-xl md:text-3xl text-left  font-serif '>Our Mission</h1>
-                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">Our mission at Fotodukaan is to bridge the gap between talented freelancers and clients who value the art of visual storytelling. We strive to make high-quality photography and videography accessible to everyone while supporting the creative community. By providing a seamless platform for freelancers and customers, we ensure that every moment is turned into a masterpiece.</p>
+                <h1 className='text-xl md:text-2xl text-left   '>Our Mission</h1>
+                <p className="md:text-sm  text-left text-black md:pr-64  font-serif text-[0.6rem]">Our mission at Fotodukaan is to bridge the gap between talented freelancers and clients who value the art of visual storytelling. We strive to make high-quality photography and videography accessible to everyone while supporting the creative community. </p>
               </div>
             </div>
 
@@ -539,6 +533,7 @@ export default function Home() {
 
               return (
                 <>
+                <Link href={`/freelancer/${_id}`} className="">
                   <div key={_id} className='relative w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
                     <div className='block h-64 w-64  mx-auto rounded-full pt-4'>
                       <img src={profilePhoto} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
@@ -573,6 +568,7 @@ export default function Home() {
 
                     </div>
                   </div>
+                  </Link>
                 </>
               )
             })}
