@@ -51,18 +51,18 @@ export default function PricePicker({ freelancerData }) {
 
     // Handle toggling of selected dates
     const handleDateToggle = (newDate) => {
-        const normalizedDate = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate())
-            .toISOString()
-            .split('T')[0];
-
-        if (selectedDates.includes(normalizedDate)) {
-            // Deselect
-            setSelectedDates(selectedDates.filter((date) => date !== normalizedDate));
+        // Format the date as YYYY-MM-DD in local time
+        const formattedDate = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
+    
+        if (selectedDates.includes(formattedDate)) {
+            // Deselect the date
+            setSelectedDates(selectedDates.filter((date) => date !== formattedDate));
         } else {
-            // Select
-            setSelectedDates([...selectedDates, normalizedDate]);
+            // Select the date
+            setSelectedDates([...selectedDates, formattedDate]);
         }
     };
+    
 
     // Handle month change
     const handleMonthChange = (date) => {
@@ -128,6 +128,25 @@ export default function PricePicker({ freelancerData }) {
     const router = useRouter();
 
     function sendprops() {
+
+        if (!selectedCategory) {
+            alert("Please select a category.");
+            return;
+        }
+        if (!selectedSubcategory) {
+            alert("Please select a subcategory.");
+            return;
+        }
+        if (!timeOption) {
+            alert("Please select Duration.");
+            return;
+        }
+        if (selectedDates.length === 0) {
+            alert("Please select at least one date.");
+            return;
+        }
+
+
         const formattedTimeOption =
             timeOption === 'extraHourPrice' ? `${timeOption},${extraHours}` : timeOption;
     
@@ -216,7 +235,7 @@ export default function PricePicker({ freelancerData }) {
                 )}
 
 {/* <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link> */}
-<a onClick={sendprops} className="flex ml-auto text-white bg-pink-500 border-0 py-2 my-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>
+<a onClick={sendprops} className="flex ml-auto text-white bg-pink-500 border-0 py-2 my-2 px-6 cursor-pointer focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>
             </div>
 
             <div>
@@ -230,11 +249,9 @@ export default function PricePicker({ freelancerData }) {
                         shouldDisableDate={shouldDisableDate}
                         renderInput={(params) => <TextField {...params} />}
                         renderDay={(day, _selectedDates, pickersDayProps) => {
-                            const normalizedDate = new Date(day.getFullYear(), day.getMonth(), day.getDate())
-                                .toISOString()
-                                .split('T')[0];
-                            const isSelected = selectedDates.includes(normalizedDate);
-
+                            const formattedDate = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
+                            const isSelected = selectedDates.includes(formattedDate);
+                        
                             return (
                                 <PickersDay
                                     {...pickersDayProps}
