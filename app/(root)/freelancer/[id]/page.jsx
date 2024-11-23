@@ -304,7 +304,7 @@ export default function page() {
 
                 <div className="flex flex-col mt-2 md:flex-row">
                   <p className='text-sm'> <span className='font-semibold text-3xl'>{minamount} ₹ </span > Starting Price  </p>
-                  <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link>
+                  {/* <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link> */}
 
 
                 </div>
@@ -352,12 +352,12 @@ export default function page() {
             <div key={index} className=" border-b-2   rounded-lg">
               <div
                 onClick={() => handleAccordionClick(index)}
-                className="flex items-center justify-between cursor-pointer p-4 text-lg font-semibold text-blue-500  rounded-lg"
+                className="flex items-center justify-between cursor-pointer p-4 text-sm font-semibold text-blue-500  rounded-lg"
               >
                 <div>
                   <p className='text-center'>{category.replace(/\b\w/g, (char) => char.toUpperCase())}</p>
                 </div>
-                <span className=" text-2xl">{openIndex === index ? '-' : '+'}</span>
+                <span className=" text-xl">{openIndex === index ? '-' : '+'}</span>
               </div>
 
               {openIndex === index && (
@@ -366,7 +366,7 @@ export default function page() {
                     {/* <h2 className="text-xl font-bold text-[#0E2041]">Subcategories:</h2> */}
                     <div className="flex items-center   flex-wrap  mb-4">
                       {details.subcategories.map((sub, idx) => (
-                        <span key={idx} className="  text-lg  font-semibold border-r-2 px-3 text-gray-600">
+                        <span key={idx} className="  text-sm  font-semibold border-r-2 px-3 text-gray-600">
                           {sub.replace(/\b\w/g, (char) => char.toUpperCase())}
                         </span>
                       ))}
@@ -374,7 +374,7 @@ export default function page() {
 
                     {details.cameraDetails && (
                       <div className="mb-4 flex ml-4 flex-col   ">
-                        <h3 className="text-xl my-2 text-left   font-serife font-bold text-blue-600">
+                        <h3 className="text-sm my-2 text-left   font-serife font-bold text-blue-600">
                           {category === 'Photography' || category === 'Videography' || category === 'Candid Photography' || category === 'Cinematography' ? 'Camera Details' :
                             category === 'Drone' ? 'Drone Details' :
                               category === 'Video Editing' ? 'Video Editing Software' : ''}
@@ -384,8 +384,8 @@ export default function page() {
                             <div className=''>
 
                               <p key={key} className="font-bold  px-1">
-                                <span className='font-bold text-xl text-violet-900 '>{key.replace(/\b\w/g, (char) => char.toUpperCase())} : </span>
-                                <span className='font-medium text-xl text-emerald-900'>{value}</span>
+                                <span className='font-bold text-sm text-violet-900 '>{key.replace(/\b\w/g, (char) => char.toUpperCase())} : </span>
+                                <span className='font-medium text-sm text-emerald-900'>{value}</span>
                               </p>
                             </div>
 

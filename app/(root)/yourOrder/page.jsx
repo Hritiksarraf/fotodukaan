@@ -116,7 +116,13 @@ function OrdersPage() {
 
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Date</h2>
-                            <h1 className='text-xl font-bold'>{new Date(order.date).toLocaleDateString()}</h1>
+                            <div className='flex flex-wrap'>
+                                {order.date.split(",").map((date, index) => (
+                                  <p key={index} className="text-xl font-bold mb-1 px-2 border-r-2 ">
+                                    {date}
+                                  </p>
+                                ))}
+                              </div>
                           </div>
 
                           <div>
@@ -128,8 +134,19 @@ function OrdersPage() {
                               Service Duration
                             </h2>
                             <h1 className="text-xl font-bold">
-                              {order.time}
-                            </h1>
+                                {order.time
+                                  .split(",")
+                                  .map((value, index) =>
+                                    value === "extraHourPrice"
+                                      ? ""
+                                      : value === "fullDayPrice"
+                                        ? "Full Day"
+                                        : value === "halfDayPrice"
+                                          ? "Half Day"
+                                          : `${value}${index === 1 ? " Hours" : ""}` // Add "Hours" to the number
+                                  )
+                                  .join(" ")}
+                              </h1>
                           </div>
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Amount</h2>

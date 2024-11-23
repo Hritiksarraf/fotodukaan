@@ -15,6 +15,8 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import Script from 'next/script';
 import Razorpay from 'razorpay';
 import { useRouter } from 'next/navigation';
+import { Query } from 'mongoose';
+import { useBooking } from "../../context/BookingContext";
 
 const cityArray = [
   "Mumbai, Maharashtra",
@@ -63,8 +65,11 @@ const cityArray = [
 {/* City */ }
 
 export default function OrderForm() {
-  const uniqueSortedCities = [...new Set(cityArray.map(city => city.split(",")[0]))].sort();
+
   const router = useRouter();
+
+  const uniqueSortedCities = [...new Set(cityArray.map(city => city.split(",")[0]))].sort();
+
   const [step, setStep] = useState(1);
   const { id } = useParams();
   const [freelancerData, setFreelancerData] = useState({});
@@ -98,11 +103,30 @@ export default function OrderForm() {
   const [blockedDates, setBlockedDates] = useState([]);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [fullPayment, setFullPayment] = useState(false)
+
+
+  const { bookingData } = useBooking();
+  useEffect(() => {
+    if (bookingData) {
+      console.log('Received state:', bookingData);
+      setOriginalTokenAmount(bookingData.price);
+      setTokenAmount(Math.round(bookingData.price * 0.2))
+
+    } else {
+      alert('Select the requried Service and Dates')
+      router.push(`/freelancer/${id}`)
+    }
+  }, [bookingData]);
+
+
   useEffect(() => {
     console.log("id", id)
     getBlockedDates(id)
     // console.log(blockedDates)
   }, [])
+
+
+
   const getBlockedDates = async (Id) => {
     const data = await fetch(`/api/dates/${Id}`, {
       method: 'GET',
@@ -122,6 +146,8 @@ export default function OrderForm() {
     console.log(formattedDates)
     setBlockedDates(formattedDates);
   }
+
+
   // Fetch freelancer data
   const getFreelancer = async () => {
     try {
@@ -129,8 +155,8 @@ export default function OrderForm() {
       const data = await response.json();
       setFreelancerData(data);
       // Set the token amount based on the full day price initially
-      setTokenAmount(0);
-      setOriginalTokenAmount(0);
+      setOriginalTokenAmount(bookingData.price);
+      setTokenAmount(Math.round(bookingData.price * 0.2))
       setLoading(false);
     } catch (error) {
       console.error('Error fetching freelancer data:', error);
@@ -141,6 +167,7 @@ export default function OrderForm() {
     if (id) {
       getFreelancer();
     }
+
   }, [id]);
 
   // Handle input changes
@@ -365,7 +392,10 @@ export default function OrderForm() {
     e.preventDefault();
     setIsProcessingPayment(true);
 
-
+    if (orderData.mobileNumber.length != 10) {
+      alert('mobile number must be of 10 digit');
+      return;
+    }
 
     try {
       const amount = tokenAmount
@@ -390,20 +420,6 @@ export default function OrderForm() {
       const razorpayOrderId = razorpayOrder.orderId;
 
       console.log(orderData.mobileNumber)
-      if (selectedDate == null) {
-        alert('please select a valid date ')
-        return
-      }
-      const date = new Date(selectedDate);
-      console.log("ff", date)
-      if (blockedDates.includes(date)) {
-        date.setDate(date.getDate() + 1);
-        alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
-        return;
-      }
-      date.setDate(date.getDate() + 1);
-      console.log("date", date)
-      const formattedDate = date.toISOString().split('T')[0];
 
 
       var options = {
@@ -429,16 +445,14 @@ export default function OrderForm() {
           pinCode: orderData.pincode,
           address: orderData.address,
           city: orderData.selectedCity,
-          date: formattedDate,
+          date: bookingData.selectedDates,
           totalAmount: originalTokenAmount,
           discount: discounts,
-          service: orderData.selectedService,
-          event: orderData.event,
-
+          service: bookingData.selectedCategory,
+          event: bookingData.selectedSubcategory,
           userid,
           freelancerid,
-          time: orderData.time,
-
+          time: bookingData.timeOption,
           orderId: razorpayOrderId
         },
         "theme": {
@@ -479,50 +493,44 @@ export default function OrderForm() {
             {/* Step 1 - Basic Details */}
             {step === 1 && (
               <>
+                {/* order info */}
+                {bookingData && <div>
+                  <p className="block text-lg font-semibold mb-1  text-black">
+                    Service
+                  </p>
+                  <p className="block text-lg  mb-1  text-gray-700">
+                    {bookingData.selectedSubcategory} - {bookingData.selectedCategory}
+                  </p>
 
-                {/* Event Date */}
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">Event Date</label>
+                  <div>
+                    {/* Date */}
+                    <p className="block text-lg font-semibold mb-1 text-black">Date</p>
+                    <div className='flex flex-wrap'>
+                    {bookingData.selectedDates.split(",").map((date, index) => (
+                      <p key={index} className="text-lg mb-1 px-2 border-r-2 text-gray-700">
+                        {date}
+                      </p>
+                    ))}
+                    </div>
 
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      label="Select a date"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      shouldDisableDate={shouldDisableDate}
-                      renderInput={(params) => <TextField {...params} />}
-                      renderDay={(day, selectedDates, pickersDayProps) => {
-                        const previousDay = new Date(day);
-                        previousDay.setDate(previousDay.getDate() + 1);
-
-                        const isDisabled = shouldDisableDate(previousDay)
-                        return (
-                          <Box
-                            {...pickersDayProps} // Pass necessary props to Box
-                            sx={{
-                              width: '36px',
-                              height: '36px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontWeight: isDisabled ? 'normal' : 'bold',
-                              color: isDisabled ? 'red' : '#000', // Gray for disabled, black for enabled
-                              margin: '2px',
-                              backgroundColor: selectedDates.includes(day) ? '#cfe8fc' : 'transparent', // Highlight selected date
-                              cursor: 'pointer', // Change cursor if disabled
-                            }}
-                            onClick={() => handleDateChange(day)} // Handle click only if not disabled
-                          >
-                            <Typography>{day.getDate()}</Typography>
-                          </Box>
-                        );
-                      }}
-                    />
-                  </LocalizationProvider>
-                </div>
-
-
-                {/* Customer Name */}
+                    {/* Duration */}
+                    <p className="block text-lg font-semibold mb-1 text-black">Duration</p>
+                    <p className="block text-lg mb-1 text-gray-700">
+                      {bookingData.timeOption
+                        .split(",")
+                        .map((value, index) =>
+                          value === "extraHourPrice"
+                            ? ""
+                            : value === "fullDayPrice"
+                              ? "Full Time"
+                              : value === "halfDayPrice"
+                                ? "Half Time"
+                                : `${value}${index === 1 ? " Hours" : ""}` // Add "Hours" to the number
+                        )
+                        .join(" ")} {/* Join with space */}
+                    </p>
+                  </div>
+                </div>}
 
 
                 <div>
@@ -603,64 +611,96 @@ export default function OrderForm() {
                   </select>
 
                 </div>
-                {/* <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">City</label>
-                  <select
-                    name="selectedCity"
-                    value={orderData.selectedCity}
+
+
+                {/* Coupon Code */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2 text-gray-700">Coupon Code</label>
+                  <input
+                    type="text"
+                    name="couponCode"
+                    value={orderData.couponCode}
                     onChange={handleInputChange}
                     className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
+                    placeholder="Enter coupon code (if any)"
+                  />
+                  <button
+                    type="button"
+                    className="mt-3 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all"
+                    onClick={applyCoupon}
+                    disabled={couponApplied}
                   >
-                    <option value="">Select your city</option>
-                    <option value="Patna">Patna</option>
-                    <option value="Muzzferpur">Muzzferpur</option>
-                  </select>
-                </div> */}
+                    {couponApplied ? "Coupon Applied" : "Apply Coupon"}
+                  </button>
+                  {couponApplied && (
+                    <p className={`mt-2 text-sm font-semibold ${isCouponValid ? 'text-green-600' : 'text-red-600'}`}>
+                      {couponMessage}
+                    </p>
+                  )}
+                </div>
+                {/* Refund Policy Checkbox */}
 
-                {/* Next Button */}
+
+                {originalTokenAmount > 0 && <div>
+                  <div>
+                    <h1 className='text-sm text-green-600'>You can just pay a token amount of 20% or do full payment</h1>
+                  </div>
+                  <div className="flex items-center ">
+                    <input
+                      type="checkbox"
+                      id="fullPayment"
+                      checked={fullPayment}
+                      onChange={(e) => {
+
+                        !fullPayment ? setTokenAmount(originalTokenAmount) : setTokenAmount(Math.round(originalTokenAmount * 0.2))
+                        setFullPayment(!fullPayment)
+                      }}
+                      className="mr-2 text-sm"
+                    />
+                    <label htmlFor="refundPolicy" className="text-lg text-gray-700">
+                      Pay full amount {originalTokenAmount}
+                    </label>
+
+                  </div>
+
+
+                  {/* Amount to be Paid */}
+                  <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p></div>}
+
+                {/* Submit Button */}
+                <div className="flex items-center mb-4">
+                  <input
+                    type="checkbox"
+                    id="refundPolicy"
+                    checked={isRefundPolicyAccepted}
+                    onChange={(e) => setIsRefundPolicyAccepted(e.target.checked)}
+                    className="mr-2"
+                    required // Optionally make it required
+                  />
+                  <label htmlFor="refundPolicy" className="text-sm text-gray-700">
+                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund & cancellation policy</a>
+                  </label>
+                </div>
                 <button
+                  type="submit"
+                  className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold hover:bg-blue-600 transition-all"
+                >
+                  Place Order
+                </button>
+
+                {/* <button
                   type="button"
                   onClick={handleNext}
                   className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold hover:bg-blue-600 transition-all"
                 >
                   Next
-                </button>
+                </button> */}
               </>
             )}
 
             {/* Step 2 - Additional Details */}
             {step === 2 && (
               <>
-
-                {/* <StaticDatePicker
-                  displayStaticWrapperAs="desktop"
-                  openTo="day"
-                  value={selectedDate}
-                  onChange={(newDate) => setSelectedDate(newDate)}
-                  shouldDisableDate={shouldDisableDate} // Disable specific dates
-                  renderDay={(day, selectedDates, pickersDayProps) => {
-                  const isDisabled = shouldDisableDate(day); // Check if date is disabled
-
-                  return (
-                    <Box
-                      {...pickersDayProps}
-                      sx={{
-                        width: '36px',    // Define a fixed width for each day
-                        height: '36px',   // Define a fixed height for each day
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: isDisabled ? 'normal' : 'bold',
-                        color: isDisabled ? '#b0b0b0' : '#000', // Gray for disabled, black for enabled
-                        margin: '2px',    // Add a small margin to separate each day
-                      }}
-                    >
-                      <Typography>{day.getDate()}</Typography>
-                      </Box>
-      );
-    }}
-  /> */}
 
                 {/* Freelancer Service Dropdown */}
                 <div>

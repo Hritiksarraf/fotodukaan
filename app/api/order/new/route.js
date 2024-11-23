@@ -105,13 +105,7 @@ export async function POST(req) {
     const eventtitle=service+" "+event+" "+time;
     const freelancerUserUpdate = await Freelancer.findById(userid);
     if (freelancerUserUpdate) {
-      const obj ={
-        date:date,
-        event:eventtitle
-      }
-      const bookedDates=freelancerUserUpdate.blockedDates
-      bookedDates.push(obj)
-      freelancerUserUpdate.bookedDates=bookedDates
+      
       // Freelancer exists, update the freelancer's orders array
       if (!freelancerUserUpdate.booking) {
         freelancerUserUpdate.booking = []; // Initialize orders array if it doesn't exist
@@ -138,6 +132,24 @@ export async function POST(req) {
 
     // Update the freelancer's order array
     const freelancerUpdate = await Freelancer.findById(freelancerid);
+
+
+    const datesArray = date.split(",");
+
+// Initialize an array for the new blocked dates
+const newBlockedDates = datesArray.map((singleDate) => ({
+  date: singleDate.trim(), // Ensure each date is trimmed of any whitespace
+  event: eventtitle,
+}));
+
+// Push the new blocked dates into the existing blockedDates array
+const bookedDates = freelancerUpdate.blockedDates || [];
+bookedDates.push(...newBlockedDates);
+
+// Update the freelancer's blockedDates field
+freelancerUpdate.blockedDates = bookedDates;
+
+
     if (!freelancerUpdate.orders) {
       freelancerUpdate.orders = [];
     }

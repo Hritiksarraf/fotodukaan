@@ -1,21 +1,28 @@
+'use client'
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers';
 import { TextField } from '@mui/material';
-import { Typography } from '@mui/material';
-import Box from '@mui/material/Box';
-import { Padding } from '@mui/icons-material';
+import { PickersDay } from '@mui/x-date-pickers';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useBooking } from "../../app/(root)/context/BookingContext";
 
 export default function PricePicker({ freelancerData }) {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedSubcategory, setSelectedSubcategory] = useState('');
     const [timeOption, setTimeOption] = useState('fullDayPrice');
     const [price, setPrice] = useState('');
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDates, setSelectedDates] = useState([]); // Array to hold selected dates
     const [blockedDates, setBlockedDates] = useState([]);
+    const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+    const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+    const [extraHours, setExtraHours] = useState(1); // State to hold the selected extra hours
+    const { setBookingData } = useBooking();
 
+    // Fetch blocked dates
     const getBlockedDates = async (Id) => {
         const data = await fetch(`/api/dates/${Id}`, {
             method: 'GET',
@@ -27,49 +34,113 @@ export default function PricePicker({ freelancerData }) {
         const blockedDates1 = blockedDates2.map((ele) => ele?.date || "");
         const formattedDates = blockedDates1.map((date) => {
             const d = new Date(date);
-            return d.toISOString().split('T')[0];
+            const localDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            return localDate.toISOString().split('T')[0]; // Convert back to YYYY-MM-DD format
         });
         setBlockedDates(formattedDates);
     };
 
+    // Disable dates that are blocked or in the past
     const shouldDisableDate = (date) => {
         if (!date || !(date instanceof Date)) return false;
-        const formattedDate = date.toISOString().split('T')[0];
-        return blockedDates.includes(formattedDate) || date < new Date();
+        const normalizedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate())
+            .toISOString()
+            .split('T')[0];
+        return blockedDates.includes(normalizedDate) || date < new Date();
     };
 
-    const handleDateChange = (newDate) => {
-        if (newDate) {
-            if (shouldDisableDate(newDate)) {
-                setSelectedDate(null);
-                const nextDay = new Date(newDate);
-                nextDay.setDate(nextDay.getDate() + 1);
-                alert(`The date ${nextDay.toISOString().split('T')[0]} is already booked. Please select another date.`);
-            } else {
-                setSelectedDate(newDate);
-                
-            }
+    // Handle toggling of selected dates
+    const handleDateToggle = (newDate) => {
+        const normalizedDate = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate())
+            .toISOString()
+            .split('T')[0];
+
+        if (selectedDates.includes(normalizedDate)) {
+            // Deselect
+            setSelectedDates(selectedDates.filter((date) => date !== normalizedDate));
         } else {
-            setSelectedDate(null);
+            // Select
+            setSelectedDates([...selectedDates, normalizedDate]);
         }
     };
 
-    const handlePriceUpdate = () => {
+    // Handle month change
+    const handleMonthChange = (date) => {
+        setCurrentMonth(date.getMonth());
+        setCurrentYear(date.getFullYear());
+    };
+
+    // Update the price dynamically based on selected category, subcategory, time, and dates
+    const updatePrice = () => {
+        if (!selectedCategory || !selectedSubcategory || !timeOption) {
+            return; // Do not update if any required field is missing
+        }
+
         const categoryDetails = freelancerData.freelancerDetails[selectedCategory];
         if (categoryDetails) {
             const { price, weddingPrice } = categoryDetails;
             const isWedding = selectedSubcategory === 'Wedding';
             const selectedPrice = isWedding ? weddingPrice : price;
-            setPrice(selectedPrice ? selectedPrice[timeOption] : 'Not Available');
-            
+
+            if (selectedPrice) {
+                const basePrice = selectedPrice[timeOption];
+
+                if (basePrice) {
+                    let totalPrice = 0;
+                    if (timeOption === 'extraHourPrice') {
+                        totalPrice = selectedDates.length > 0
+                            ? basePrice * selectedDates.length * extraHours
+                            : basePrice * extraHours;
+                        
+                    } else {
+                        // Calculate total price based on selected dates
+                        totalPrice = selectedDates.length > 0
+                            ? basePrice * selectedDates.length
+                            : basePrice;
+                    }
+
+                    setPrice(totalPrice);
+                } else {
+                    setPrice('Not Available');
+                }
+            } else {
+                setPrice('Not Available');
+            }
         }
     };
 
+    // Watch for changes in selectedCategory, selectedSubcategory, timeOption, extraHours, and selectedDates to update the price
     useEffect(() => {
         if (freelancerData._id) {
             getBlockedDates(freelancerData._id);
         }
     }, [freelancerData]);
+
+    // Recalculate price whenever dates are selected/deselected
+    useEffect(() => {
+        updatePrice();
+    }, [selectedCategory, selectedSubcategory, timeOption, selectedDates, extraHours]);
+
+
+
+   
+   
+    const router = useRouter();
+
+    function sendprops() {
+        const formattedTimeOption =
+            timeOption === 'extraHourPrice' ? `${timeOption},${extraHours}` : timeOption;
+    
+        setBookingData({
+            price,
+            selectedCategory,
+            selectedSubcategory,
+            timeOption: formattedTimeOption,
+            selectedDates: selectedDates.join(','),
+        });
+    
+        router.push(`/booking/${freelancerData._id}`);
+    }
 
     return (
         <div>
@@ -110,54 +181,77 @@ export default function PricePicker({ freelancerData }) {
                     <option value="extraHourPrice">Extra Hour</option>
                 </select>
             </div>
+
+            {/* Show extra hour dropdown when the "Extra Hour" option is selected */}
+            {timeOption === 'extraHourPrice' && (
+                <div className="mt-4">
+                    <label htmlFor="extraHours" className="block text-sm font-semibold">Select Extra Hours</label>
+                    <select
+                        id="extraHours"
+                        value={extraHours}
+                        onChange={(e) => setExtraHours(parseInt(e.target.value))}
+                        className="px-1 py-2 border w-36 text-sm rounded"
+                    >
+                        {[1, 2, 3, 4].map((hour) => (
+                            <option key={hour} value={hour}>{hour} Hour{hour > 1 ? 's' : ''}</option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
             <div className='flex items-center gap-5'>
-                <button
-                    onClick={handlePriceUpdate}
-                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+                {/* Button is enabled only when category, subcategory, and time option are selected */}
+                {/* <button
+                    onClick={updatePrice}
+                    disabled={!selectedCategory || !selectedSubcategory || !timeOption}
+                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded disabled:bg-gray-300"
                 >
                     Check Price
-                </button>
+                </button> */}
 
                 {price && (
                     <p className="mt-4 text-lg font-semibold">
-                        Price: ₹{price}
+                        Total Price: ₹{price}
                     </p>
                 )}
+
+{/* <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link> */}
+<a onClick={sendprops} className="flex ml-auto text-white bg-pink-500 border-0 py-2 my-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>
             </div>
 
             <div>
                 <label className="block text-sm font-semibold mt-4 mb-1 text-gray-700">Check Available Dates!</label>
-                <LocalizationProvider dateAdapter={AdapterDateFns} sx={{Padding:'0px'}}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
-                        label="Select a date"
-                        value={selectedDate}
-                        onChange={handleDateChange}
+                        label="Select dates"
+                        value={null} // Always allow opening the calendar
+                        onChange={handleDateToggle}
+                        onMonthChange={handleMonthChange}
                         shouldDisableDate={shouldDisableDate}
-                        sx={{Padding:'0px'}}
                         renderInput={(params) => <TextField {...params} />}
-                        renderDay={(day, selectedDates, pickersDayProps) => {
-                            const isDisabled = shouldDisableDate(day);
+                        renderDay={(day, _selectedDates, pickersDayProps) => {
+                            const normalizedDate = new Date(day.getFullYear(), day.getMonth(), day.getDate())
+                                .toISOString()
+                                .split('T')[0];
+                            const isSelected = selectedDates.includes(normalizedDate);
+
                             return (
-                                <Box
+                                <PickersDay
                                     {...pickersDayProps}
                                     sx={{
-                                        width: '36px',
-                                        height: '36px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontWeight: isDisabled ? 'normal' : 'bold',
-                                        color: isDisabled ? 'red' : '#000',
-                                        border: isDisabled ? '1px solid red' : '#000',
-                                        borderRadius: isDisabled ? '7px' : '#000',
-                                        margin: '2px',
-                                        backgroundColor: selectedDates.includes(day) ? '#cfe8fc' : 'transparent',
-                                        cursor: 'pointer',
+                                        ...(pickersDayProps.disabled && {
+                                            color: 'red !important',
+                                            textDecoration: 'line-through',
+                                            border: '1px solid red',
+                                        }),
+                                        ...(isSelected && {
+                                            backgroundColor: 'blue !important',
+                                            color: 'white !important',
+                                            borderRadius: '50%',
+                                        }),
                                     }}
-                                    onClick={() => handleDateChange(day)}
-                                >
-                                    <Typography>{day.getDate()}</Typography>
-                                </Box>
+                                    onClick={() => handleDateToggle(day)}
+                                />
                             );
                         }}
                     />
