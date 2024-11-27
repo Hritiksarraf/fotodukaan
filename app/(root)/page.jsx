@@ -18,25 +18,25 @@ export default function Home() {
   const Services = [
     {
       title: "Traditional Photographer",
-      img: "https://www.silkphotos.com/wp-content/uploads/2013/08/Indian-wedding-photographer-05.jpg",
+      img: "https://img.freepik.com/free-photo/indian-photographer-with-camera-pastel-wall_496169-1588.jpg?t=st=1732723327~exp=1732726927~hmac=ad1817278d6896078199e3b45d807c5fa74233d41c8de29fbecb5d7e6e59bb5a&w=2000",
       link: "/freelancer/event/Traditional Photography",
       des: "Our professional photographers capture the essence of your special moments, from weddings and events to personal and corporate shoots."
     },
     {
       title: "Candid Photographer",
-      img: "https://www.photojaanic.com/blog/wp-content/uploads/sites/2/2017/03/02.jpg",
+      img: "https://img.freepik.com/free-photo/professional-indian-young-photographer-taking-photos-studio-with-leight_231208-3780.jpg?t=st=1732723632~exp=1732727232~hmac=9081eb560093c408884c0da0c7e68c353c006543b3882471b202ce935c97ed24&w=2000",
       link: "/freelancer/event/Candid Photography",
       des: "Specializing in capturing authentic, unposed moments, our candid photography services provide a natural, storytelling approach to documenting your special events."
     },
     {
       title: "Traditional Videographer",
-      img: "https://www.wedding.film/wp-content/uploads/2023/03/how-long-does-it-take-to-edit-a-wedding-video.jpg",
+      img: "https://images.unsplash.com/photo-1653851792843-077ee7c5e7cb?q=80&w=2601&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       link: "/freelancer/event/Traditional Videography",
       des: "Our videographers create stunning visual narratives that highlight the most important moments of your events, preserving your memories in a cinematic way."
     },
     {
       title: "Cinematographer",
-      img: "https://img.freepik.com/free-photo/close-up-influencer-holding-flowers_23-2149172443.jpg",
+      img: "https://images.unsplash.com/photo-1495132336320-a0923a300d34?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGZpbG1tYWtpbmd8ZW58MHx8MHx8fDA%3D",
       link: "/freelancer/event/Cinematography",
       des: "Our talented cinematographers specialize in creating high-quality films that evoke emotion and beautifully capture the essence of your events or projects."
     },
@@ -54,13 +54,14 @@ export default function Home() {
     },
     {
       title: "LED wall",
-      img: "https://ledmarketusa.com/wp-content/uploads/2024/02/LED-Wall-for-Banquet-Halls-1.jpg.webp",
+      img: "https://ultravisionledsolutions.com/cdn/shop/products/STAGERenderingForMarketingPurpose-min-min.png?v=1658158319&width=4000",
       link: "/freelancer/type/LED wall",
       des: "Enhance your events with our LED wall services, providing high-quality visual displays perfect for large gatherings, corporate events, and concerts."
     },
     {
       title: "LED TV",
-      img: "https://maduraievents.in/wp-content/uploads/2014/05/wedding-led-tv-videography.jpg",
+      // img: "https://maduraievents.in/wp-content/uploads/2014/05/wedding-led-tv-videography.jpg",
+      img:"https://5.imimg.com/data5/IOS/Default/2024/9/454121300/VQ/PI/NH/7956633/product-jpeg-500x500.png",
       link: "/freelancer/type/LED TV",
       des: "We provide high-definition LED TVs for events and presentations, ensuring a clear and vibrant display for your content."
     }

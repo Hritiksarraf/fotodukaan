@@ -71,7 +71,7 @@ export async function POST(req) {
         { status: 404 }
       );
     }
-
+    const paidonweb=(Number(totalAmount)-(paymentData.amount / 100)<2);
     // Step 4: Create the order based on the data received
     const newOrder = new Order({
       customerName: name,
@@ -93,6 +93,7 @@ export async function POST(req) {
       freelancerId: freelancerid,
       isPolicyAccepted: true,
       time,
+      paidOnWeb:paidonweb,
       orderId: paymentData.id, // Using Razorpay payment ID as orderId
     });
 

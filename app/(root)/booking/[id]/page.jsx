@@ -522,9 +522,9 @@ export default function OrderForm() {
                           value === "extraHourPrice"
                             ? ""
                             : value === "fullDayPrice"
-                              ? "Full Time"
+                              ? "Full day"
                               : value === "halfDayPrice"
-                                ? "Half Time"
+                                ? "Half day"
                                 : `${value}${index === 1 ? " Hours" : ""}` // Add "Hours" to the number
                         )
                         .join(" ")} {/* Join with space */}
