@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import { TextField } from '@mui/material';
 import { Typography, Box, Paper, useMediaQuery } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
+import { PickersDay } from '@mui/x-date-pickers';
 
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -221,49 +222,21 @@ function BlockedDatesCalendar() {
                       value={selectedDate}
                       onChange={(newDate) => setSelectedDate(newDate)}
                       shouldDisableDate={shouldDisableDate}
-                      sx={{
-                        '& .MuiCalendarPicker-root': {
-                          height: isSmallScreen ? '70vh' : '950px', // Adjust height for small screens
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                          Color: 'blue'
-                        },
-                        '& .MuiPickersCalendarHeader-root': {
-                          marginBottom: '5px', // Space around header
-                        },
-                        '& .MuiDayPicker-weekContainer': {
-                          margin: '1px 0', // Space between weeks to prevent overlap
-                        },
-                      }}
+                      
                       renderDay={(day, selectedDates, pickersDayProps) => {
                         const isDisabled = shouldDisableDate(day);
                         return (
-                          <Box
-                            {...pickersDayProps}
-                            sx={{
-                              width: isSmallScreen ? '2rem' : '2rem',  // Smaller size for phone screens
-                              height: isSmallScreen ? '2rem' : '2rem',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontWeight: isDisabled ? 'normal' : 'bold',
-                              color: isDisabled ? 'red' : '#1e90ff',
-                              backgroundColor: isDisabled ? '#f0f0f0' : '#e6f2ff',
-                              borderRadius: '8px',
-                              border: isDisabled ? '1px solid #ddd' : '1px solid #1e90ff',
-                              margin: '3px', // Adjusted for spacing on smaller screens
-                              transition: 'background-color 0.3s, color 0.3s',
-                              '&:hover': {
-                                backgroundColor: isDisabled ? '#f0f0f0' : '#cce7ff',
-                              },
-                            }}
-                          >
-                            <Typography variant={isSmallScreen ? 'body2' : 'body1'}>
-                              {day.getDate()}
-                            </Typography>
-                          </Box>
-                        );
+                          <PickersDay
+                              {...pickersDayProps}
+                              sx={{
+                                  ...(pickersDayProps.disabled && {
+                                      color: 'red !important',
+                                      border: '1px solid red',
+                                      borderRadius:"3px"
+                                  })
+                              }}
+                          />
+                      );
                       }}
                     />
                     <div>

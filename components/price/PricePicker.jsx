@@ -9,6 +9,8 @@ import { PickersDay } from '@mui/x-date-pickers';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useBooking } from "../../app/(root)/context/BookingContext";
+import Button from "@mui/material/Button";
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 
 export default function PricePicker({ freelancerData }) {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -21,6 +23,7 @@ export default function PricePicker({ freelancerData }) {
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [extraHours, setExtraHours] = useState(1); // State to hold the selected extra hours
     const { setBookingData } = useBooking();
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
     // Fetch blocked dates
     const getBlockedDates = async (Id) => {
@@ -53,7 +56,7 @@ export default function PricePicker({ freelancerData }) {
     const handleDateToggle = (newDate) => {
         // Format the date as YYYY-MM-DD in local time
         const formattedDate = `${newDate.getFullYear()}-${String(newDate.getMonth() + 1).padStart(2, '0')}-${String(newDate.getDate()).padStart(2, '0')}`;
-    
+
         if (selectedDates.includes(formattedDate)) {
             // Deselect the date
             setSelectedDates(selectedDates.filter((date) => date !== formattedDate));
@@ -62,7 +65,7 @@ export default function PricePicker({ freelancerData }) {
             setSelectedDates([...selectedDates, formattedDate]);
         }
     };
-    
+
 
     // Handle month change
     const handleMonthChange = (date) => {
@@ -91,7 +94,7 @@ export default function PricePicker({ freelancerData }) {
                         totalPrice = selectedDates.length > 0
                             ? basePrice * selectedDates.length * extraHours
                             : basePrice * extraHours;
-                        
+
                     } else {
                         // Calculate total price based on selected dates
                         totalPrice = selectedDates.length > 0
@@ -123,8 +126,8 @@ export default function PricePicker({ freelancerData }) {
 
 
 
-   
-   
+
+
     const router = useRouter();
 
     function sendprops() {
@@ -149,7 +152,7 @@ export default function PricePicker({ freelancerData }) {
 
         const formattedTimeOption =
             timeOption === 'extraHourPrice' ? `${timeOption},${extraHours}` : timeOption;
-    
+
         setBookingData({
             price,
             selectedCategory,
@@ -157,7 +160,7 @@ export default function PricePicker({ freelancerData }) {
             timeOption: formattedTimeOption,
             selectedDates: selectedDates.join(','),
         });
-    
+
         router.push(`/booking/${freelancerData._id}`);
     }
 
@@ -234,46 +237,61 @@ export default function PricePicker({ freelancerData }) {
                     </p>
                 )}
 
-{/* <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link> */}
-<a onClick={sendprops} className="flex ml-auto text-white bg-pink-500 border-0 py-2 my-2 px-6 cursor-pointer focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>
+                {/* <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link> */}
+                <a onClick={sendprops} className="flex ml-auto text-white bg-pink-500 border-0 py-2 my-2 px-6 cursor-pointer focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>
             </div>
 
             <div>
-                <label className="block text-sm font-semibold mt-4 mb-1 text-gray-700">Check Available Dates!</label>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                        label="Select dates"
-                        value={null} // Always allow opening the calendar
-                        onChange={handleDateToggle}
-                        onMonthChange={handleMonthChange}
-                        shouldDisableDate={shouldDisableDate}
-                        renderInput={(params) => <TextField {...params} />}
-                        renderDay={(day, _selectedDates, pickersDayProps) => {
-                            const formattedDate = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
-                            const isSelected = selectedDates.includes(formattedDate);
-                        
-                            return (
-                                <PickersDay
-                                    {...pickersDayProps}
-                                    sx={{
-                                        ...(pickersDayProps.disabled && {
-                                            color: 'red !important',
-                                            textDecoration: 'line-through',
-                                            border: '1px solid red',
-                                        }),
-                                        ...(isSelected && {
-                                            backgroundColor: 'blue !important',
-                                            color: 'white !important',
-                                            borderRadius: '50%',
-                                        }),
-                                    }}
-                                    onClick={() => handleDateToggle(day)}
-                                />
-                            );
-                        }}
-                    />
-                </LocalizationProvider>
-            </div>
+            <label className="block text-sm font-semibold mt-4 mb-1 text-gray-700">Check Available Dates!</label>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                    label="Select dates"
+                    open={isCalendarOpen}
+                    onOpen={() => setIsCalendarOpen(true)}
+                    
+                    value={null} // Keeps the calendar open for multiple selections
+                    onChange={(date) => {
+                        if (date) handleDateToggle(date);
+                    }}
+                    shouldDisableDate={shouldDisableDate}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            onClick={() => setIsCalendarOpen(true)} // Open calendar when clicking the input
+                        />
+                    )}
+                    renderDay={(day, _selectedDates, pickersDayProps) => {
+                        const formattedDate = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
+                        const isSelected = selectedDates.includes(formattedDate);
+
+                        return (
+                            <PickersDay
+                                {...pickersDayProps}
+                                sx={{
+                                    ...(pickersDayProps.disabled && {
+                                        color: 'red !important',
+                                        border: '1px solid red',
+                                    }),
+                                    ...(isSelected && {
+                                        backgroundColor: 'blue !important',
+                                        color: 'white !important',
+                                        borderRadius: '90%',
+                                    }),
+                                }}
+                            />
+                        );
+                    }}
+                />
+                <button
+                onClick={() => setIsCalendarOpen(false)}
+                className="mt-4 bg-blue-500 ml-8 text-white py-2 px-4 rounded"
+            >
+                Done
+            </button>
+            </LocalizationProvider>
+            
+            
+        </div>
         </div>
     );
 }
