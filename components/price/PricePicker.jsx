@@ -271,6 +271,9 @@ export default function PricePicker({ freelancerData }) {
                                     ...(pickersDayProps.disabled && {
                                         color: 'red !important',
                                         border: '1px solid red',
+                                        borderRadius:"4px",
+                                        margin:"2px"
+
                                     }),
                                     ...(isSelected && {
                                         backgroundColor: 'blue !important',
