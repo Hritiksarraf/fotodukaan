@@ -50,7 +50,7 @@ export default function page() {
           },
           body: JSON.stringify({name,text,star}),
         });
-        console.log('i am here3')
+        // console.log('i am here3')
         const result = await response.json();
         if (response.ok) {
           alert('Review Done');
@@ -62,7 +62,7 @@ export default function page() {
           alert('Error doing review ' + result.message);
         }
       } catch (error) {
-        console.error('Error doing review', error);
+        // console.error('Error doing review', error);
         alert('Something went wrong. Please try again later.');
       }
     }
@@ -163,7 +163,7 @@ export default function page() {
       },
     });
     const data = await response.json();
-    console.log(data)
+    // console.log(data)
     setFreelancerData(data);
     
     setLoading(false);
@@ -179,7 +179,7 @@ export default function page() {
     });
     const reviewData = await response.json();
     setTestimonialData(reviewData.reviews);
-    console.log(reviewData)
+    // console.log(reviewData)
     setReviewLoading(false)
   };
 

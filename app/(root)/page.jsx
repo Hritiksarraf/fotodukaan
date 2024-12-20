@@ -12,19 +12,20 @@ import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 import Link from 'next/link';
 import Modal from 'react-modal';
 import SearchBar from '@/components/searchBar/SearchBar';
+import Location from '@/components/location/Location';
 
 export default function Home() {
 
   const Services = [
     {
       title: "Traditional Photographer",
-      img: "https://img.freepik.com/free-photo/indian-photographer-with-camera-pastel-wall_496169-1588.jpg?t=st=1732723327~exp=1732726927~hmac=ad1817278d6896078199e3b45d807c5fa74233d41c8de29fbecb5d7e6e59bb5a&w=2000",
+      img: "https://images.unsplash.com/photo-1490638114763-02630949efda?q=80&w=3438&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       link: "/freelancer/event/Traditional Photography",
       des: "Our professional photographers capture the essence of your special moments, from weddings and events to personal and corporate shoots."
     },
     {
       title: "Candid Photographer",
-      img: "https://img.freepik.com/free-photo/professional-indian-young-photographer-taking-photos-studio-with-leight_231208-3780.jpg?t=st=1732723632~exp=1732727232~hmac=9081eb560093c408884c0da0c7e68c353c006543b3882471b202ce935c97ed24&w=2000",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1733410783/professional-indian-young-photographer-taking-photos-studio-with-leight_oxf5jx.jpg",
       link: "/freelancer/event/Candid Photography",
       des: "Specializing in capturing authentic, unposed moments, our candid photography services provide a natural, storytelling approach to documenting your special events."
     },
@@ -36,7 +37,7 @@ export default function Home() {
     },
     {
       title: "Cinematographer",
-      img: "https://images.unsplash.com/photo-1495132336320-a0923a300d34?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGZpbG1tYWtpbmd8ZW58MHx8MHx8fDA%3D",
+      img: "https://images.unsplash.com/photo-1520904504199-f040f78d6f66?q=80&w=3432&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       link: "/freelancer/event/Cinematography",
       des: "Our talented cinematographers specialize in creating high-quality films that evoke emotion and beautifully capture the essence of your events or projects."
     },
@@ -48,7 +49,7 @@ export default function Home() {
     },
     {
       title: "Crane",
-      img: "https://img.freepik.com/premium-photo/tv-camera-crane-studio_42764-53.jpg?w=2000",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1733410442/istockphoto-636166868-612x612_pzf1pm.jpg",
       link: "/freelancer/type/Crane",
       des: "Our crane operators bring cinematic movement to your videos, ideal for large-scale productions such as concerts, weddings, and film shoots."
     },
@@ -301,10 +302,10 @@ export default function Home() {
   const [place, setPlace] = useState("");
 
   const getFeelancer = async () => {
-    console.log('getting freelancer')
+    // console.log('getting freelancer')
     const response = await fetch("/api/freelancer");
     const data = await response.json();
-    console.log('got freelancer', data)
+    // console.log('got freelancer', data)
     setFreelancer(data);
   };
 
@@ -417,6 +418,7 @@ export default function Home() {
           />
         </div>
       </section>
+      
       <section>
         <div>
           <h1 className="text-4xl md:text-6xl py-10 text-center text-gradient-to-r from-white to-blue-100"

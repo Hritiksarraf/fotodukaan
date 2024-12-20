@@ -35,10 +35,10 @@ export default function Pages() {
           {
             size: 'invisible',
             callback: (response) => {
-              console.log('reCAPTCHA solved:', response);
+              
             },
             'expired-callback': () => {
-              console.log('reCAPTCHA expired');
+              
             },
           },
           
@@ -48,7 +48,7 @@ export default function Pages() {
           setRecaptchaLoaded(true);
         });
       } catch (error) {
-        console.error('Error initializing reCAPTCHA:', error);
+        
       }
     }
   }
@@ -129,9 +129,9 @@ export default function Pages() {
       
 
       let response = await res.json();
-      console.log(response);
+      
       if(response.success){
-        console.log(response);
+        
         toast.success('Password Reset Successful', {
           position: 'top-left',
           autoClose: 5000,
@@ -162,7 +162,7 @@ export default function Pages() {
       
       
     } catch (error) {
-      // console.log(error)
+      
       toast.error('Password Reset Failed', {
         position: 'top-left',
         autoClose: 5000,

@@ -10,6 +10,7 @@ import OTPInput from 'react-otp-input';
 import { auth } from '@/app/firebase.config';
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
+import Location from '@/components/location/Location';
 
 
 const cityArray = [
@@ -158,6 +159,7 @@ export default function Page() {
     const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
     const [otpValue, setOtpValue] = useState('')
     const [loading, setLoading] = useState(false);
+    const [place, setPlace] = useState('')
 
 
     const [formData, setFormData] = useState({
@@ -229,7 +231,7 @@ export default function Page() {
             if (!formData.profilePhoto) {
                 errors.profilePhoto = "Profile photo is required";
             }
-            if (!formData.city) {
+            if (place=='') {
                 errors.city = "City is required";
             }
             if (!formData.address) {
@@ -314,7 +316,12 @@ export default function Page() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(place==''){
+            alert('please select city')
+            return
+        }
         const errors = validate();
+
         if (Object.keys(errors).length === 0) {
             if (!recaptchaLoaded) {
                 toast.error('reload and try again', {
@@ -329,6 +336,11 @@ export default function Page() {
                 });
                 return;
             }
+
+            setFormData((prevData) => ({
+                ...prevData,
+                city:place,
+            }));
 
             const appVerifier = window.recaptchaVerifier;
             const phoneNumber = '+91' + formData.phone;
@@ -384,6 +396,10 @@ export default function Page() {
             }
             // console.log("step 1 passed")
             // Step 2: Prepare the rest of the form data
+            setFormData((prevData) => ({
+                ...prevData,
+                city:place,
+            }));
             const payload = {
                 ...formData,
                 profilePhoto: profilePhotoUrl, // Add the photo URL here
@@ -1089,7 +1105,7 @@ export default function Page() {
 
                                             {/* City */}
                                             <div>
-                                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                                                {/* <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">
                                                     City
                                                 </label>
                                                 <select
@@ -1107,7 +1123,12 @@ export default function Page() {
                                                         </option>
                                                     ))}
                                                 </select>
-                                                {formErrors.city && <p className="text-red-500 text-sm">{formErrors.city}</p>}
+                                                {formErrors.city && <p className="text-red-500 text-sm">{formErrors.city}</p>} */}
+                                                <p className="block text-sm font-semibold mb-2 text-gray-700">City</p>
+                  <div className="w-full border rounded-xl py-1">
+          <Location onSelectLocation={setPlace} />
+          </div>
+                                                
                                             </div>
 
                                             {/* Full Address */}

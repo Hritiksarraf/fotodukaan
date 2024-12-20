@@ -37,7 +37,7 @@ function BlockedDatesCalendar() {
   }, [])
   const getEvents = async (id) => {
     try {
-      console.log("abc", id)
+      // console.log("abc", id)
       const response = await fetch('/api/dates', {
         method: 'POST',
         headers: {
@@ -47,11 +47,11 @@ function BlockedDatesCalendar() {
       });
 
       const data = await response.json();
-      // console.log("Events data:", data);
+      // // console.log("Events data:", data);
       setEvents(data.reverse());
       setLoading(false)
     } catch (error) {
-      console.error("Error fetching events:", error);
+      // console.error("Error fetching events:", error);
       setLoading(false)
     }
   };
@@ -63,12 +63,12 @@ function BlockedDatesCalendar() {
       }
     })
     const blockedDates2 = await data.json();
-    console.log("bd2", blockedDates2)
+    // console.log("bd2", blockedDates2)
     setAllEvents(blockedDates2)
     setInitialEvents(blockedDates2)
     const blockedDates = []
     blockedDates2.map((ele) => blockedDates.push(ele?.date || ""))
-    console.log("bd", blockedDates)
+    // console.log("bd", blockedDates)
 
     const formattedDates = blockedDates.map(date => {
       const d = new Date(date);
@@ -87,7 +87,7 @@ function BlockedDatesCalendar() {
     const formattedValue = format(new Date(date), 'yyyy-MM-dd');
 
     if (alreadyBlockedDates.includes(formattedValue)) {
-      console.log("Unblocking date:", formattedValue);
+      // console.log("Unblocking date:", formattedValue);
 
       setAlreadyBlockedDates((prev) => prev.filter(date => date !== formattedValue));
 
@@ -96,7 +96,7 @@ function BlockedDatesCalendar() {
         return eventDate !== formattedValue;
       }));
 
-      console.log("Updated allEvents:", allEvents);
+      // console.log("Updated allEvents:", allEvents);
     } else {
       // Add the date to blockedDates
       if (blockedDates.includes(formattedValue)) {
@@ -109,14 +109,14 @@ function BlockedDatesCalendar() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(blockedDates)
-    console.log(blockedDates.length)
+    // console.log(blockedDates)
+    // console.log(blockedDates.length)
     if (blockedDates.length == 1) {
-      console.log("hello")
+      // console.log("hello")
       setBlockedDates([])
     }
-    console.log(blockedDates.length)
-    console.log(initialEvents, allEvents)
+    // console.log(blockedDates.length)
+    // console.log(initialEvents, allEvents)
     if (blockedDates.length == 0 && initialEvents === allEvents) {
       alert("Please select at least one date");
     } else if (blockedDates.length == 0 && initialEvents !== allEvents) {
@@ -129,15 +129,15 @@ function BlockedDatesCalendar() {
       })
       setBlockedDates([])
       setSelectedDate(null);
-      console.log("data", data)
+      // console.log("data", data)
       if (data?.ok)
         alert("unblocked successfully");
     }
     else {
       try {
 
-        console.log("f", freelancerId)
-        console.log("blockedDates", blockedDates)
+        // console.log("f", freelancerId)
+        // console.log("blockedDates", blockedDates)
         if (input === null || input === ' ') {
           alert("Please enter a valid reason")
         } else {
@@ -156,7 +156,7 @@ function BlockedDatesCalendar() {
               allEvents.push(obj)
             })
           }
-          console.log("events", allEvents)
+          // console.log("events", allEvents)
           const data = await fetch(`/api/dates/${freelancerId}`, {
             method: 'POST',
             headers: {
@@ -166,7 +166,7 @@ function BlockedDatesCalendar() {
           })
           setBlockedDates([])
           setSelectedDate(null);
-          console.log("data", data)
+          // console.log("data", data)
           if (data?.ok)
             alert("Blocked dates saved successfully");
         }

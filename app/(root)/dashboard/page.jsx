@@ -49,7 +49,7 @@ function OrdersPage() {
         if (response.ok) {
           const data = await response.json();
           setOrders(data.orders.reverse());
-          console.log(data);
+          // console.log(data);
           setLeftAmount(data.totalAmount - data.discount - data.paidAmount);
         } else {
           setError("Failed to fetch orders");
@@ -138,10 +138,10 @@ function OrdersPage() {
           {
             size: "invisible",
             callback: (response) => {
-              console.log("reCAPTCHA solved:", response);
+              // console.log("reCAPTCHA solved:", response);
             },
             "expired-callback": () => {
-              console.log("reCAPTCHA expired");
+              // console.log("reCAPTCHA expired");
             },
           }
         );
@@ -150,7 +150,7 @@ function OrdersPage() {
           setRecaptchaLoaded(true);
         });
       } catch (error) {
-        console.error("Error initializing reCAPTCHA:", error);
+        // console.error("Error initializing reCAPTCHA:", error);
       }
     }
   }
@@ -170,7 +170,7 @@ function OrdersPage() {
         setEnterOtp(true);
       })
       .catch((error) => {
-        console.error("Error sending OTP:", error);
+        // console.error("Error sending OTP:", error);
       });
   };
 
@@ -180,11 +180,11 @@ function OrdersPage() {
     window.confirmationResult
       .confirm(otpValue)
       .then(async (res) => {
-        console.log(res);
+        // console.log(res);
         handleworkstart();
       })
       .catch((err) => {
-        console.log("Invalid OTP:", err);
+        // console.log("Invalid OTP:", err);
         setOtpLoading(false);
       });
   }

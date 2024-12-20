@@ -17,6 +17,7 @@ import Razorpay from 'razorpay';
 import { useRouter } from 'next/navigation';
 import { Query } from 'mongoose';
 import { useBooking } from "../../context/BookingContext";
+import Location from '@/components/location/Location';
 
 const cityArray = [
   "Mumbai, Maharashtra",
@@ -103,12 +104,13 @@ export default function OrderForm() {
   const [blockedDates, setBlockedDates] = useState([]);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
   const [fullPayment, setFullPayment] = useState(false)
+  const [place, setPlace] = useState("");
 
 
   const { bookingData } = useBooking();
   useEffect(() => {
     if (bookingData) {
-      console.log('Received state:', bookingData);
+      
       setOriginalTokenAmount(bookingData.price);
       setTokenAmount(Math.round(bookingData.price * 0.2))
 
@@ -120,9 +122,8 @@ export default function OrderForm() {
 
 
   useEffect(() => {
-    console.log("id", id)
     getBlockedDates(id)
-    // console.log(blockedDates)
+    // // console.log(blockedDates)
   }, [])
 
 
@@ -135,15 +136,15 @@ export default function OrderForm() {
       }
     })
     const blockedDates2 = await data.json();
-    console.log("f", blockedDates2)
+    
     const blockedDates1 = []
     blockedDates2.map((ele) => blockedDates1.push(ele?.date || ""))
-    console.log(blockedDates1)
+    
     const formattedDates = blockedDates1.map(date => {
       const d = new Date(date);
       return d.toISOString().split('T')[0]; // Get only 'yyyy-mm-dd' part
     });
-    console.log(formattedDates)
+    
     setBlockedDates(formattedDates);
   }
 
@@ -159,7 +160,7 @@ export default function OrderForm() {
       setTokenAmount(Math.round(bookingData.price * 0.2))
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching freelancer data:', error);
+      
     }
   };
 
@@ -172,14 +173,14 @@ export default function OrderForm() {
 
   // Handle input changes
   const handleInputChange = (e) => {
-    console.log(orderData.mobileNumber)
+    // console.log(orderData.mobileNumber)
     const { name, value } = e.target;
     setOrderData({ ...orderData, [name]: value });
     if (name === 'selectedService') {
       setEvents([])
       const eventsdata = freelancerData?.freelancerDetails[value]?.subcategories || [];
       setEvents(eventsdata);
-      console.log("Subcategories for selected service:", eventsdata);
+      // console.log("Subcategories for selected service:", eventsdata);
       setOrderData((prevData) => ({ ...prevData, eventType: value, time: '', event: '' }));
       setTime([])
       setTokenAmount(0);
@@ -247,7 +248,7 @@ export default function OrderForm() {
       return false; // If date is null or not a Date object, do not disable
     }
     const formattedDate = date.toISOString().split('T')[0]; // Format date to 'YYYY-MM-DD'
-    // console.log("f",formattedDate)
+    // // console.log("f",formattedDate)
     return blockedDates.includes(formattedDate) || date < new Date();
   };
 
@@ -258,7 +259,7 @@ export default function OrderForm() {
       // Create a new date object for the next day
       const nextDay = new Date(newDate);
       nextDay.setDate(nextDay.getDate() + 1); // Increment day by 1
-      console.log("nxt", nextDay)
+      // console.log("nxt", nextDay)
       // Check if the selected next day is blocked
       if (shouldDisableDate(nextDay)) {
         setSelectedDate(null); // Clear the selected date
@@ -268,9 +269,9 @@ export default function OrderForm() {
 
 
       } else {
-        console.log("A", newDate)
+        // console.log("A", newDate)
         setSelectedDate(newDate);
-        // console.log(`Selected date: ${formattedNewDate}`);
+        // // console.log(`Selected date: ${formattedNewDate}`);
       }
     } else {
       setSelectedDate(null); // Handle case when date is cleared
@@ -313,29 +314,29 @@ export default function OrderForm() {
     const freelancerid = freelancerData._id;
     const discounts = discount;
 
-    console.log('i am here')
-    console.log("s", selectedDate)
+    // console.log('i am here')
+    // console.log("s", selectedDate)
     if (selectedDate == null) {
       alert('please select a valid date ')
       return
     }
     const date = new Date(selectedDate);
-    console.log("ff", date)
+    // console.log("ff", date)
     if (blockedDates.includes(date)) {
       date.setDate(date.getDate() + 1);
       alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
     } else {
       date.setDate(date.getDate() + 1);
-      console.log("date", date)
+      // console.log("date", date)
       const formattedDate = date.toISOString().split('T')[0];
-      console.log(formattedDate)
+      // console.log(formattedDate)
       const orderDetails = {
         name: orderData.customerName,
         email: localUser?.email || '',
         phone: orderData.mobileNumber,
         pinCode: orderData.pincode,
         address: orderData.address,
-        city: orderData.selectedCity,
+        city: place,
         date: formattedDate,
         paidAmount: tokenAmount,
         totalAmount: originalTokenAmount,
@@ -350,7 +351,7 @@ export default function OrderForm() {
         orderId: razorpayOrder.orderId
       };
 
-      console.log(orderDetails)
+      // console.log(orderDetails)
 
       try {
         const response = await fetch('/api/order/new', {
@@ -360,7 +361,7 @@ export default function OrderForm() {
           },
           body: JSON.stringify(orderDetails),
         })
-        console.log('i am here3')
+        // console.log('i am here3')
         const result = await response.json();
         if (response.ok) {
           alert('Order placed successfully');
@@ -369,7 +370,7 @@ export default function OrderForm() {
           alert('Error placing order: ' + result.message);
         }
       } catch (error) {
-        console.error('Error placing order:', error);
+        // console.error('Error placing order:', error);
         alert('Something went wrong. Please try again later.');
       }
     }
@@ -396,10 +397,14 @@ export default function OrderForm() {
       alert('mobile number must be of 10 digit');
       return;
     }
+    if(place==""){
+      alert('please select the city of service');
+      return;
+    }
 
     try {
       const amount = tokenAmount
-      console.log(amount)
+      // console.log(amount)
       const payload = { payAmount: tokenAmount };
       const response = await fetch('/api/razorpay', {
         method: "POST",
@@ -419,7 +424,8 @@ export default function OrderForm() {
       const discounts = discount;
       const razorpayOrderId = razorpayOrder.orderId;
 
-      console.log(orderData.mobileNumber)
+      // console.log(orderData.mobileNumber)
+      // console.log(place)
 
 
       var options = {
@@ -444,7 +450,7 @@ export default function OrderForm() {
           customerPhone: orderData.mobileNumber,
           pinCode: orderData.pincode,
           address: orderData.address,
-          city: orderData.selectedCity,
+          city: place,
           date: bookingData.selectedDates,
           totalAmount: originalTokenAmount,
           discount: discounts,
@@ -463,7 +469,7 @@ export default function OrderForm() {
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
     } catch (error) {
-      console.log("razorPayerror", error)
+      // console.log("razorPayerror", error)
 
     }
 
@@ -592,7 +598,7 @@ export default function OrderForm() {
 
                 {/* City Dropdown */}
                 <div>
-                  <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                  {/* <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">
                     City
                   </label>
                   <select
@@ -608,7 +614,11 @@ export default function OrderForm() {
                         {city}
                       </option>
                     ))}
-                  </select>
+                  </select> */}
+                  <p className="block text-sm font-semibold mb-2 text-gray-700">City</p>
+                  <div className="w-full border rounded-xl py-1">
+          <Location onSelectLocation={setPlace} />
+        </div>
 
                 </div>
 
