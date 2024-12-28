@@ -3,7 +3,7 @@ import { Client } from "@googlemaps/google-maps-services-js";
 const client = new Client();
 
 export async function GET(request) {
-  console.log('api key is',process.env.GOOGLE_API_KEY)
+  // console.log('api key is',process.env.GOOGLE_API_KEY)
   const { searchParams } = new URL(request.url);
   const input = searchParams.get("input");
 
