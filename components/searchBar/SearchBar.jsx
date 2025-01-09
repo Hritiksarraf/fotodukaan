@@ -2,51 +2,8 @@
 import React from 'react'
 import { useState } from 'react';
 import Link from 'next/link';
+import Location from '../location/Location';
 
-const cityArray = [
-  "Mumbai, Maharashtra",
-  "Delhi, National Capital Territory",
-  "Bangalore (Bengaluru), Karnataka",
-  "Hyderabad, Telangana",
-  "Ahmedabad, Gujarat",
-  "Chennai, Tamil Nadu",
-  "Kolkata, West Bengal",
-  "Pune, Maharashtra",
-  "Jaipur, Rajasthan",
-  "Surat, Gujarat",
-  "Lucknow, Uttar Pradesh",
-  "Kanpur, Uttar Pradesh",
-  "Nagpur, Maharashtra",
-  "Indore, Madhya Pradesh",
-  "Patna, Bihar",
-  "Bhopal, Madhya Pradesh",
-  "Vadodara, Gujarat",
-  "Ludhiana, Punjab",
-  "Agra, Uttar Pradesh",
-  "Nashik, Maharashtra",
-  "Coimbatore, Tamil Nadu",
-  "Kochi (Cochin), Kerala",
-  "Visakhapatnam, Andhra Pradesh",
-  "Ghaziabad, Uttar Pradesh",
-  "Thiruvananthapuram, Kerala",
-  "Varanasi, Uttar Pradesh",
-  "Rajkot, Gujarat",
-  "Meerut, Uttar Pradesh",
-  "Faridabad, Haryana",
-  "Amritsar, Punjab",
-  "Jodhpur, Rajasthan",
-  "Madurai, Tamil Nadu",
-  "Raipur, Chhattisgarh",
-  "Aurangabad, Maharashtra",
-  "Gwalior, Madhya Pradesh",
-  "Ranchi, Jharkhand",
-  "Guwahati, Assam",
-  "Bhubaneswar, Odisha",
-  "Mysore, Karnataka",
-  "Jabalpur, Madhya Pradesh",
-  "Goa, Maharashtra",
-  "Muzaffarpur, Bihar"
-];
 
 
 const categories = [
@@ -145,20 +102,17 @@ const categories = [
 export default function SearchBar() {
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
-  const [place, setPlace] = useState("");
-  const isSearchDisabled = !category;
+  const [place, setPlace] = useState(""); // State to store location
+  let isSearchDisabled = !category;
+  if(!subCategory && place){
+    isSearchDisabled=true;
+  }
 
-
-  
   const selectedCategory = categories.find(cat => cat.name === category);
   const subcategories = selectedCategory ? selectedCategory.subcategories : [];
 
-  const uniqueSortedCities = [...new Set(cityArray.map(city => city.split(",")[0]))].sort();
-
-
-
   return (
-    <div className="flex items-center justify-center ">
+    <div className="flex items-center justify-center">
       <div className="bg-white rounded-md md:shadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-0 md:gap-x-4">
         
         {/* Category Select */}
@@ -167,7 +121,7 @@ export default function SearchBar() {
           onChange={(e) => { setCategory(e.target.value); setSubCategory(""); }} // Reset subCategory on category change
           className="w-full sm:w-40 border-gray-300 rounded-md p-1 md:p-2"
         >
-          <option value="">Select Category</option>
+          <option value="">Category</option>
           {categories.map((cat, index) => (
             <option key={index} value={cat.name}>{cat.name}</option>
           ))}
@@ -177,29 +131,19 @@ export default function SearchBar() {
         <select
           value={subCategory}
           onChange={(e) => setSubCategory(e.target.value)}
-          className="w-full sm:w-auto border-gray-300 rounded-md p-1 md:p-2"
+          className="w-full sm:w-40 border-gray-300 rounded-md p-1 md:p-2"
           disabled={!subcategories.length} // Disable if no subcategories available
         >
-          <option value="">Select SubCategory</option>
+          <option value="">Sub Category</option>
           {subcategories.map((sub, index) => (
             <option key={index} value={sub}>{sub}</option>
           ))}
         </select>
 
-        {/* Place Select */}
-        <select
-      value={place}
-      onChange={(e) => setPlace(e.target.value)}
-      className="w-full sm:w-32 border-gray-300 rounded-md p-1 md:p-2"
-      disabled={!subCategory}
-    >
-      <option value="">Select Place</option>
-      {uniqueSortedCities.map((city) => (
-        <option key={city} value={city}>
-          {city}
-        </option>
-      ))}
-    </select>
+        {/* Location Component */}
+        <div className="w-full sm:w-40">
+          <Location onSelectLocation={setPlace} />
+        </div>
 
         {/* Search Button */}
         <Link

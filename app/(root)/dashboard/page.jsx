@@ -53,7 +53,7 @@ function OrdersPage() {
         if (response.ok) {
           const data = await response.json();
           setOrders(data.orders.reverse());
-          console.log(data);
+          // console.log(data);
           setLeftAmount(data.totalAmount - data.discount - data.paidAmount);
         } else {
           setError("Failed to fetch orders");
@@ -146,10 +146,10 @@ function OrdersPage() {
           {
             size: "invisible",
             callback: (response) => {
-              console.log("reCAPTCHA solved:", response);
+              // console.log("reCAPTCHA solved:", response);
             },
             "expired-callback": () => {
-              console.log("reCAPTCHA expired");
+              // console.log("reCAPTCHA expired");
             },
           }
         );
@@ -158,7 +158,7 @@ function OrdersPage() {
           setRecaptchaLoaded(true);
         });
       } catch (error) {
-        console.error("Error initializing reCAPTCHA:", error);
+        // console.error("Error initializing reCAPTCHA:", error);
       }
     }
   }
@@ -178,7 +178,7 @@ function OrdersPage() {
         setEnterOtp(true);
       })
       .catch((error) => {
-        console.error("Error sending OTP:", error);
+        // console.error("Error sending OTP:", error);
       });
   };
 
@@ -188,11 +188,11 @@ function OrdersPage() {
     window.confirmationResult
       .confirm(otpValue)
       .then(async (res) => {
-        console.log(res);
+        // console.log(res);
         handleworkstart();
       })
       .catch((err) => {
-        console.log("Invalid OTP:", err);
+        // console.log("Invalid OTP:", err);
         setOtpLoading(false);
       });
   }
@@ -261,9 +261,14 @@ function OrdersPage() {
                               <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">
                                 Date
                               </h2>
-                              <h1 className="text-xl font-bold">
-                                {new Date(order.date).toLocaleDateString()}
-                              </h1>
+                              <div className='flex flex-wrap'>
+                                {order.date.split(",").map((date, index) => (
+                                  <p key={index} className="text-xl font-bold mb-1 px-2 border-r-2 ">
+                                    {date}
+                                  </p>
+                                ))}
+                              </div>
+
                             </div>
 
                             <div>
@@ -279,7 +284,18 @@ function OrdersPage() {
                                 Service Duration
                               </h2>
                               <h1 className="text-xl font-bold">
-                                {order.time}
+                                {order.time
+                                  .split(",")
+                                  .map((value, index) =>
+                                    value === "extraHourPrice"
+                                      ? ""
+                                      : value === "fullDayPrice"
+                                        ? "Full Day"
+                                        : value === "halfDayPrice"
+                                          ? "Half Day"
+                                          : `${value}${index === 1 ? " Hours" : ""}` // Add "Hours" to the number
+                                  )
+                                  .join(" ")}
                               </h1>
                             </div>
                             <div>
@@ -312,9 +328,9 @@ function OrdersPage() {
                                     <span className="text-green-600">Yes</span>
 
                                     {order.freelancerAproved &&
-                                    !order.additionalDetails[0].amountPaid ? (
+                                      !order.additionalDetails[0].amountPaid ? (
                                       <button
-                                        onClick={()=>{handleAmountPaid(order._id)}}
+                                        onClick={() => { handleAmountPaid(order._id) }}
                                         className="flex mr-auto text-white bg-green-500 border-0 text-sm py-2 px-2 ml-20 focus:outline-none hover:bg-yellow-600 rounded"
                                       >
                                         Click if Amount Paid

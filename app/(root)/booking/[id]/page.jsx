@@ -14,9 +14,63 @@ import { Typography } from '@mui/material'
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import Script from 'next/script';
 import Razorpay from 'razorpay';
+import { useRouter } from 'next/navigation';
+import { Query } from 'mongoose';
+import { useBooking } from "../../context/BookingContext";
+import Location from '@/components/location/Location';
 
+const cityArray = [
+  "Mumbai, Maharashtra",
+  "Delhi, National Capital Territory",
+  "Bangalore (Bengaluru), Karnataka",
+  "Hyderabad, Telangana",
+  "Ahmedabad, Gujarat",
+  "Chennai, Tamil Nadu",
+  "Kolkata, West Bengal",
+  "Pune, Maharashtra",
+  "Jaipur, Rajasthan",
+  "Surat, Gujarat",
+  "Lucknow, Uttar Pradesh",
+  "Kanpur, Uttar Pradesh",
+  "Nagpur, Maharashtra",
+  "Indore, Madhya Pradesh",
+  "Patna, Bihar",
+  "Bhopal, Madhya Pradesh",
+  "Vadodara, Gujarat",
+  "Ludhiana, Punjab",
+  "Agra, Uttar Pradesh",
+  "Nashik, Maharashtra",
+  "Coimbatore, Tamil Nadu",
+  "Kochi (Cochin), Kerala",
+  "Visakhapatnam, Andhra Pradesh",
+  "Ghaziabad, Uttar Pradesh",
+  "Thiruvananthapuram, Kerala",
+  "Varanasi, Uttar Pradesh",
+  "Rajkot, Gujarat",
+  "Meerut, Uttar Pradesh",
+  "Faridabad, Haryana",
+  "Amritsar, Punjab",
+  "Jodhpur, Rajasthan",
+  "Madurai, Tamil Nadu",
+  "Raipur, Chhattisgarh",
+  "Aurangabad, Maharashtra",
+  "Gwalior, Madhya Pradesh",
+  "Ranchi, Jharkhand",
+  "Guwahati, Assam",
+  "Bhubaneswar, Odisha",
+  "Mysore, Karnataka",
+  "Jabalpur, Madhya Pradesh",
+  "Goa, Maharashtra",
+  "Muzaffarpur, Bihar"
+];
+{/* City */ }
 
 export default function OrderForm() {
+
+  const router = useRouter();
+
+  const uniqueSortedCities = [...new Set(cityArray.map(city => city.split(",")[0]))].sort();
+
   const [step, setStep] = useState(1);
   const { id } = useParams();
   const [freelancerData, setFreelancerData] = useState({});
@@ -49,11 +103,31 @@ export default function OrderForm() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [blockedDates, setBlockedDates] = useState([]);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false)
+  const [fullPayment, setFullPayment] = useState(false)
+  const [place, setPlace] = useState("");
+
+
+  const { bookingData } = useBooking();
   useEffect(() => {
-    console.log("id", id)
+    if (bookingData) {
+      
+      setOriginalTokenAmount(bookingData.price);
+      setTokenAmount(Math.round(bookingData.price * 0.2))
+
+    } else {
+      alert('Select the requried Service and Dates')
+      router.push(`/freelancer/${id}`)
+    }
+  }, [bookingData]);
+
+
+  useEffect(() => {
     getBlockedDates(id)
-    // console.log(blockedDates)
+    // // console.log(blockedDates)
   }, [])
+
+
+
   const getBlockedDates = async (Id) => {
     const data = await fetch(`/api/dates/${Id}`, {
       method: 'GET',
@@ -62,28 +136,31 @@ export default function OrderForm() {
       }
     })
     const blockedDates2 = await data.json();
-    console.log("f", blockedDates2)
+    
     const blockedDates1 = []
     blockedDates2.map((ele) => blockedDates1.push(ele?.date || ""))
-    console.log(blockedDates1)
+    
     const formattedDates = blockedDates1.map(date => {
       const d = new Date(date);
       return d.toISOString().split('T')[0]; // Get only 'yyyy-mm-dd' part
     });
-    console.log(formattedDates)
+    
     setBlockedDates(formattedDates);
   }
+
+
+  // Fetch freelancer data
   const getFreelancer = async () => {
     try {
       const response = await fetch(`/api/freelancer/${id}`);
       const data = await response.json();
       setFreelancerData(data);
       // Set the token amount based on the full day price initially
-      setTokenAmount(data.startingPrice);
-      setOriginalTokenAmount(data.startingPrice);
+      setOriginalTokenAmount(bookingData.price);
+      setTokenAmount(Math.round(bookingData.price * 0.2))
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching freelancer data:', error);
+      
     }
   };
 
@@ -91,17 +168,19 @@ export default function OrderForm() {
     if (id) {
       getFreelancer();
     }
+
   }, [id]);
 
   // Handle input changes
   const handleInputChange = (e) => {
+    // console.log(orderData.mobileNumber)
     const { name, value } = e.target;
     setOrderData({ ...orderData, [name]: value });
     if (name === 'selectedService') {
       setEvents([])
       const eventsdata = freelancerData?.freelancerDetails[value]?.subcategories || [];
       setEvents(eventsdata);
-      console.log("Subcategories for selected service:", eventsdata);
+      // console.log("Subcategories for selected service:", eventsdata);
       setOrderData((prevData) => ({ ...prevData, eventType: value, time: '', event: '' }));
       setTime([])
       setTokenAmount(0);
@@ -128,19 +207,19 @@ export default function OrderForm() {
       // Update token amount based on selected event and time
       if (orderData.event === 'Wedding') {
         if (value === 'halfDay') {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.halfDayPrice || 0));
         } else if (value === 'fullDay') {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.weddingPrice?.fullDayPrice || 0));
         }
       } else {
         // Non-wedding event pricing
         if (value === 'halfDay') {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0));
         } else {
-          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0)*0.2));
+          setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0) * 0.2));
           setOriginalTokenAmount(Math.round(freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.fullDayPrice || 0));
         }
       }
@@ -169,7 +248,7 @@ export default function OrderForm() {
       return false; // If date is null or not a Date object, do not disable
     }
     const formattedDate = date.toISOString().split('T')[0]; // Format date to 'YYYY-MM-DD'
-    // console.log("f",formattedDate)
+    // // console.log("f",formattedDate)
     return blockedDates.includes(formattedDate) || date < new Date();
   };
 
@@ -180,7 +259,7 @@ export default function OrderForm() {
       // Create a new date object for the next day
       const nextDay = new Date(newDate);
       nextDay.setDate(nextDay.getDate() + 1); // Increment day by 1
-      console.log("nxt", nextDay)
+      // console.log("nxt", nextDay)
       // Check if the selected next day is blocked
       if (shouldDisableDate(nextDay)) {
         setSelectedDate(null); // Clear the selected date
@@ -190,9 +269,9 @@ export default function OrderForm() {
 
 
       } else {
-        console.log("A", newDate)
+        // console.log("A", newDate)
         setSelectedDate(newDate);
-        // console.log(`Selected date: ${formattedNewDate}`);
+        // // console.log(`Selected date: ${formattedNewDate}`);
       }
     } else {
       setSelectedDate(null); // Handle case when date is cleared
@@ -218,10 +297,14 @@ export default function OrderForm() {
       setLocalUser(decodedUser);
       setLoading(false);
     }
+    else {
+      alert('please login before making an order')
+      router.push('/log-in')
+    }
   }, []);
 
   // Handle form submission
-  const handleSubmit = async (e,razorpayOrder) => {
+  const handleSubmit = async (e, razorpayOrder) => {
     e.preventDefault();
     if (!isRefundPolicyAccepted) {
       alert('You must accept the refund policy to proceed.');
@@ -231,29 +314,29 @@ export default function OrderForm() {
     const freelancerid = freelancerData._id;
     const discounts = discount;
 
-    console.log('i am here')
-    console.log("s", selectedDate)
+    // console.log('i am here')
+    // console.log("s", selectedDate)
     if (selectedDate == null) {
       alert('please select a valid date ')
       return
     }
     const date = new Date(selectedDate);
-    console.log("ff", date)
+    // console.log("ff", date)
     if (blockedDates.includes(date)) {
       date.setDate(date.getDate() + 1);
       alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
     } else {
       date.setDate(date.getDate() + 1);
-      console.log("date", date)
+      // console.log("date", date)
       const formattedDate = date.toISOString().split('T')[0];
-      console.log(formattedDate)
+      // console.log(formattedDate)
       const orderDetails = {
         name: orderData.customerName,
         email: localUser?.email || '',
         phone: orderData.mobileNumber,
         pinCode: orderData.pincode,
         address: orderData.address,
-        city: orderData.selectedCity,
+        city: place,
         date: formattedDate,
         paidAmount: tokenAmount,
         totalAmount: originalTokenAmount,
@@ -265,10 +348,10 @@ export default function OrderForm() {
         freelancerid,
         time: orderData.time,
         isPolicyAccepted: isRefundPolicyAccepted,
-        orderId:razorpayOrder.orderId
+        orderId: razorpayOrder.orderId
       };
 
-      console.log(orderDetails)
+      // console.log(orderDetails)
 
       try {
         const response = await fetch('/api/order/new', {
@@ -277,8 +360,8 @@ export default function OrderForm() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(orderDetails),
-        });
-        console.log('i am here3')
+        })
+        // console.log('i am here3')
         const result = await response.json();
         if (response.ok) {
           alert('Order placed successfully');
@@ -287,14 +370,18 @@ export default function OrderForm() {
           alert('Error placing order: ' + result.message);
         }
       } catch (error) {
-        console.error('Error placing order:', error);
+        // console.error('Error placing order:', error);
         alert('Something went wrong. Please try again later.');
       }
     }
   };
 
   const handleNext = () => {
-    setStep(2); // Move to the next step
+    if (orderData.mobileNumber.length != 10) {
+      alert('mobile number must be of 10 digit');
+      return;
+    }
+    setStep(2);
   };
 
   const handleBack = () => {
@@ -302,19 +389,32 @@ export default function OrderForm() {
   };
 
 
-  const handlePayment= async(e)=>{
+  const handlePayment = async (e) => {
     e.preventDefault();
     setIsProcessingPayment(true);
 
-   
+    if (orderData.mobileNumber.length != 10) {
+      alert('mobile number must be of 10 digit');
+      return;
+    }
+    if(place==""){
+      alert('please select the city of service');
+      return;
+    }
 
     try {
-
+      const amount = tokenAmount
+      // console.log(amount)
+      const payload = { payAmount: tokenAmount };
       const response = await fetch('/api/razorpay', {
-        method:"POST",
-      })
-  
-      const razorpayOrder=response.json();
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),  // Convert payload to JSON string
+      });
+
+      const razorpayOrder = response.json();
       if (!isRefundPolicyAccepted) {
         alert('You must accept the refund policy to proceed.');
         return;
@@ -322,67 +422,55 @@ export default function OrderForm() {
       const userid = userData._id;
       const freelancerid = freelancerData._id;
       const discounts = discount;
-  
-     
-      if (selectedDate == null) {
-        alert('please select a valid date ')
-        return
-      }
-      const date = new Date(selectedDate);
-      console.log("ff", date)
-      if (blockedDates.includes(date)) {
-        date.setDate(date.getDate() + 1);
-        alert(`The date ${date.toISOString().split('T')[0]} is already booked.`)
-        return;
-      }
-      date.setDate(date.getDate() + 1);
-      console.log("date", date)
-      const formattedDate = date.toISOString().split('T')[0];
+      const razorpayOrderId = razorpayOrder.orderId;
+
+      // console.log(orderData.mobileNumber)
+      // console.log(place)
 
 
       var options = {
         "key": process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
-        "amount": 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "amount": tokenAmount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
         "currency": "INR",
         "name": "Foto Dukaan", //your business name
         "description": "Order Transaction",
         "image": "https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png",
         "order_id": razorpayOrder.orderId, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-        "handler": function (response){
+        "handler": function (response) {
           // handleSubmit(e,razorpayOrder);
-          alert('sucess')
+          alert('Your order has been placed')
+          router.push('/yourOrder')
         },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
-            "name": orderData.customerName, //your customer's name
-            "contact": orderData.mobileNumber,
+          "name": orderData.customerName, //your customer's name
+
         },
         "notes": {
-          email: localUser?.email || '',
+          name: orderData.customerName,
+          customerPhone: orderData.mobileNumber,
           pinCode: orderData.pincode,
           address: orderData.address,
-          city: orderData.selectedCity,
-          date: formattedDate,
+          city: place,
+          date: bookingData.selectedDates,
           totalAmount: originalTokenAmount,
           discount: discounts,
-          service: orderData.selectedService,
-          event: orderData.event,
-          additionalDetails: [],
+          service: bookingData.selectedCategory,
+          event: bookingData.selectedSubcategory,
           userid,
           freelancerid,
-          time: orderData.time,
-          isPolicyAccepted: isRefundPolicyAccepted,
-          orderId:razorpayOrder.orderId
+          time: bookingData.timeOption,
+          orderId: razorpayOrderId
         },
         "theme": {
-            "color": "#3399cc"
+          "color": "#3399cc"
         }
-        
-    };
-    const rzp1 = new window.Razorpay(options);
-    rzp1.open();
+
+      };
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
     } catch (error) {
-      console.log("razorPayerror", error)
-      
+      // console.log("razorPayerror", error)
+
     }
 
   }
@@ -411,50 +499,44 @@ export default function OrderForm() {
             {/* Step 1 - Basic Details */}
             {step === 1 && (
               <>
+                {/* order info */}
+                {bookingData && <div>
+                  <p className="block text-lg font-semibold mb-1  text-black">
+                    Service
+                  </p>
+                  <p className="block text-lg  mb-1  text-gray-700">
+                    {bookingData.selectedSubcategory} - {bookingData.selectedCategory}
+                  </p>
 
-                {/* Event Date */}
-                <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">Event Date</label>
-                  
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      label="Select a date"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      shouldDisableDate={shouldDisableDate}
-                      renderInput={(params) => <TextField {...params} />}
-                      renderDay={(day, selectedDates, pickersDayProps) => {
-                        const previousDay = new Date(day);
-                        previousDay.setDate(previousDay.getDate() + 1);
+                  <div>
+                    {/* Date */}
+                    <p className="block text-lg font-semibold mb-1 text-black">Date</p>
+                    <div className='flex flex-wrap'>
+                    {bookingData.selectedDates.split(",").map((date, index) => (
+                      <p key={index} className="text-lg mb-1 px-2 border-r-2 text-gray-700">
+                        {date}
+                      </p>
+                    ))}
+                    </div>
 
-                        const isDisabled = shouldDisableDate(previousDay)
-                        return (
-                          <Box
-                            {...pickersDayProps} // Pass necessary props to Box
-                            sx={{
-                              width: '36px',
-                              height: '36px',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              fontWeight: isDisabled ? 'normal' : 'bold',
-                              color: isDisabled ? 'red' : '#000', // Gray for disabled, black for enabled
-                              margin: '2px',
-                              backgroundColor: selectedDates.includes(day) ? '#cfe8fc' : 'transparent', // Highlight selected date
-                              cursor: 'pointer', // Change cursor if disabled
-                            }}
-                            onClick={() => handleDateChange(day)} // Handle click only if not disabled
-                          >
-                            <Typography>{day.getDate()}</Typography>
-                          </Box>
-                        );
-                      }}
-                    />
-                  </LocalizationProvider>
-                </div>
-
-
-                {/* Customer Name */}
+                    {/* Duration */}
+                    <p className="block text-lg font-semibold mb-1 text-black">Duration</p>
+                    <p className="block text-lg mb-1 text-gray-700">
+                      {bookingData.timeOption
+                        .split(",")
+                        .map((value, index) =>
+                          value === "extraHourPrice"
+                            ? ""
+                            : value === "fullDayPrice"
+                              ? "Full day"
+                              : value === "halfDayPrice"
+                                ? "Half day"
+                                : `${value}${index === 1 ? " Hours" : ""}` // Add "Hours" to the number
+                        )
+                        .join(" ")} {/* Join with space */}
+                    </p>
+                  </div>
+                </div>}
 
 
                 <div>
@@ -509,12 +591,16 @@ export default function OrderForm() {
                     className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Enter your mobile number"
                     required
+                    pattern="^[0-9]{10}$"  // Only allows exactly 10 digits
+                    title="Please enter a 10-digit mobile number"  // Tooltip for invalid input
                   />
                 </div>
 
                 {/* City Dropdown */}
                 <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">City</label>
+                  {/* <label htmlFor="city" className="block mb-2 text-sm font-medium text-black dark:text-black">
+                    City
+                  </label>
                   <select
                     name="selectedCity"
                     value={orderData.selectedCity}
@@ -522,55 +608,109 @@ export default function OrderForm() {
                     className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   >
-                    <option value="">Select your city</option>
-                    <option value="Patna">Patna</option>
-                    <option value="Muzzferpur">Muzzferpur</option>
-                  </select>
+                    <option value="">Select City</option>
+                    {uniqueSortedCities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select> */}
+                  <p className="block text-sm font-semibold mb-2 text-gray-700">City</p>
+                  <div className="w-full border rounded-xl py-1">
+          <Location onSelectLocation={setPlace} />
+        </div>
+
                 </div>
 
-                {/* Next Button */}
+
+                {/* Coupon Code */}
+                <div>
+                  <label className="block text-sm font-semibold mb-2 text-gray-700">Coupon Code</label>
+                  <input
+                    type="text"
+                    name="couponCode"
+                    value={orderData.couponCode}
+                    onChange={handleInputChange}
+                    className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    placeholder="Enter coupon code (if any)"
+                  />
+                  <button
+                    type="button"
+                    className="mt-3 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all"
+                    onClick={applyCoupon}
+                    disabled={couponApplied}
+                  >
+                    {couponApplied ? "Coupon Applied" : "Apply Coupon"}
+                  </button>
+                  {couponApplied && (
+                    <p className={`mt-2 text-sm font-semibold ${isCouponValid ? 'text-green-600' : 'text-red-600'}`}>
+                      {couponMessage}
+                    </p>
+                  )}
+                </div>
+                {/* Refund Policy Checkbox */}
+
+
+                {originalTokenAmount > 0 && <div>
+                  <div>
+                    <h1 className='text-sm text-green-600'>You can just pay a token amount of 20% or do full payment</h1>
+                  </div>
+                  <div className="flex items-center ">
+                    <input
+                      type="checkbox"
+                      id="fullPayment"
+                      checked={fullPayment}
+                      onChange={(e) => {
+
+                        !fullPayment ? setTokenAmount(originalTokenAmount) : setTokenAmount(Math.round(originalTokenAmount * 0.2))
+                        setFullPayment(!fullPayment)
+                      }}
+                      className="mr-2 text-sm"
+                    />
+                    <label htmlFor="refundPolicy" className="text-lg text-gray-700">
+                      Pay full amount {originalTokenAmount}
+                    </label>
+
+                  </div>
+
+
+                  {/* Amount to be Paid */}
+                  <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p></div>}
+
+                {/* Submit Button */}
+                <div className="flex items-center mb-4">
+                  <input
+                    type="checkbox"
+                    id="refundPolicy"
+                    checked={isRefundPolicyAccepted}
+                    onChange={(e) => setIsRefundPolicyAccepted(e.target.checked)}
+                    className="mr-2"
+                    required // Optionally make it required
+                  />
+                  <label htmlFor="refundPolicy" className="text-sm text-gray-700">
+                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund & cancellation policy</a>
+                  </label>
+                </div>
                 <button
+                  type="submit"
+                  className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold hover:bg-blue-600 transition-all"
+                >
+                  Place Order
+                </button>
+
+                {/* <button
                   type="button"
                   onClick={handleNext}
                   className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold hover:bg-blue-600 transition-all"
                 >
                   Next
-                </button>
+                </button> */}
               </>
             )}
 
             {/* Step 2 - Additional Details */}
             {step === 2 && (
               <>
-                
-                {/* <StaticDatePicker
-                  displayStaticWrapperAs="desktop"
-                  openTo="day"
-                  value={selectedDate}
-                  onChange={(newDate) => setSelectedDate(newDate)}
-                  shouldDisableDate={shouldDisableDate} // Disable specific dates
-                  renderDay={(day, selectedDates, pickersDayProps) => {
-                  const isDisabled = shouldDisableDate(day); // Check if date is disabled
-
-                  return (
-                    <Box
-                      {...pickersDayProps}
-                      sx={{
-                        width: '36px',    // Define a fixed width for each day
-                        height: '36px',   // Define a fixed height for each day
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: isDisabled ? 'normal' : 'bold',
-                        color: isDisabled ? '#b0b0b0' : '#000', // Gray for disabled, black for enabled
-                        margin: '2px',    // Add a small margin to separate each day
-                      }}
-                    >
-                      <Typography>{day.getDate()}</Typography>
-                      </Box>
-      );
-    }}
-  /> */}
 
                 {/* Freelancer Service Dropdown */}
                 <div>
@@ -658,6 +798,35 @@ export default function OrderForm() {
                   )}
                 </div>
                 {/* Refund Policy Checkbox */}
+
+
+                {originalTokenAmount > 0 && <div>
+                  <div>
+                    <h1 className='text-sm text-green-600'>You can just pay a token amount of 20% or do full payment</h1>
+                  </div>
+                  <div className="flex items-center ">
+                    <input
+                      type="checkbox"
+                      id="fullPayment"
+                      checked={fullPayment}
+                      onChange={(e) => {
+
+                        !fullPayment ? setTokenAmount(originalTokenAmount) : setTokenAmount(Math.round((freelancerData?.freelancerDetails[orderData?.selectedService]?.price?.halfDayPrice || 0) * 0.2))
+                        setFullPayment(!fullPayment)
+                      }}
+                      className="mr-2 text-sm"
+                    />
+                    <label htmlFor="refundPolicy" className="text-lg text-gray-700">
+                      Pay full amount {originalTokenAmount}
+                    </label>
+
+                  </div>
+
+
+                  {/* Amount to be Paid */}
+                  <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p></div>}
+
+                {/* Submit Button */}
                 <div className="flex items-center mb-4">
                   <input
                     type="checkbox"
@@ -671,11 +840,6 @@ export default function OrderForm() {
                     I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">refund & cancellation policy</a>
                   </label>
                 </div>
-
-                {/* Amount to be Paid */}
-                <p className="text-lg font-bold text-gray-800">Amount to be Paid: ₹{tokenAmount}</p>
-
-                {/* Submit Button */}
                 <button
                   type="submit"
                   className="w-full bg-blue-500 text-white py-4 rounded-lg font-semibold hover:bg-blue-600 transition-all"

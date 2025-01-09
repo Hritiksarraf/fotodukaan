@@ -12,6 +12,7 @@
     "@date-io/date-fns": "^2.0.0",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@googlemaps/google-maps-services-js": "^3.4.0",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.13.6",
     "@mui/x-date-pickers": "^5.0.0",

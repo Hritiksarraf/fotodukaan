@@ -155,7 +155,7 @@ function LoginPage() {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <a href="#" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-700">Forgot password?</a>
+                  <Link href="/forgotPassword" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-700">Forgot password?</Link>
                 </div>
                 <button
                   type="submit"

@@ -87,7 +87,7 @@ export default function Page() {
                     throw new Error("Image upload failed");
                 }
             } catch (error) {
-                console.error("Error uploading image:", error);
+                // console.error("Error uploading image:", error);
             }
         }
     
@@ -112,10 +112,10 @@ export default function Page() {
                 }));
                 setSelectedFile(null);
             } else {
-                console.error("Failed to add images to the array");
+                // console.error("Failed to add images to the array");
             }
         } catch (error) {
-            console.error("Error updating image array: ", error);
+            // console.error("Error updating image array: ", error);
         } finally {
             setUploading(false);
         }
@@ -145,10 +145,10 @@ export default function Page() {
                 setDeleteConfirm(false); // Close the delete confirmation modal
                 setImageToDelete(null); // Clear the selected image
             } else {
-                console.error("Failed to delete image");
+                // console.error("Failed to delete image");
             }
         } catch (error) {
-            console.error("Error deleting image: ", error);
+            // console.error("Error deleting image: ", error);
         }
     };
 
@@ -176,10 +176,10 @@ export default function Page() {
                 }));
                 setNewVideoUrl(""); // Clear input after successful upload
             } else {
-                console.error("Failed to add video");
+                // console.error("Failed to add video");
             }
         } catch (error) {
-            console.error("Error adding video: ", error);
+            // console.error("Error adding video: ", error);
         }
     };
 
@@ -207,10 +207,10 @@ export default function Page() {
                 setDeleteConfirmVideo(false); // Close the delete confirmation modal
                 setVideoToDelete(null); // Clear the selected video
             } else {
-                console.error("Failed to delete video");
+                // console.error("Failed to delete video");
             }
         } catch (error) {
-            console.error("Error deleting video: ", error);
+            // console.error("Error deleting video: ", error);
         }
     };
 

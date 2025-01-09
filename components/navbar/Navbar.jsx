@@ -85,14 +85,18 @@ export default function Navbar() {
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>}
+<<<<<<< HEAD
                             {!admin && profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+=======
+                            {profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-[#0E2041] w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+>>>>>>> 0d01aa6e86f9f84ac4acd55fe0ce685863c4f0a7
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
                                 </div>
                                 <h1 className="text-white font-bold">{user.name}</h1>
                                 <div className="flex flex-col gap-5">
-                                    <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
+                                    <Link href="/bookings" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-[#0E2041] rounded-full md:inline-flex">
                                         Bookings
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                             <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
@@ -107,7 +111,7 @@ export default function Navbar() {
 
                                 </div>
                             </div>}
-                            {profileState && user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                            {profileState && user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-[#0E2041] w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -147,6 +151,7 @@ export default function Navbar() {
                 </div>
                 
                 <div className={`flex-1 items-center mt-8 md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
+<<<<<<< HEAD
                     {!admin&&<ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
                         {!admin&&
                             <div className="flex gap-5">
@@ -222,18 +227,87 @@ export default function Navbar() {
                         }       
                     </ul>}
                     
+=======
+                    <ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+                        {
+                            navigation.map((item, idx) => {
+                                return (
+                                    <li key={idx} className="text-[#0E2041] font-bold       hover:text-gray-400">
+                                        <Link href={item.path} className="block">
+                                            {item.title}
+                                        </Link>
+                                    </li>
+                                )
+                            })
+                        }
+                        <li>
+                            <select
+                                value={category}
+                                onChange={handleCategoryChange}
+                                className="text-[#0E2041] font-bold btn-select      hover:text-gray-400"
+                            >
+                                <option value="">Select Category</option>
+                                <option value="Traditional Photography">Traditional Photographer</option>
+                                <option value="Candid Photography">Candid Photographer</option>
+                                <option value="Traditional Videography">Traditional Videographer</option>
+                                <option value="Cinematography">Cinematographer</option>
+                                <option value="Drone">Drone</option>
+                                <option value="Crane">Crane</option>
+                                <option value="LED wall">LED wall</option>
+                                <option value="LED TV">LED TV</option>
+                            </select>
+                        </li>
+                        <li>
+                        <select
+    value="policy"
+    className="text-[#0E2041] font-bold btn-select hover:text-gray-400"
+    onChange={(e) => {
+        const selectedValue = e.target.value;
+        let url = "";
+
+        switch (selectedValue) {
+            case "Privacy Policy":
+                url = "https://drive.google.com/file/d/1SjvEX2Am-j7jXsSw4ZzNUB5JMijFzRuq/view?usp=drive_link";
+                break;
+            case "Cancellation and Refunds":
+                url = "https://drive.google.com/file/d/1cxfJvPp4jmWqIQ_C5LjddX5eAH7p2HRa/view?usp=drive_link";
+                break;
+            case "Terms and Conditions":
+                url = "https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link";
+                break;
+            case "Shipping and Delivery":
+                url = "https://drive.google.com/file/d/17FKCsPc3i_OdG3BH7HKAGeW9c7HFznoc/view?usp=drive_link";
+                break;
+            default:
+                break;
+        }
+
+        if (url) {
+            window.open(url, "_blank", "noopener,noreferrer");
+        }
+    }}
+>
+    <option value="">Company policy</option>
+    <option value="Privacy Policy">Privacy Policy</option>
+    <option value="Cancellation and Refunds">Cancellation and Refunds</option>
+    <option value="Terms and Conditions">Terms and Conditions</option>
+    <option value="Shipping and Delivery">Shipping and Delivery</option>
+</select>
+                        </li>
+                    </ul>
+>>>>>>> 0d01aa6e86f9f84ac4acd55fe0ce685863c4f0a7
                     {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">
                             <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>
-                            <button onClick={() => { setProfileState(!profileState) }} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 font-medium text-blue-700 hover:text-yellow-700 active:bg-blue-600 rounded-full md:inline-flex">
+                            <button onClick={() => { setProfileState(!profileState) }} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 font-medium text-[#0E2041] hover:text-yellow-700 active:bg-[#0E2041] rounded-full md:inline-flex">
                                 {user.name}
                             </button>
                         </div>
 
-                        {profileState && !user.freelancer && <div className="absolute md:translate-y-32 bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                        {profileState && !user.freelancer && <div className="absolute md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                             <div>
                                 <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -256,7 +330,7 @@ export default function Navbar() {
                             </div>
                         </div>}
                         <div>
-                            {profileState && user.freelancer && <div className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-500 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
+                            {profileState && user.freelancer && <div className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -279,7 +353,7 @@ export default function Navbar() {
                     </div>
                         ) :
                         (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
-                            <Link href="/log-in" className="block text-blue-600 hover:text-gray-400">
+                            <Link href="/log-in" className="block text-[#0E2041] hover:text-gray-400">
                                 Log in
                             </Link>
                             <Link href="/login" className="block text-blue-600 hover:text-gray-400">
@@ -291,8 +365,8 @@ export default function Navbar() {
                                     <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                                 </svg>
                             </Link>
-                            <Link href="/register" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-blue-600 rounded-full md:inline-flex">
-                                Register as Photographer
+                            <Link href="/register" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-[#F5AA2B] hover:bg-yellow-400 active:bg-[#0E2041] rounded-full md:inline-flex">
+                                Register as Freelancer
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                     <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                                 </svg>

@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import AddPhotoAlternateOutlined from '@mui/icons-material/AddPhotoAlternateOutlined';
 import jwt from "jsonwebtoken";
 import EditBar from '@/components/editBar/EditBar';
+import Location from '@/components/location/Location';
 
 
 const cityArray = [
@@ -52,7 +53,6 @@ const cityArray = [
     "Goa, Maharashtra",
     "Muzaffarpur, Bihar"
 ];
-
 export default function ProfileUpdateForm() {
     const [loading, setLoading] = useState(true);
     const [freelancerData, setFreelancerData] = useState({
@@ -66,8 +66,9 @@ export default function ProfileUpdateForm() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [localUser, setLocalUser] = useState(null);
+    const [place, setPlace] = useState('');
+    const [readyToSubmit, setReadyToSubmit] = useState(false); // New state to track readiness
 
-    // Fetch freelancer data
     const getFreelancerData = async () => {
         if (localUser) {
             const response = await fetch(`/api/freelancer/${localUser.userid}`, {
@@ -78,13 +79,14 @@ export default function ProfileUpdateForm() {
             });
             const data = await response.json();
             setFreelancerData(data);
-
+            setPlace(data.city);
         }
     };
 
     useEffect(() => {
         getFreelancerData();
     }, [localUser]);
+
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -96,7 +98,22 @@ export default function ProfileUpdateForm() {
 
     useEffect(() => {
         setLoading(false);
-    }, [freelancerData])
+    }, [freelancerData]);
+
+    useEffect(() => {
+        // Update freelancerData.city when place changes
+        setFreelancerData((prevState) => ({
+            ...prevState,
+            city: place,
+        }));
+    }, [place]);
+
+    useEffect(() => {
+        // Enable submission only if city is updated
+        if (freelancerData.city === place) {
+            setReadyToSubmit(true);
+        }
+    }, [freelancerData.city, place]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -113,7 +130,12 @@ export default function ProfileUpdateForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!freelancerData.name || !freelancerData.email || !freelancerData.city || !freelancerData.address || !freelancerData.startingPrice || !freelancerData.halfDayPrice || !freelancerData.extraHourPrice || !freelancerData.aboutYourself) {
+        if (!readyToSubmit) {
+            alert("City is not updated yet. Please wait.");
+            return;
+        }
+
+        if (!freelancerData.name || !freelancerData.email || !freelancerData.city || !freelancerData.address || !freelancerData.aboutYourself) {
             alert("Please fill out all required fields.");
             return;
         }
@@ -214,22 +236,10 @@ export default function ProfileUpdateForm() {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-bold mb-2">City</label>
-                        <select
-                            name="city"
-                            id="city"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
-                            onChange={handleInputChange}
-                            value={freelancerData.city}
-                            required
-                        >
-                            <option value="">Select City</option>
-                            {uniqueSortedCities.map((city) => (
-                                <option key={city} value={city}>
-                                    {city}
-                                </option>
-                            ))}
-                        </select>
+                        <p className="block text-sm font-semibold mb-2 text-gray-700">City</p>
+                        <div className="w-full border rounded-xl py-1">
+                            <Location onSelectLocation={setPlace} />
+                        </div>
                     </div>
 
                     <div className="mb-4">
@@ -287,7 +297,7 @@ export default function ProfileUpdateForm() {
 
                     <button
                         type="submit"
-                        disabled={uploading}
+                        disabled={uploading || !readyToSubmit}
                         className="w-full bg-blue-500 text-white py-2 rounded-lg"
                     >
                         {uploading ? "Updating..." : "Update Profile"}

@@ -20,6 +20,7 @@ export default function ServiceCard({
   });
   return (
     <div className=" w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r from-white to-white dark:text-black my-6 shadow-lg flex flex-col bg-primary/10 ">
+      <Link href={`/freelancer/${_id}`}>
       <div className="block h-64 w-64 mx-auto rounded-full pt-4">
         <img
           src={profilePhoto}
@@ -55,6 +56,7 @@ export default function ServiceCard({
           Know more
         </Link>
       </div>
+      </Link>
     </div>
   );
 }

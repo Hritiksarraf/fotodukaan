@@ -50,7 +50,7 @@ export default function page() {
           },
           body: JSON.stringify({name,text,star}),
         });
-        console.log('i am here3')
+        // console.log('i am here3')
         const result = await response.json();
         if (response.ok) {
           alert('Review Done');
@@ -62,7 +62,7 @@ export default function page() {
           alert('Error doing review ' + result.message);
         }
       } catch (error) {
-        console.error('Error doing review', error);
+        // console.error('Error doing review', error);
         alert('Something went wrong. Please try again later.');
       }
     }
@@ -163,7 +163,7 @@ export default function page() {
       },
     });
     const data = await response.json();
-    console.log(data)
+    // console.log(data)
     setFreelancerData(data);
     
     setLoading(false);
@@ -179,7 +179,7 @@ export default function page() {
     });
     const reviewData = await response.json();
     setTestimonialData(reviewData.reviews);
-    console.log(reviewData)
+    // console.log(reviewData)
     setReviewLoading(false)
   };
 
@@ -304,7 +304,7 @@ export default function page() {
 
                 <div className="flex flex-col mt-2 md:flex-row">
                   <p className='text-sm'> <span className='font-semibold text-3xl'>{minamount} ₹ </span > Starting Price  </p>
-                  <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link>
+                  {/* <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link> */}
 
 
                 </div>
@@ -344,7 +344,7 @@ export default function page() {
         </section> */}
 
       <div className="w-full px-4 pt-5 ">
-        <h1 className="text-3xl md:text-5xl text-center text-black mb-8" style={{ fontFamily: 'Poppins' }}>
+        <h1 className="text-3xl md:text-5xl text-center text-black mb-8" >
           Check Out My Services
         </h1>
         <div className="md:w-[50vw] md:mx-[15vw] bg-gradient-to-b  md:p-4 rounded-lg ">
@@ -352,12 +352,12 @@ export default function page() {
             <div key={index} className=" border-b-2   rounded-lg">
               <div
                 onClick={() => handleAccordionClick(index)}
-                className="flex items-center justify-between cursor-pointer p-4 text-lg font-semibold text-blue-500  rounded-lg"
+                className="flex items-center justify-between cursor-pointer p-4 text-sm font-semibold text-blue-500  rounded-lg"
               >
                 <div>
                   <p className='text-center'>{category.replace(/\b\w/g, (char) => char.toUpperCase())}</p>
                 </div>
-                <span className=" text-2xl">{openIndex === index ? '-' : '+'}</span>
+                <span className=" text-xl">{openIndex === index ? '-' : '+'}</span>
               </div>
 
               {openIndex === index && (
@@ -366,7 +366,7 @@ export default function page() {
                     {/* <h2 className="text-xl font-bold text-[#0E2041]">Subcategories:</h2> */}
                     <div className="flex items-center   flex-wrap  mb-4">
                       {details.subcategories.map((sub, idx) => (
-                        <span key={idx} className="  text-lg  font-semibold border-r-2 px-3 text-gray-600">
+                        <span key={idx} className="  text-sm  font-semibold border-r-2 px-3 text-gray-600">
                           {sub.replace(/\b\w/g, (char) => char.toUpperCase())}
                         </span>
                       ))}
@@ -374,7 +374,7 @@ export default function page() {
 
                     {details.cameraDetails && (
                       <div className="mb-4 flex ml-4 flex-col   ">
-                        <h3 className="text-xl my-2 text-left   font-serife font-bold text-blue-600">
+                        <h3 className="text-sm my-2 text-left   font-serife font-bold text-blue-600">
                           {category === 'Photography' || category === 'Videography' || category === 'Candid Photography' || category === 'Cinematography' ? 'Camera Details' :
                             category === 'Drone' ? 'Drone Details' :
                               category === 'Video Editing' ? 'Video Editing Software' : ''}
@@ -384,8 +384,8 @@ export default function page() {
                             <div className=''>
 
                               <p key={key} className="font-bold  px-1">
-                                <span className='font-bold text-xl text-violet-900 '>{key.replace(/\b\w/g, (char) => char.toUpperCase())} : </span>
-                                <span className='font-medium text-xl text-emerald-900'>{value}</span>
+                                <span className='font-bold text-sm text-violet-900 '>{key.replace(/\b\w/g, (char) => char.toUpperCase())} : </span>
+                                <span className='font-medium text-sm text-emerald-900'>{value}</span>
                               </p>
                             </div>
 
@@ -407,7 +407,7 @@ export default function page() {
 
       <section className='w-[100vw] mx-auto md:pr-[25vw] md:pl-[15vw]'>
         {freelancerData.image.length > 0 && freelancerData.video.length > 0 && (
-          <h2 className='text-center text-4xl md:text-5xl my-6' style={{ fontFamily: 'Poppins' }}>
+          <h2 className='text-center text-3xl md:text-5xl my-6' >
             Glimpses of My Work
           </h2>
         )}
@@ -496,7 +496,7 @@ export default function page() {
       <section className=' px-auto md:pr-[25vw] md:pl-[15vw] w-[100vw]'>
         <div className='bg-gradient-to-r from-white to-white'>
           <div className=' text-3xl px-5  '>
-            <h3 className='py-5 text-2xl lg:text-4xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
+            <h3 className='py-5 text-2xl lg:text-4xl font-semibold' >
               Review and Rating
             </h3>
             <p className='text-lg text-gray-600 '> {freelancerData.stars.star} star rating | {freelancerData.stars.noOfPeople} Review</p>
@@ -691,12 +691,12 @@ export default function page() {
 
         <section className='my-2'>
           <div>
-            <h1 className='pl-5 mx-5 text-3xl text-gray-700 font-bold'>Policies</h1>
+            <h1 className='pl-5  text-2xl text-gray-700 font-bold'>Policies</h1>
           </div>
           <div>
             <ul className='pl-5'>
               {policyPoints.map((point, index) => (
-                <li key={index} className='text-gray-600 py-3 font-bold text-sm'> <span><DoneIcon className='text-green-900 ' /></span> {point}</li>
+                <li key={index} className='text-gray-600 py-1 font-bold text-sm'> <span><DoneIcon className='text-green-900 ' /></span> {point}</li>
               ))}
             </ul>
           </div>

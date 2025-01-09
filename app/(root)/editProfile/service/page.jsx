@@ -244,7 +244,7 @@ export default function page() {
             },
         });
         const data = await response.json();
-        console.log(data)
+        // console.log(data)
         setSelectedCategories(data.freelancerDetails)
         setFreelancerData(data);
         setLoading(false)
