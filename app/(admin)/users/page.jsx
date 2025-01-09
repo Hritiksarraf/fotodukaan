@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import { Input } from '@mui/material'
 import { useRouter } from 'next/navigation'
 function page() {
-    const [user, setUser] = useState()
+    const [user, setUser] = useState([])
     const [search, setSearch] = useState(null)
     const [searchResult, setSearchResult] = useState(null)
     const router = useRouter()
@@ -17,6 +17,21 @@ function page() {
         }else{
             setUser(data.users)
             setSearchResult(data.users)
+        }
+    }
+    const handleDelete=async(id)=>{
+        const response = await fetch(`/api/admin/user/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const data = await response.json()
+        if(!data.success){
+            toast.error('failed to delete user')
+        }else{
+            toast.success('user deleted')
+            getUsers()
         }
     }
     useEffect(()=>{
@@ -34,9 +49,15 @@ function page() {
     
     }, [])
     useEffect(()=>{
-        const searchPosts =user && user.filter((u) =>u.name.toLowerCase().includes(search.trim().toLowerCase()));
-        setSearchResult(searchPosts)
-    
+        if (/\d/.test(search)) {
+            const searchPosts = user && user.filter((u) => 
+                u.phone.toString().includes(search.trim())
+            );
+            setSearchResult(searchPosts);
+        }else{
+            const searchPosts =user && user.filter((u) =>u.name.toLowerCase().includes(search.trim().toLowerCase()));
+            setSearchResult(searchPosts)
+        }
     },[setSearch,search])
     
     return (
@@ -44,7 +65,7 @@ function page() {
             <div className='w-full flex items-center justify-center mb-5'>
                 <Input
                 className='w-[50%] rounded-lg placeholder:text-center text-xl transition-colors duration-300 pl-5 border border-gray-500 text-black placeholder-black '
-                placeholder='search users'
+                placeholder='search users by name / phone number'
                 value={search}
                 onChange={(e)=>setSearch(e.target.value)}
                 />
@@ -56,13 +77,20 @@ function page() {
                     <div className='rounded-full w-full flex items-center justify-center'>
                     <img src={user?.profilePhoto} className='size-24 rounded-full' alt="freelancer image" />
                     </div>
+                    <div className='ml-2'>User Id :  {user?._id}</div>
                     <div className='ml-2'>EMAIL :  {user?.email}</div>
                     <div className='ml-2'>PHONE NO: {user?.phone}</div>
                     <div className='ml-2'>ADDRESS: {user?.address}</div>
                     <div className='ml-2'>CITY: {user?.city}</div>
                     <div className='ml-2'>PINCODE: {user?.pinCode}</div>
-                    <div className='w-full flex items-center justify-center'>
-                    <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={()=>router.push(`/users/${user?._id}`)}>View Details</button>
+                    <div className='w-full flex items-center justify-center mt-2'>
+                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={()=>handleDelete(user?._id)}>Delete User</button>
+                    </div>
+                    <div className='w-full flex items-center justify-center mt-2'>
+                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={()=>router.push(`/users/${user?._id}/orders`)}>Orders Placed</button>
+                    </div>
+                    <div className='w-full flex items-center justify-center mt-2'>
+                        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={()=>router.push(`/users/${user?._id}/edit`)}>Edit</button>
                     </div>
                 </div>
                 ))}

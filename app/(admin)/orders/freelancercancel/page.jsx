@@ -8,8 +8,6 @@ import OrderCard from '@/components/cards/OrderCard'
 
 function page() {
 const [order, setOrder] = useState(null)
-const [open, setOpen] = useState(false)
-const [reason, setReason] = useState(null)
 const getOrders=async()=>{
     const response = await fetch(`/api/admin/order`)
     const data = await response.json()
@@ -18,7 +16,7 @@ const getOrders=async()=>{
     }else{
         let arr =[]
         data.orders?.map((order)=>{
-            if(order.freelancerAproved){
+            if(order.freelancerCancel){
                 arr.push(order)
             }
         })
@@ -40,35 +38,13 @@ useEffect(() => {
 useEffect(()=>{
     getOrders()
 },[])
-const handleFreelancerCancel=async(id)=>{
-    if(!reason){
-        alert('please enter the reason to cancel the order')
-    }else{
-        const response = await fetch("/cancel",{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({id:id,freelancerCancelReason:reason})
-        })
-        const data = await response.json()
-        if(!data.success){
-            toast.error('failed to cancel freelancer order')
-        }else{
-            toast.success('freelancer order canceled successfully')
-            window.location.reload()
-        }
-    }
-}
-
-
 return (
     <div className='w-full min-h-screen flex flex-col items-center justify-center '>
-    <div className='w-full text-center font-bold text-3xl mb-5'>ORDERS APPROVED BY FREELANCER </div>
+    <div className='w-full text-center font-bold text-3xl mb-5'>ORDERS CANCELLED BY FREELANCERS </div>
     <OrderCard
     orders={order}
-    approve={true}
     onDelete={true}
+    approve={true}
     onEdit={true}
     />
     </div>

@@ -63,14 +63,6 @@ export default function Navbar() {
             router.push(`/freelancer/type/${selectedCategory}`); // Adjust the path to match your dynamic route
         }
     };
-    const handleOrderChange=(e)=>{
-        if(e.target.value=='orders'){
-            router.push('/orders')
-        }else{
-            router.push(`/orders/${e.target.value}`)
-            
-        }
-    }
 
 
     return (
@@ -153,37 +145,7 @@ export default function Navbar() {
                         </button>
                     </div>
                 </div>
-                <div className={` ${admin?"ml-72":""}`}>
-                    {admin&&(
-                            <div className="flex items-center justify-between w-full gap-40">
-                                <Link href="/freelancers" className="block text-blue-600 hover:text-gray-400">
-                                    Freelancers
-                                </Link>
-                                <Link href="/users" className="block text-blue-600 hover:text-gray-400">
-                                    Users
-                                </Link>
-                                <select
-                                        value={order}
-                                        onChange={handleOrderChange}
-                                        className="text-blue-600 font-bold btn-select hover:text-gray-400"
-                                    >
-                                        <option value="">Orders</option>
-                                        <option value="usercancel">Canceled by user</option>
-                                        <option value="admincancel">Canceled by admin</option>
-                                        <option value="notapproved">not approved by freelancer</option>
-                                        <option value="freelancerapprove">approved by freelancer</option>
-                                        <option value="adminapprove">approved by admin</option>
-                                        <option value="orders">All Orders</option>
-                                    </select>
-                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
-                                        Logout
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                                        </svg>
-                                </button>
-                            </div>
-                    )}
-                    </div>
+                
                 <div className={`flex-1 items-center mt-8 md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
                     {!admin&&<ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
                         {!admin&&

@@ -5,6 +5,8 @@ import jwt from 'jsonwebtoken'; // To decode the token
 import Link from 'next/link';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+
 
 function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -12,6 +14,8 @@ function OrdersPage() {
   const [error, setError] = useState('');
   const [localUser, setLocalUser] = useState(null);
   const [leftAmount, setLeftAmount] = useState(0)
+  const [open, setOpen] = useState(false)
+  const [reason, setReason] = useState(null)
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -51,18 +55,23 @@ function OrdersPage() {
 
   const handleCancelOrder = async (orderId) => {
     try {
-      const response = await fetch('/api/cancel-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ orderId }),
-      });
-
-      if (response.ok) {
-        setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
-      } else {
-        alert('Failed to cancel the order');
+      if(!reason){
+        alert('please enter the reason to cancel the order')
+      }else{
+        const response = await fetch('/api/order/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id:orderId,userCancelReason:reason }),
+        });
+        const data = await response.json()
+  
+        if (data.success) {
+          setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
+        } else {
+          alert('Failed to cancel the order');
+        }
       }
     } catch (error) {
       alert('An error occurred while canceling the order');
@@ -131,8 +140,35 @@ function OrdersPage() {
                                 </div>
 
                                 
-                                
-                                <button href={`/`} className="flex mt-4 mr-auto text-white bg-red-500  border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Cancel</button>
+                                <div>
+                                  <button href={`/`} onClick={()=>setOpen(true)} className="flex mt-4 mr-auto text-white bg-red-500  border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Cancel</button>
+                                  <Modal
+                                    open={open}
+                                    onClose={()=>setOpen(false)}
+                                    aria-labelledby="parent-modal-title"
+                                    aria-describedby="parent-modal-description"
+                                  >
+                                    <div className="w-full h-full flex flex-col text-white">
+                                      <div className="w-full text-center text-2xl font-bold">Are you sure you want to cancel the order?
+                                      </div>
+                                      <div>Enter the reason for canceling the order</div>
+                                      <input
+                                        value={reason}
+                                        onChange={(e)=>setReason(e.target.value)}
+                                        placeholder="reason"
+                                        className="rounded-lg text-black"
+                                      />
+                                      <div className='w-full flex items-center justify-center'>
+
+                                      <button onClick={handleCancelOrder}>Cancel the order</button>
+                                      </div>
+                                      <div className="w-full flex items-center justify-center">
+                                        <button onClick={()=>setOpen(false)}>Cancel</button>
+                                      </div>
+                                    </div>
+                                    
+                                  </Modal>
+                                </div>
                             </div>
                             <div>
                             

@@ -3,7 +3,10 @@ import User from "@/lib/models/User";
 export const POST= async(req,{params})=>{
     try {
         const {id} = await req.json()
-        const user = await User.findById(id)
+        const user = await User.findById(id).populate({
+            path:"booking",
+            model:'Order',
+        })
         if(!user) {
             return new Response(
                 JSON.stringify({ error: "user is not there",success:false }),
