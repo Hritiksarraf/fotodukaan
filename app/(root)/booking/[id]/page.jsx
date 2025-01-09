@@ -73,7 +73,7 @@ export default function OrderForm() {
     console.log(formattedDates)
     setBlockedDates(formattedDates);
   }
-  // F
+  const getFreelancer = async () => {
     try {
       const response = await fetch(`/api/freelancer/${id}`);
       const data = await response.json();
