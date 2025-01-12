@@ -310,7 +310,7 @@ export default function OrderForm() {
       alert('You must accept the refund policy to proceed.');
       return;
     }
-    const userid = userData._id;
+    const userid = localUser.userid;
     const freelancerid = freelancerData._id;
     const discounts = discount;
 
@@ -401,6 +401,7 @@ export default function OrderForm() {
       alert('please select the city of service');
       return;
     }
+    console.log('hey here3')
 
     try {
       const amount = tokenAmount
@@ -413,16 +414,21 @@ export default function OrderForm() {
         },
         body: JSON.stringify(payload),  // Convert payload to JSON string
       });
-
+      console.log('hey here6')
       const razorpayOrder = response.json();
+      console.log('hey here5')
       if (!isRefundPolicyAccepted) {
         alert('You must accept the refund policy to proceed.');
         return;
       }
-      const userid = userData._id;
+      console.log('hey here4')
+      console.log(localUser)
+      const userid = localUser.userid;
       const freelancerid = freelancerData._id;
       const discounts = discount;
       const razorpayOrderId = razorpayOrder.orderId;
+      console.log(userid,freelancerid,discounts,razorpayOrderId)
+      console.log('hey here1')
 
       // console.log(orderData.mobileNumber)
       // console.log(place)
@@ -470,7 +476,7 @@ export default function OrderForm() {
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
     } catch (error) {
-      // console.log("razorPayerror", error)
+      console.log("razorPayerror", error)
 
     }
 
