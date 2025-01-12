@@ -43,7 +43,7 @@ export default function page() {
       const text = userReview
       const star = userRating
       try {
-        const response = await fetch(`/api/freelancer/review/${decodedUser.userid}/postReview`, {
+        const response = await fetch(`/api/freelancer/review/${freelancerData._id}/postReview`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -54,6 +54,7 @@ export default function page() {
         const result = await response.json();
         if (response.ok) {
           alert('Review Done');
+          window.location.reload()
           setIsReviewModalOpen(false);
           setUserReview('');
           setUserRating(5);
@@ -69,8 +70,6 @@ export default function page() {
     else {
       alert('Please login to submit a review');
     }
-
-    // Submit the review data (userName, userReview, userRating) to your backend or state management
 
 
   };

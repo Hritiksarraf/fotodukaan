@@ -113,13 +113,13 @@ export default function SearchBar() {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="bg-white rounded-md md:shadow-lg p-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-0 md:gap-x-4">
+      <div className="bg-white rounded-md md:shadow-lg px-6 py-6 w-full sm:w-[45vw] flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-0 md:gap-x-4">
         
         {/* Category Select */}
         <select
           value={category}
           onChange={(e) => { setCategory(e.target.value); setSubCategory(""); }} // Reset subCategory on category change
-          className="w-full sm:w-40 border-gray-300 rounded-md p-1 md:p-2"
+          className="w-full sm:w-[8vw] border-gray-300 rounded-md p-1 md:p-2"
         >
           <option value="">Category</option>
           {categories.map((cat, index) => (
@@ -131,7 +131,7 @@ export default function SearchBar() {
         <select
           value={subCategory}
           onChange={(e) => setSubCategory(e.target.value)}
-          className="w-full sm:w-40 border-gray-300 rounded-md p-1 md:p-2"
+          className="w-full sm:w-[10vw] border-gray-300 rounded-md p-1 md:p-2"
           disabled={!subcategories.length} // Disable if no subcategories available
         >
           <option value="">Sub Category</option>
@@ -141,16 +141,16 @@ export default function SearchBar() {
         </select>
 
         {/* Location Component */}
-        <div className="w-full sm:w-40">
+        <div className="w-full sm:w-[10vw]">
           <Location onSelectLocation={setPlace} />
         </div>
 
         {/* Search Button */}
         <Link
           href={isSearchDisabled ? "#" : `/freelancer/type/${category}/${subCategory}/${place}`}
-          className={`w-full sm:w-auto px-4 py-2 rounded-md text-white ${isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"}`}
+          className={`w-full sm:w-auto px-4 py-2 text-sm rounded-md text-white ${isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"}`}
         >
-          Find Freelancer →
+          Find Freelancer
         </Link>
       </div>
     </div>

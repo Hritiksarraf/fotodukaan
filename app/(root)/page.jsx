@@ -62,7 +62,7 @@ export default function Home() {
     {
       title: "LED TV",
       // img: "https://maduraievents.in/wp-content/uploads/2014/05/wedding-led-tv-videography.jpg",
-      img:"https://5.imimg.com/data5/IOS/Default/2024/9/454121300/VQ/PI/NH/7956633/product-jpeg-500x500.png",
+      img: "https://5.imimg.com/data5/IOS/Default/2024/9/454121300/VQ/PI/NH/7956633/product-jpeg-500x500.png",
       link: "/freelancer/type/LED TV",
       des: "We provide high-definition LED TVs for events and presentations, ensuring a clear and vibrant display for your content."
     }
@@ -357,52 +357,23 @@ export default function Home() {
 
       </section>
       {/* Hero Section */}
-      <section className="  bg-cover flex flex-col-reverse md:flex-row bg-gradient-to-t md:bg-gradient-to-r from-blue-800 to-blue-400   bg-center w-full h-full pt-20  text-center md:text-left ">
+      <section className="  bg-cover flex flex-col-reverse -z-50 md:flex-row bg-gradient-to-t md:bg-gradient-to-r from-blue-800 to-blue-400   bg-center w-full h-[85vh] pt-20  text-center md:text-left ">
         <div className=" md:w-[70vw] p-5 md:p-10 md:px-15">
 
-          <h1 className="text-5xl md:text-8xl font-bold text-left text-white">Find the Best Freelancers <p className="text-yellow-500 h-12 " >{' '}<span className=' text-3xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
+          <h1 className="text-5xl md:text-[10vh] font-bold text-left text-white">Find the Best Freelancers <p className="text-yellow-500 h-[5vh] " >{' '}<span className=' text-3xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
 
           {/* <p className='text-gray-300 border-l-2 px-2 text-left font-light hidden md:block  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Or are you a freelancer ready to showcase your talent and get hired for exciting projects? Our platform connects creative professionals with those who need them, making it easier than ever to hire the right person for the job.</p>
           <p className='text-gray-300 border-l-2 px-2 text-left font-light md:hidden  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p> */}
           <p className='py-8 text-white text-lg'> Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p>
-          <div className="mt-10 sm:mt-8  ">
-            <div className="bg-white rounded-md shadow-lg  w-full sm:w-[45vw] f gap-9 space-y-4  space-x-4">
-              {/* <select
-                value={category}
-                onChange={(e) => { setCategory(e.target.value) }}
-                className="w-full sm:w-auto border-gray-300 rounded-md p-2"
-              >
-                <option value="">Select Category</option>
-                <option>Photography</option>
-                <option>Videography</option>
-                <option>Drone</option>
-                <option>Video Editing</option>
-                <option>Crane</option>
-              </select>
+          <div className="mt-10 sm:mt-2  ">
+            <div className="bg-white rounded-md shadow-lg  w-full sm:w-[45vw] f gap-9 space-y-  space-x-4">
 
-              <select
-                value={place}
-                onChange={(e) => { setPlace(e.target.value) }}
-                className="w-full sm:w-auto border-gray-300 rounded-md p-2"
-              >
-                <option value="">Select Place</option>
-                <option>patna</option>
-                <option>muzaffarpur</option>
-              </select>
-
-              <Link
-                href={isSearchDisabled ? "#" : `/freelancer/type/${category}/${place}`}
-                className={`w-full sm:w-auto px-4 py-2 rounded-md text-white ${isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"
-                  }`}
-              >
-                Find Freelancer →
-              </Link> */}
-              <SearchBar/>
+              <SearchBar />
             </div>
           </div>
           <div className="mt-8 flex mx-auto w-[100%] justify-center md:justify-start">
 
-            <Link href={"/contact"} className="bg-yellow-600 text-white px-6 py-3 rounded-full mr-4">Contact Us</Link>
+            <Link href={"/contact"} className="bg-yellow-600 text-white px-6 py-3 -z-10 rounded-full mr-4">Contact Us</Link>
 
           </div>
         </div>
@@ -411,18 +382,16 @@ export default function Home() {
             // src='https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
             src='https://wedding-planner-ui-by-mani.vercel.app/endpic1.jpg'
             // src='https://unsplash.com/photos/beautiful-indian-bride-and-groom-hand-with-mehandi-design-BDWH_GDKVCIhttps://plus.unsplash.com/premium_photo-1670524465634-93cf255ffa8b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5kaWFuJTIwd2VkZGluZyUyMGltYWdlfGVufDB8fDB8fHwwhttps://plus.unsplash.com/premium_photo-1670524465634-93cf255ffa8b?q=80&w=3254&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-            width={800}
-            height={900}
-            className=" rounded-lg shadow-lg md:w-[70vw]  object-cover rounded-b-[10rem] md:rounded-br-[0rem] md:rounded-bl-[25rem]  h-[40vh] md:h-[80vh]"
+            className=" rounded-lg shadow-lg md:w-[60vw]  object-cover rounded-b-[10rem] md:rounded-br-[0rem] md:rounded-bl-[25rem]  h-[40vh] md:h-full"
             alt="Camera"
           />
         </div>
       </section>
-      
+
       <section>
         <div>
           <h1 className="text-4xl md:text-6xl py-10 text-center text-gradient-to-r from-white to-blue-100"
-            
+
           >Services we provide</h1>
         </div>
         <div className='flex flex-wrap items-center justify-center'>
@@ -433,8 +402,8 @@ export default function Home() {
             return (
               <Link href={link}>
                 <div key={index} className='relative border-[0.4rem] md:w-[21vw] mx-6 bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10  '>
-                  <div className='block md:h-[17rem] md:w-[17rem] mx-6 md:mx-auto rounded-full pt-6'>
-                    <img src={img} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
+                  <div className='block md:h-[17rem]   rounded-full pt-6'>
+                    <img src={img} alt="" className=' aspect-square object-cover px-10 rounded-md h-full w-full' />
                   </div>
 
                   <div className='flex flex-col items-center text-center mt-4'>
@@ -536,17 +505,17 @@ export default function Home() {
 
               return (
                 <>
-                <Link href={`/freelancer/${_id}`} className="">
-                  <div key={_id} className='relative w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                    <div className='block h-64 w-64  mx-auto rounded-full pt-4'>
-                      <img src={profilePhoto} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
-                    </div>
+                  <Link href={`/freelancer/${_id}`} className="">
+                    <div key={_id} className='relative w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
+                      <div className='block h-64 w-64  mx-auto rounded-full pt-4'>
+                        <img src={profilePhoto} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
+                      </div>
 
-                    <div className='flex flex-col items-center text-center mt-4'>
-                      <p className='text-xl font-bold my-1'>{name}</p>
-                      <p className='text-sm'> <span className='font-semibold text-xl'>{minamount} ₹ </span > Starting Price  </p>
+                      <div className='flex flex-col items-center text-center mt-4'>
+                        <p className='text-xl font-bold my-1'>{name}</p>
+                        <p className='text-sm'> <span className='font-semibold text-xl'>{minamount} ₹ </span > Starting Price  </p>
 
-                      {/* <div className="flex flex-wrap items-center justify-center gap-y-4 my-4 space-x-2">
+                        {/* <div className="flex flex-wrap items-center justify-center gap-y-4 my-4 space-x-2">
                       
               {skills.map((skill, index) => (
                 <span
@@ -557,20 +526,20 @@ export default function Home() {
                 </span>
               ))}
             </div> */}
-                      <div className='h-5 flex'>
-                        {Array(5).fill(0).map((_, index) => (
-                          index < Number(stars.star) ? (
-                            <StarIcon key={index} size="small" className="text-yellow-500" />
-                          ) : (
-                            <StarBorderIcon key={index} size="small" className="text-yellow-500" />
-                          )
-                        ))}
+                        <div className='h-5 flex'>
+                          {Array(5).fill(0).map((_, index) => (
+                            index < Number(stars.star) ? (
+                              <StarIcon key={index} size="small" className="text-yellow-500" />
+                            ) : (
+                              <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                            )
+                          ))}
+                        </div>
+
+                        <Link href={`/freelancer/${_id}`} className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4">Know more</Link>
+
                       </div>
-
-                      <Link href={`/freelancer/${_id}`} className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4">Know more</Link>
-
                     </div>
-                  </div>
                   </Link>
                 </>
               )
@@ -733,7 +702,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='bg-gradient-to-tr from-white   to-blue-400'>
+      <section className='bg-gradient-to-tr from-white  w-full  to-blue-400'>
         <div id="contact" className="flex flex-col items-center lg:h-96 justify-center pt-10   text-black dark:text-black">
           <div className="text-black pb-12">
             <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-4xl lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Get in touch with us</h3></div>
@@ -762,12 +731,12 @@ export default function Home() {
               {/* <i class="fa-regular mb-4 text-green-600 fa-2xl fa-clock"></i> */}
               <LocationOnIcon className='text-blue-600 text-5xl' />
               <p className="text-blue-700 ">Location</p>
-              <p className=' mt-3 px-5 text-center md:w-[10vw] text-black'>154,1st Floor,Maharaja Kameshwar Complex Fraser Road Patna</p>
+              <p className=' mt-3 px-5 text-center md:w-[10vw] text-black'>154,1st Floor,Maharaja</p>
 
             </div>
           </div>
         </div>
-        <div className="" style={{ height: "80vh" }}>
+        <div className="h-full" >
           <form
             action="https://formspree.io/f/mgvewagv"
             method="post"

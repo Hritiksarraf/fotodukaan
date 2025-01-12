@@ -8,7 +8,7 @@ import PermPhoneMsgIcon from '@mui/icons-material/PermPhoneMsg';
 export default function page() {
   return (
     <div className='pt-20'>
-        <div className='w-[100vw] h-[80vh] bg-cover bg-center pt-20 bg-[url("/assets/contact.jpg")]'>
+        <div className='w-[100vw] h-full min-h-[80vh] pb-10 bg-cover bg-center pt-20 bg-[url("/assets/contact.jpg")]'>
           <div className="md:w-[60vw]">
             <h1 className="px-3 md:px-10 py-5 text-5xl md:text-8xl font-bold text-left text-yellow-500">Need Help!</h1>
             <h1 className="px-3 md:px-10 pt-5 text-5xl md:text-8xl font-bold text-left text-white">Contact Us</h1>
@@ -17,7 +17,7 @@ export default function page() {
           </div>
         </div>
         <section>
-        <section className='bg-gradient-to-tr from-white   to-blue-200'>
+        <section className='bg-gradient-to-tr from-white h-full   to-blue-200'>
       <div  id="contact" className="flex flex-col items-center lg:h-96 justify-center    text-black dark:text-black">
         <div className="text-black pb-12">
         <div className='text-center  text-4xl lg:text-9xl'><h3 className='text-center pt-5 text-3xl lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Get in touch with us</h3></div>
@@ -46,12 +46,12 @@ export default function page() {
             {/* <i class="fa-regular mb-4 text-green-600 fa-2xl fa-clock"></i> */}
             <LocationOnIcon className='text-blue-600 text-5xl'/>
             <p className="text-blue-700 ">Location</p>
-            <p className=' mt-3 text-center md:w-[10vw] px-5 md:px-0 text-black'>154,1st Floor,Maharaja Kameshwar Complex Fraser Road Patna</p>
+            <p className=' mt-3 text-center md:w-[10vw] px-5 md:px-0 text-black'>154,1st Floor,Maharaja Kameshwar</p>
            
           </div>
         </div>
       </div>
-      <div className="" style={{ height: "80vh" }}>
+      <div className="h-full" >
         <form
           action="https://formspree.io/f/mgvewagv"
           method="post"

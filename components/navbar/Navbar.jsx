@@ -152,7 +152,7 @@ export default function Navbar() {
                             <select
                                 value={category}
                                 onChange={handleCategoryChange}
-                                className="text-[#0E2041] font-bold btn-select      hover:text-gray-400"
+                                className="text-[#0E2041] font-bold btn-select w-36      hover:text-gray-400"
                             >
                                 <option value="">Select Category</option>
                                 <option value="Traditional Photography">Traditional Photographer</option>
@@ -165,7 +165,7 @@ export default function Navbar() {
                                 <option value="LED TV">LED TV</option>
                             </select>
                         </li>
-                        <li>
+                        {/* <li>
                         <select
     value="policy"
     className="text-[#0E2041] font-bold btn-select hover:text-gray-400"
@@ -201,7 +201,7 @@ export default function Navbar() {
     <option value="Terms and Conditions">Terms and Conditions</option>
     <option value="Shipping and Delivery">Shipping and Delivery</option>
 </select>
-                        </li>
+                        </li> */}
                     </ul>
                     {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">

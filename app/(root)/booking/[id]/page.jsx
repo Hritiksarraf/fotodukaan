@@ -443,7 +443,8 @@ export default function OrderForm() {
         },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
           "name": orderData.customerName, //your customer's name
-
+          "phone":orderData.mobileNumber,
+          "email":"test@gmail.com"
         },
         "notes": {
           name: orderData.customerName,
