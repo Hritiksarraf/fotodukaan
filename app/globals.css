@@ -17,4 +17,18 @@
     color: #2463EB;
   }
 }
+/* Hide the vertical scrollbar while keeping scrolling functional */
+html {
+  scrollbar-width: none; /* For Firefox */
+  overflow-y: scroll; /* Ensures the content is scrollable */
+}
 
+body {
+  margin: 0;
+  padding: 0;
+  overflow-y: auto; /* Keep the content scrollable */
+}
+
+::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Edge */
+}

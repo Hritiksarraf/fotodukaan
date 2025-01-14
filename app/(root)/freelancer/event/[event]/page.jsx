@@ -74,7 +74,7 @@ export default function Page() {
       <div className='min-h-[80vh] w-[100vw]'>
         <Box sx={{ display: 'flex' }}>
           <div className='pt-80 flex items-center justify-center text-center mx-auto'>
-            <CircularProgress color="inherit" size="8rem" />
+            <CircularProgress color="inherit" size="4rem" />
           </div>
         </Box>
       </div>

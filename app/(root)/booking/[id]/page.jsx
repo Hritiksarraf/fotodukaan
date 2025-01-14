@@ -110,7 +110,7 @@ export default function OrderForm() {
   const { bookingData } = useBooking();
   useEffect(() => {
     if (bookingData) {
-      
+
       setOriginalTokenAmount(bookingData.price);
       setTokenAmount(Math.round(bookingData.price * 0.2))
 
@@ -136,15 +136,15 @@ export default function OrderForm() {
       }
     })
     const blockedDates2 = await data.json();
-    
+
     const blockedDates1 = []
     blockedDates2.map((ele) => blockedDates1.push(ele?.date || ""))
-    
+
     const formattedDates = blockedDates1.map(date => {
       const d = new Date(date);
       return d.toISOString().split('T')[0]; // Get only 'yyyy-mm-dd' part
     });
-    
+
     setBlockedDates(formattedDates);
   }
 
@@ -160,7 +160,7 @@ export default function OrderForm() {
       setTokenAmount(Math.round(bookingData.price * 0.2))
       setLoading(false);
     } catch (error) {
-      
+
     }
   };
 
@@ -397,7 +397,7 @@ export default function OrderForm() {
       alert('mobile number must be of 10 digit');
       return;
     }
-    if(place==""){
+    if (place == "") {
       alert('please select the city of service');
       return;
     }
@@ -427,7 +427,7 @@ export default function OrderForm() {
       const freelancerid = freelancerData._id;
       const discounts = discount;
       const razorpayOrderId = razorpayOrder.orderId;
-      console.log(userid,freelancerid,discounts,razorpayOrderId)
+      console.log(userid, freelancerid, discounts, razorpayOrderId)
       console.log('hey here1')
 
       // console.log(orderData.mobileNumber)
@@ -449,8 +449,8 @@ export default function OrderForm() {
         },
         "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
           "name": orderData.customerName, //your customer's name
-          "phone":orderData.mobileNumber,
-          "email":"test@gmail.com"
+          "phone": orderData.mobileNumber,
+          "email": "test@gmail.com"
         },
         "notes": {
           name: orderData.customerName,
@@ -487,7 +487,7 @@ export default function OrderForm() {
       <div className='min-h-[80vh] w-[100vw]'>
         <Box sx={{ display: 'flex' }}>
           <div className='pt-80 flex items-center justify-center text-center mx-auto'>
-            <CircularProgress color="inherit" size="8rem" />
+            <CircularProgress color="inherit" size="4rem" />
           </div>
         </Box>
       </div>
@@ -519,11 +519,11 @@ export default function OrderForm() {
                     {/* Date */}
                     <p className="block text-lg font-semibold mb-1 text-black">Date</p>
                     <div className='flex flex-wrap'>
-                    {bookingData.selectedDates.split(",").map((date, index) => (
-                      <p key={index} className="text-lg mb-1 px-2 border-r-2 text-gray-700">
-                        {date}
-                      </p>
-                    ))}
+                      {bookingData.selectedDates.split(",").map((date, index) => (
+                        <p key={index} className="text-lg mb-1 px-2 border-r-2 text-gray-700">
+                          {date}
+                        </p>
+                      ))}
                     </div>
 
                     {/* Duration */}
@@ -624,8 +624,8 @@ export default function OrderForm() {
                   </select> */}
                   <p className="block text-sm font-semibold mb-2 text-gray-700">City</p>
                   <div className="w-full border rounded-xl py-1">
-          <Location onSelectLocation={setPlace} />
-        </div>
+                    <Location onSelectLocation={setPlace} />
+                  </div>
 
                 </div>
 

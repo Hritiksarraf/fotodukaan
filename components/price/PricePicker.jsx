@@ -242,59 +242,76 @@ export default function PricePicker({ freelancerData }) {
             </div>
 
             <div>
-            <label className="block text-sm font-semibold mt-4 mb-1 text-gray-700">Check Available Dates!</label>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DesktopDatePicker
-                    label="Select dates"
-                    open={isCalendarOpen}
-                    onOpen={() => setIsCalendarOpen(true)}
-                    
-                    value={null} // Keeps the calendar open for multiple selections
-                    onChange={(date) => {
-                        if (date) handleDateToggle(date);
-                    }}
-                    shouldDisableDate={shouldDisableDate}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            onClick={() => setIsCalendarOpen(true)} // Open calendar when clicking the input
-                        />
-                    )}
-                    renderDay={(day, _selectedDates, pickersDayProps) => {
-                        const formattedDate = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
-                        const isSelected = selectedDates.includes(formattedDate);
+                <label className="block text-sm font-semibold mt-4 mb-1 text-gray-700">Check Available Dates!</label>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DesktopDatePicker
+                        label="Select dates"
+                        open={isCalendarOpen}
+                        onOpen={() => setIsCalendarOpen(true)}
 
-                        return (
-                            <PickersDay
-                                {...pickersDayProps}
-                                sx={{
-                                    ...(pickersDayProps.disabled && {
-                                        color: 'red !important',
-                                        border: '1px solid red',
-                                        borderRadius:"4px",
-                                        margin:"2px"
-
-                                    }),
-                                    ...(isSelected && {
-                                        backgroundColor: 'blue !important',
-                                        color: 'white !important',
-                                        borderRadius: '90%',
-                                    }),
-                                }}
+                        value={null} // Keeps the calendar open for multiple selections
+                        onChange={(date) => {
+                            if (date) handleDateToggle(date);
+                        }}
+                        shouldDisableDate={shouldDisableDate}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                onClick={() => setIsCalendarOpen(true)} // Open calendar when clicking the input
                             />
-                        );
-                    }}
-                />
-                <button
-                onClick={() => setIsCalendarOpen(false)}
-                className="mt-4 bg-blue-500 ml-8 text-white py-2 px-4 rounded"
-            >
-                Done
-            </button>
-            </LocalizationProvider>
-            
-            
-        </div>
+                        )}
+                        renderDay={(day, _selectedDates, pickersDayProps) => {
+                            const formattedDate = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
+                            const isSelected = selectedDates.includes(formattedDate);
+
+                            return (
+                                <PickersDay
+                                    {...pickersDayProps}
+                                    sx={{
+                                        ...(pickersDayProps.disabled && {
+                                            color: 'red !important',
+                                            border: '1px solid red',
+                                            borderRadius: "4px",
+                                            margin: "2px"
+
+                                        }),
+                                        ...(isSelected && {
+                                            backgroundColor: 'blue !important',
+                                            color: 'white !important',
+                                            borderRadius: '90%',
+                                        }),
+                                    }}
+                                />
+                            );
+                        }}
+                    />
+                    <button
+                        onClick={() => setIsCalendarOpen(false)}
+                        className="mt-4 bg-blue-500 ml-8 text-white py-2 px-4 rounded"
+                    >
+                        Done
+                    </button>
+                </LocalizationProvider>
+                <div className="">
+                    <h4 className="text-sm font-semibold">Selected Dates:</h4>
+                    <div className="flex flex-wrap gap-2 mt-1">
+                        {selectedDates.length > 0 ? (
+                            selectedDates.map((date, index) => (
+                                <span
+                                    key={index}
+                                    className="px-2 py-1 bg-blue-200 text-blue-700 text-xs rounded border border-blue-300"
+                                >
+                                    {date}
+                                </span>
+                            ))
+                        ) : (
+                            <p className="text-gray-500 text-sm py-1 ">No dates selected.</p>
+                        )}
+                    </div>
+                </div>
+
+
+            </div>
         </div>
     );
 }

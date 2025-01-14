@@ -48,7 +48,7 @@ export default function page() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({name,text,star}),
+          body: JSON.stringify({ name, text, star }),
         });
         // console.log('i am here3')
         const result = await response.json();
@@ -164,7 +164,7 @@ export default function page() {
     const data = await response.json();
     // console.log(data)
     setFreelancerData(data);
-    
+
     setLoading(false);
   };
 
@@ -188,7 +188,7 @@ export default function page() {
   }, [id]);
 
 
- 
+
 
 
   const displayCategories = (details) => {
@@ -237,7 +237,7 @@ export default function page() {
     return (<div className='min-h-[80vh] w-[100vw]'>
       <Box sx={{ display: 'flex' }}>
         <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
-          <CircularProgress color="inherit" size="8rem" />
+          <CircularProgress color="inherit" size="4rem" />
         </div>
       </Box>
     </div>);
@@ -274,7 +274,7 @@ export default function page() {
           <div className="container lg:w-[75vw]  md:p-10 pt-10 mx-auto  bg-white  ">
             <div className=" mx-auto px-5 py-5 shadow-2xl md:p-10 flex flex-wrap   ">
               <img alt="ecommerce" className="lg:w-1/2 aspect-square w-full lg:h-auto h-64 object-cover object-center rounded" src={freelancerData.profilePhoto} />
-              <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+              <div className="lg:w-1/2 w-full lg:pl-10 lg:py-4 mt-6 lg:mt-0">
                 <h2 className="text-sm title-font text-gray-700 tracking-widest">Freelancer</h2>
                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{freelancerData.name}</h1>
                 <div className="flex mb-4">
@@ -307,7 +307,7 @@ export default function page() {
 
 
                 </div>
-                <div className='my-5'>
+                <div className=''>
                   <PricePicker freelancerData={freelancerData} />
                 </div>
                 {/* <div className="hidden md:block mt-4">
@@ -498,35 +498,35 @@ export default function page() {
             <h3 className='py-5 text-2xl lg:text-4xl font-semibold' >
               Review and Rating
             </h3>
-            <p className='text-lg text-gray-600 '> {freelancerData.stars.star} star rating | {freelancerData.stars.noOfPeople} Review</p>
+            <p className='text-lg text-gray-600 '> {freelancerData.stars.star.toFixed(1)} star rating star rating | {freelancerData.stars.noOfPeople} Review</p>
           </div>
           <div className=''>
             <Slider {...settings}>
-              {Array.isArray(TestimonialData) && TestimonialData?.slice().reverse().map(({ id, profilePhoto, name, text, star,createdAt }) => {
+              {Array.isArray(TestimonialData) && TestimonialData?.slice().reverse().map(({ id, profilePhoto, name, text, star, createdAt }) => {
 
 
                 const truncatedText = text.split(' ').length > 20
                   ? text.split(' ').slice(0, 20).join(' ')
                   : text;
 
-                  const formattedDate = new Date(createdAt).toLocaleDateString();
+                const formattedDate = new Date(createdAt).toLocaleDateString();
 
-                  const reviewText = (() => {
-                    switch (star) {
-                      case 5:
-                        return 'Excellent';
-                      case 4:
-                        return 'Nice';
-                      case 3:
-                        return 'Good';
-                      case 2:
-                        return 'Bad';
-                      case 1:
-                        return 'Worst';
-                      default:
-                        return ''; // In case of an unexpected star value
-                    }
-                  })();
+                const reviewText = (() => {
+                  switch (star) {
+                    case 5:
+                      return 'Excellent';
+                    case 4:
+                      return 'Nice';
+                    case 3:
+                      return 'Good';
+                    case 2:
+                      return 'Bad';
+                    case 1:
+                      return 'Worst';
+                    default:
+                      return ''; // In case of an unexpected star value
+                  }
+                })();
 
                 return (
                   <>
@@ -544,7 +544,7 @@ export default function page() {
                         ))}
                         <p className='text-[0.6rem] px-2'>{formattedDate}</p>
 
-                        
+
                       </div>
                       <div>
                         <p className='my-3 font-bold text-xl '>{reviewText}</p>

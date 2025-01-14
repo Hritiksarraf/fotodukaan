@@ -769,26 +769,42 @@ export default function Home() {
             <input
               useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
               className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
-              type="text"
+              type="email"
               id="email"
               name="email"
               placeholder="Email"
-            />
-            <input
-              useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
-              className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
-              type="text"
-              id="phone"
-              name="phone"
-              placeholder="Your Phone No"
               required
             />
+            <input
+  useClassNames="false"
+  data-aos="zoom-in"
+  data-aos-delay="100"
+  data-aos-duration="1000"
+  mirror="false"
+  style={{
+    WebkitAppearance: "none", // For Chrome, Safari
+    MozAppearance: "textfield", // For Firefox
+    appearance: "none", // General fallback
+  }}
+  className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black h-12 p-2 my-2"
+  type="tel" // Use 'tel' instead of 'number' to avoid arrows
+  id="phone"
+  name="phone"
+  placeholder="Your Phone No"
+  required
+  pattern="^[0-9]{10}$" // Ensures exactly 10 digits
+  inputMode="numeric" // Ensures numeric input on mobile
+  maxLength={10} // Prevents entering more than 10 digits
+  title="Please enter a 10-digit phone number"
+/>
+
             <textarea
               useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
               className="w-4/5 lg:w-1/3  border-yellow-600 border-2 rounded-md  bg-blue-100 dark:text-black text-black   h-48 p-2 my-2 "
               name="message"
               id="message"
               placeholder="How can we help you"
+              required
             ></textarea>
             <button useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false" className="w-40 h-12 my-2   bg-blue-600 text-white" type="submit">
               MESSAGE

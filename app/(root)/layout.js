@@ -25,10 +25,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <title>FotoDukaan</title>
-        
-        <link rel="icon" href="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397187/fav_rjw9cu.jpg" />
-        
-
+        <link
+          rel="icon"
+          href="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397187/fav_rjw9cu.jpg"
+        />
         <link
           rel="stylesheet"
           type="text/css"
@@ -40,13 +40,8 @@ export default function RootLayout({ children }) {
           type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
         />
-
-        
-       
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <Navbar />
         <BookingProvider>{children}</BookingProvider>
         <Footer />

@@ -231,7 +231,7 @@ export default function Page() {
             if (!formData.profilePhoto) {
                 errors.profilePhoto = "Profile photo is required";
             }
-            if (place=='') {
+            if (place == '') {
                 errors.city = "City is required";
             }
             if (!formData.address) {
@@ -316,7 +316,7 @@ export default function Page() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(place==''){
+        if (place == '') {
             alert('please select city')
             return
         }
@@ -339,7 +339,7 @@ export default function Page() {
 
             setFormData((prevData) => ({
                 ...prevData,
-                city:place,
+                city: place,
             }));
 
             const appVerifier = window.recaptchaVerifier;
@@ -350,7 +350,7 @@ export default function Page() {
                     setStep((prevState) => ({ ...prevState, currentStep: 4 }));
                 })
                 .catch((error) => {
-                    
+
                     toast.error('error sending otp try again', {
                         position: 'top-left',
                         autoClose: 5000,
@@ -398,7 +398,7 @@ export default function Page() {
             // Step 2: Prepare the rest of the form data
             setFormData((prevData) => ({
                 ...prevData,
-                city:place,
+                city: place,
             }));
             const payload = {
                 ...formData,
@@ -565,7 +565,7 @@ export default function Page() {
     };
     const [steps, setStep] = useState({
         stepsItems: ["Details", "Service", "Profile"],
-        currentStep: 1
+        currentStep: 2
     });
 
     const handlestep2 = () => {
@@ -573,7 +573,7 @@ export default function Page() {
             (category) => category.subcategories && category.subcategories.length > 0
         );
         if (isValid) {
-            
+
             setStep((prevState) => ({ ...prevState, currentStep: 3 }));
         } else {
             alert("Please select at least one category and subcategory.");
@@ -662,7 +662,7 @@ export default function Page() {
                 {steps.currentStep === 1 && (
                     <section>
                         {/* this is details section */}
-                        <section className="bg-gradient-to-b from-white to-yellow-200 h-[100vh]">
+                        <section className="bg-gradient-to-b from-white to-yellow-200 min-h-[100vh] pb-24">
                             <div className="flex flex-col items-center  h-[80vh] px-6 py-2 mx-auto md:h-screen lg:py-0">
                                 <Link
                                     href="/"
@@ -676,7 +676,7 @@ export default function Page() {
                                         alt="fotodukaan logo"
                                     />
                                 </Link>
-                                <div className="w-full rounded-lg shadow dark:border dark:border-gray-700 md:mt-0 text-black sm:max-w-md xl:p-0 bg-gradient-to-r from-white to-white">
+                                <div className="w-full rounded-lg shadow dark:border dark:border-gray-700 md:mt-0 text-black sm:max-w-md bg-gradient-to-r from-white to-white">
                                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-black">
                                             Sign-up as a freelancer and start earning
@@ -779,13 +779,13 @@ export default function Page() {
                 )}
                 {steps.currentStep === 2 && (
 
-                    <section className="bg-gradient-to-b md:min-h-[100vh] min-h-[100vh]  from-white to-yellow-200 ">
+                    <section className="bg-gradient-to-b md:min-h-[100vh] min-h-[100vh] pb-20  from-white to-yellow-200 ">
                         <div className="flex flex-col items-center    px-6  mx-auto ">
                             <Link href="/" className="flex items-center  text-2xl font-semibold text-gray-900 dark:text-white">
                                 <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
                             </Link>
                         </div>
-                        <div className="flex flex-col items-center   justify-center shadow-2xl bg-white  border-2 w-[90vw] md:w-[30vw]  px-6 py-8 mx-auto  lg:py-0">
+                        <div className="flex flex-col items-center   justify-center shadow-2xl bg-white  border-2 w-[90vw] md:w-[80vw]  px-6 py-8 mx-auto  lg:py-0">
 
                             <h1 className="text-xl font-bold mt-5 md:mt-15 leading-tight tracking-tight text-blue-500 md:text-3xl ">
                                 Step-2
@@ -794,20 +794,20 @@ export default function Page() {
                                 Select Your Services
                             </h1>
                             <form action="" onSubmit={handlestep2}>
-                                <div className="flex flex-col bg-white items-start justify-start w-full ">
+                                <div className="flex flex-col md:flex-row md:flex-wrap bg-white items-center justify-center md:w-[70vw]  ">
                                     {categories.map((category) => (
-                                        <div key={category.name} className="w-full">
-                                            <button onClick={() => handleCategoryClick(category.name)} className={`flex gap-5 shadow-md justify-center items-center w-full md:w-[27vw] p-4  text-left border-b rounded-lg my-2 ${selectedCategories[category.name] ? 'bg-blue-600 text-white' : 'bg-yellow-400'}`}>
+                                        <div key={category.name} className="w-[80vw] mx-auto">
+                                            <button onClick={() => handleCategoryClick(category.name)} className={`flex gap-5 shadow-md justify-center items-center w-full md:w-[70vw] p-4  text-left border-b rounded-lg my-2  md:mx-auto ${selectedCategories[category.name] ? 'bg-blue-600 text-white' : 'bg-yellow-400'}`}>
                                                 <span>{category.name}</span>
                                                 {/* <span>{selectedCategories[category.name]?.subcategories.length || 0}</span> */}
                                             </button>
                                             {selectedCategories[category.name] && (
                                                 <div className="p-1 ">
-                                                    <div className=" flex flex-wrap">
+                                                    <div className=" md:flex md:flex-wrap md:items-center md:justify-between">
                                                         {(category.name !== "Crane" && category.name !== "LED wall" && category.name !== "LED TV") && (
                                                             <div className='w-full flex items-center justify-center'>
                                                                 <button
-                                                                    className="rounded-md bg-blue-400 w-[30%] p-4"
+                                                                    className="rounded-md bg-blue-400 w-[80vw] md:w-[20vw]  p-4"
                                                                     onClick={() => handleButtonClick(category)}
                                                                 >Select All</button>
                                                             </div>
@@ -817,7 +817,7 @@ export default function Page() {
 
                                                             <div
                                                                 key={subcategory}
-                                                                className={`flex items-center w-[100%] md:[45%]  m-2 cursor-pointer p-2  rounded-md transition-colors duration-200 ${selectedCategories[category.name]?.subcategories?.includes(subcategory) ? 'bg-green-500' : 'bg-yellow-400'}`}
+                                                                className={`flex items-center w-[100%] md:w-[20vw]  my-2 cursor-pointer p-2  rounded-md transition-colors duration-200 ${selectedCategories[category.name]?.subcategories?.includes(subcategory) ? 'bg-green-500' : 'bg-yellow-400'}`}
                                                                 onClick={() => handleSubcategoryClick(category.name, subcategory)}
                                                             >
                                                                 <input
@@ -841,65 +841,73 @@ export default function Page() {
 
 
 
-                                                    {(category.name === "Photography" || category.name === "Videography" || category.name === "Candid Photography" || category.name === "Cinematography") && (
+                                                    {(category.name === "Traditional Photography" || category.name === "Traditional Videography" || category.name === "Candid Photography" || category.name === "Cinematography") && (
                                                         <div className="mt-2 mb-5 ">
                                                             <div className='block w-[100%] h-[100%]'>
                                                                 <h2 className="text-3xl text-center my-5 font-semibold">Camera Details</h2>
+                                                                <div className='md:w-[70vw] w-[100%] flex flex-wrap mx-auto items-center justify-between'>
+                                                                    <div>
 
-                                                                <label htmlFor="brand" className="block mb-2">Camera Brand</label>
-                                                                <select
-                                                                    id="brand"
-                                                                    value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
-                                                                    onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
-                                                                    className="block w-full bg-blue-100 p-2 border rounded"
-                                                                    required
-                                                                >
-                                                                    <option value="" disabled>Select Camera Brand</option>
-                                                                    <option value="Nikon">Nikon</option>
-                                                                    <option value="Canon">Canon</option>
-                                                                    <option value="GoPro">GoPro</option>
-                                                                    <option value="Sony">Sony</option>
-                                                                    <option value="Fujifilm">Fujifilm</option>
-                                                                    <option value="Panasonic">Panasonic</option>
-                                                                    <option value="Leica">Leica</option>
-                                                                    <option value="Hasselblad">Hasselblad</option>
-                                                                    <option value="Red">Red</option>
-                                                                    <option value="Arri">Arri</option>
-                                                                </select>
-
-                                                                <label htmlFor="model" className="block mb-2 mt-4">Camera Model</label>
-                                                                <input
-                                                                    type="text"
-                                                                    placeholder="Camera Model"
-                                                                    value={selectedCategories[category.name]?.cameraDetails?.model || ''}
-                                                                    onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
-                                                                    className="block bg-blue-100 w-full p-2 border rounded"
-                                                                    required
-                                                                />
-
-                                                                <label htmlFor="specs" className="block mb-2 mt-4">Camera Lense</label>
-                                                                <input
-                                                                    type="text"
-                                                                    placeholder="Camera Lense"
-                                                                    value={selectedCategories[category.name]?.cameraDetails?.lanse || ''}
-                                                                    onChange={(e) => handleCameraDetailsChange(category.name, 'lanse', e.target.value)}
-                                                                    className="block bg-blue-100 w-full p-2 border rounded mt-2"
-                                                                    required
-                                                                />
-                                                                <label htmlFor="Gimble" className="block mb-2 mt-4">Gimble</label>
-                                                                <input
-                                                                    type="text"
-                                                                    placeholder="Camera Lense"
-                                                                    value={selectedCategories[category.name]?.cameraDetails?.gimble || ''}
-                                                                    onChange={(e) => handleCameraDetailsChange(category.name, 'gimble', e.target.value)}
-                                                                    className="block w-full bg-blue-100 p-2 border rounded mt-2"
-                                                                    required
-                                                                />
+                                                                        <label htmlFor="brand" className="block mb-2">Camera Brand</label>
+                                                                        <select
+                                                                            id="brand"
+                                                                            value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
+                                                                            onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
+                                                                            className="block w-[80vw] md:w-[20vw] bg-blue-100 p-2 border rounded"
+                                                                            required
+                                                                        >
+                                                                            <option value="" disabled>Select Camera Brand</option>
+                                                                            <option value="Nikon">Nikon</option>
+                                                                            <option value="Canon">Canon</option>
+                                                                            <option value="GoPro">GoPro</option>
+                                                                            <option value="Sony">Sony</option>
+                                                                            <option value="Fujifilm">Fujifilm</option>
+                                                                            <option value="Panasonic">Panasonic</option>
+                                                                            <option value="Leica">Leica</option>
+                                                                            <option value="Hasselblad">Hasselblad</option>
+                                                                            <option value="Red">Red</option>
+                                                                            <option value="Arri">Arri</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label htmlFor="model" className="block mb-2 ">Camera Model</label>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Camera Model"
+                                                                            value={selectedCategories[category.name]?.cameraDetails?.model || ''}
+                                                                            onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
+                                                                            className="block bg-blue-100 w-[80vw] md:w-[20vw] p-2 border rounded"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label htmlFor="specs" className="block mb-2 ">Camera Lense</label>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Camera Lense"
+                                                                            value={selectedCategories[category.name]?.cameraDetails?.lanse || ''}
+                                                                            onChange={(e) => handleCameraDetailsChange(category.name, 'lanse', e.target.value)}
+                                                                            className="block bg-blue-100 w-[80vw] md:w-[20vw]  p-2 border rounded mt-2"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label htmlFor="Gimble" className="block mb-2 ">Gimble</label>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Camera Lense"
+                                                                            value={selectedCategories[category.name]?.cameraDetails?.gimble || ''}
+                                                                            onChange={(e) => handleCameraDetailsChange(category.name, 'gimble', e.target.value)}
+                                                                            className="block w-[80vw] md:w-[20vw] bg-blue-100 p-2 border rounded mt-2"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     )}
-                                                    <h3 className="text-lg font-medium mt-4 mb-1">Pricing:</h3>
-                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                    <h3 className="text-lg font-medium mt-4 mb-1 md:w-[70vw] mx-auto">Pricing:</h3>
+                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:w-[70vw] mx-auto">
                                                         {category.pricing.fullDayPrice && (
                                                             <div>
                                                                 <label className="block">Full Day Price:</label>
@@ -909,6 +917,7 @@ export default function Page() {
                                                                     onChange={(e) => handlePriceChange(category.name, 'price', 'fullDayPrice', e.target.value)}
                                                                     className="w-full p-2 border rounded"
                                                                     required
+                                                                    min="0"
                                                                 />
                                                                 {formErrors[category.name]?.price?.fullDayPrice && (
                                                                     <p className="text-red-500 text-xs mt-1">{formErrors[category.name].price.fullDayPrice}</p>
@@ -924,6 +933,7 @@ export default function Page() {
                                                                     value={selectedCategories[category.name].price.halfDayPrice}
                                                                     onChange={(e) => handlePriceChange(category.name, 'price', 'halfDayPrice', e.target.value)}
                                                                     className="w-full p-2 border rounded"
+                                                                    min="0"
                                                                 />
                                                                 {formErrors[category.name]?.price?.halfDayPrice && (
                                                                     <p className="text-red-500 text-xs mt-1">{formErrors[category.name].price.halfDayPrice}</p>
@@ -940,6 +950,7 @@ export default function Page() {
                                                                     value={selectedCategories[category.name].price.extraHourPrice}
                                                                     onChange={(e) => handlePriceChange(category.name, 'price', 'extraHourPrice', e.target.value)}
                                                                     className="w-full p-2 border rounded"
+                                                                    min="0"
                                                                 />
                                                                 {formErrors[category.name]?.price?.extraHourPrice && (
                                                                     <p className="text-red-500 text-xs mt-1">{formErrors[category.name].price.extraHourPrice}</p>
@@ -948,9 +959,9 @@ export default function Page() {
                                                         )}
                                                     </div>
                                                     {category?.weddingPrice && (
-                                                        <h3 className="text-lg font-medium mt-4 mb-1">Wedding Pricing:</h3>
+                                                        <h3 className="text-lg font-medium mt-4 mb-1 md:w-[70vw] mx-auto">Wedding Pricing:</h3>
                                                     )}
-                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:w-[70vw] mx-auto">
                                                         {category?.weddingPrice?.fullDayPrice && (
                                                             <div>
                                                                 <label className="block">Wedding Full Day Price:</label>
@@ -960,6 +971,7 @@ export default function Page() {
                                                                     value={selectedCategories[category.name].weddingPrice.fullDayPrice}
                                                                     onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'fullDayPrice', e.target.value)}
                                                                     className="w-full p-2 border rounded"
+                                                                    min="0"
                                                                 />
                                                                 {formErrors[category.name]?.weddingPrice?.fullDayPrice && (
                                                                     <p className="text-red-500 text-xs mt-1">{formErrors[category.name].weddingPrice.fullDayPrice}</p>
@@ -975,6 +987,7 @@ export default function Page() {
                                                                     value={selectedCategories[category.name].weddingPrice.halfDayPrice}
                                                                     onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'halfDayPrice', e.target.value)}
                                                                     className="w-full p-2 border rounded"
+                                                                    min="0"
                                                                 />
                                                                 {formErrors[category.name]?.weddingPrice?.halfDayPrice && (
                                                                     <p className="text-red-500 text-xs mt-1">{formErrors[category.name].weddingPrice.halfDayPrice}</p>
@@ -990,6 +1003,7 @@ export default function Page() {
                                                                     value={selectedCategories[category.name].weddingPrice.extraHourPrice}
                                                                     onChange={(e) => handlePriceChange(category.name, 'weddingPrice', 'extraHourPrice', e.target.value)}
                                                                     className="w-full p-2 border rounded"
+                                                                    min="0"
                                                                 />
                                                                 {formErrors[category.name]?.weddingPrice?.extraHourPrice && (
                                                                     <p className="text-red-500 text-xs mt-1">{formErrors[category.name].weddingPrice.extraHourPrice}</p>
@@ -1001,8 +1015,8 @@ export default function Page() {
 
                                                     {category.name === "Drone" && (
                                                         <div className="mt-4">
-                                                            <h3 className="text-lg font-medium mb-2">Drone Details:</h3>
-                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                            <h3 className="text-lg font-medium mb-2 w-[70vw] mx-auto ">Drone Details:</h3>
+                                                            <div className="flex flex-col md:flex-row flex-wrap w-full md:w-[70vw] mx-auto gap-x-14">
                                                                 <div>
                                                                     <label className="block mb-2 text-sm font-medium text-black dark:text-black">
                                                                         Drone Brand
@@ -1013,7 +1027,7 @@ export default function Page() {
                                                                         placeholder="Enter Drone Brand"
                                                                         value={selectedCategories[category.name]?.cameraDetails?.brand || ''}
                                                                         onChange={(e) => handleCameraDetailsChange(category.name, 'brand', e.target.value)}
-                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                                        className="bg-gray-50 border md:w-[20vw] border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                                                                     />
                                                                 </div>
                                                                 <div>
@@ -1026,14 +1040,14 @@ export default function Page() {
                                                                         placeholder="Enter Drone Model"
                                                                         value={selectedCategories[category.name]?.cameraDetails?.model || ''}
                                                                         onChange={(e) => handleCameraDetailsChange(category.name, 'model', e.target.value)}
-                                                                        className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                                        className="bg-gray-50 border md:w-[20vw] border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                                                                     />
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     )}
                                                     {(category.name === "LED wall" || category.name === "LED TV") && (
-                                                        <div className="mt-4">
+                                                        <div className="mt-4 md:w-[70vw] mx-auto w-full">
                                                             <h3 className="text-lg font-medium mb-2">LED Details:</h3>
                                                             <div>
                                                                 <label className="block mb-2 text-sm font-medium text-black dark:text-black">
@@ -1045,7 +1059,7 @@ export default function Page() {
                                                                     placeholder="Enter size (e.g., 10x20)"
                                                                     value={selectedCategories[category.name]?.ledDetails?.size || ''}
                                                                     onChange={(e) => handleLedDetailsChange(category.name, 'size', e.target.value)}
-                                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
+                                                                    className="bg-gray-50 border md:w-[20vw] border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
                                                                 />
                                                             </div>
                                                         </div>
@@ -1125,10 +1139,10 @@ export default function Page() {
                                                 </select>
                                                 {formErrors.city && <p className="text-red-500 text-sm">{formErrors.city}</p>} */}
                                                 <p className="block text-sm font-semibold mb-2 text-gray-700">City</p>
-                  <div className="w-full border rounded-xl py-1">
-          <Location onSelectLocation={setPlace} />
-          </div>
-                                                
+                                                <div className="w-full border rounded-xl py-1">
+                                                    <Location onSelectLocation={setPlace} />
+                                                </div>
+
                                             </div>
 
                                             {/* Full Address */}
@@ -1145,7 +1159,7 @@ export default function Page() {
                                                     onChange={handleInputChange}
                                                     value={formData.address}
                                                     required
-                                                    
+
                                                 />
                                                 {formErrors.address && <p className="text-red-500 text-sm">{formErrors.address}</p>}
                                             </div>
@@ -1174,8 +1188,8 @@ export default function Page() {
                                                     checked={isTermsAccepted}
                                                     onChange={(e) => setIsTermsAccepted(e.target.checked)}
                                                 />
-                                                <label htmlFor="terms">
-                                                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Terms and Conditions</a>
+                                                <label htmlFor="terms" className='mx-2'>
+                                                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer ">Terms and Conditions</a>
                                                 </label>
                                             </div>
 

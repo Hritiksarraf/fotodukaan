@@ -123,7 +123,7 @@ export default function SearchBar() {
         >
           <option value="">Category</option>
           {categories.map((cat, index) => (
-            <option key={index} value={cat.name}>{cat.name}</option>
+            <option key={index} value={cat.name} className='mx-2 w-[20vw] '> {cat.name} </option>
           ))}
         </select>
         
@@ -136,7 +136,7 @@ export default function SearchBar() {
         >
           <option value="">Sub Category</option>
           {subcategories.map((sub, index) => (
-            <option key={index} value={sub}>{sub}</option>
+            <option key={index} value={sub} className='w-[20vw]'>{sub}</option>
           ))}
         </select>
 
