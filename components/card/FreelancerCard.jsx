@@ -26,6 +26,7 @@ function FreelancerCard({
     const [user, setUser] = useState(null)
     const router = useRouter()
     const [open, setOpen] = useState(false)
+    const [selectedFrName,setSelectedFrName]=useState('');
     const getFeelancer = useCallback(async () => {
         try {
             setLoading(true)
@@ -199,6 +200,7 @@ function FreelancerCard({
                                     onClick={() => {
                                         setOpen(true);
                                         setSelectedFr(fr._id);
+                                        setSelectedFrName(fr.name);
                                     }}
                                     sx={{
                                         color: "red", // Sets the icon color to green
@@ -213,7 +215,7 @@ function FreelancerCard({
                                     onClose={() => setOpen(false)}
                                     aria-labelledby="modal-title"
                                     aria-describedby="modal-description"
-                                    
+
                                 >
                                     <Box
                                         sx={{
@@ -232,7 +234,7 @@ function FreelancerCard({
                                         </div>
                                         <div className="flex flex-col text-black">
                                             <div className="text-center text-xl font-bold">
-                                                Are you sure you want to delete the <span className='text-red-500 font-bold'>{fr.name} </span> freelancer?
+                                                Are you sure you want to delete the <span className='text-red-500 font-bold'>{selectedFrName} </span> freelancer?
                                             </div>
                                             <div className="flex items-center justify-between mt-5">
                                                 <Button

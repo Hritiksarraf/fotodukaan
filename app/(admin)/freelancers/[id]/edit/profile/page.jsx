@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import EditBar from '@/components/editBar/EditBar';
 import Location from '@/components/location/Location';
 import { useParams } from "next/navigation";
+import Link from 'next/link';
 
 
 const cityArray = [
@@ -205,8 +206,12 @@ export default function ProfileUpdateForm() {
 
     return (
         <div className='min-h-75vh] pt-32 overflow-x-hidden'>
-            <div>
-                <EditBar />
+            <div className='flex justify-center' >
+                <div className='flex text-black md:w-[50vw] w-[90vw]   justify-center gap-10 font-bold rounded-xl shadow-xl  '>
+                    <Link href={`/freelancers/${id}/edit/gallery`} className='bg-yellow-500 mb-3 underline-offset-1 text-white px-4 rounded-xl py-2' >Gallery</Link>
+                    <Link href={`/freelancers/${id}/edit/profile`} className='bg-yellow-500 mb-3 underline-offset-1 text-white px-4 rounded-xl py-2' >Profile</Link>
+                    <Link href={`/freelancers/${id}/edit/service`} className='bg-yellow-500 mb-3 underline-offset-1 text-white px-4 rounded-xl py-2' >Service</Link>
+                </div>
             </div>
             <div className="min-h-screen flex justify-center items-center p-10">
                 <form className="w-full max-w-lg p-8 rounded-lg shadow-lg bg-blue-100" onSubmit={handleSubmit}>
