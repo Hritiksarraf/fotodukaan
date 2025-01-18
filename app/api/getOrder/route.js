@@ -16,6 +16,7 @@ export const POST = async (req) => {
         { status: 400 }
       );
     }
+    console.log(id)
 
     // Try to find the user in Freelancer collection
     let person = await Freelancer.findOne({ _id: id });

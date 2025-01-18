@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect, useState , useRef} from "react"
 import jwt from "jsonwebtoken";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,7 @@ export default function Navbar() {
     const router = useRouter();
     const [profileState, setProfileState] = useState(false)
     const [category, setCategory] = useState("");
+    const menuRef = useRef(null);
 
     // Replace javascript:void(0) paths with your paths
     const navigation = [
@@ -55,6 +56,20 @@ export default function Navbar() {
             router.push(`/freelancer/type/${selectedCategory}`); // Adjust the path to match your dynamic route
         }
     };
+
+    useEffect(() => {
+        const handleClick = () => {
+          setProfileState(false);
+        };
+    
+        if (profileState) {
+          document.addEventListener("click", handleClick);
+        }
+    
+        return () => {
+          document.removeEventListener("click", handleClick);
+        };
+      }, [profileState, setProfileState]);
 
 
     return (
@@ -214,7 +229,7 @@ export default function Navbar() {
                             </button>
                         </div>
 
-                        {profileState && !user.freelancer && <div className="absolute md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
+                        {profileState && !user.freelancer && <div className="absolute  md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3  ">
                             <div>
                                 <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -237,7 +252,7 @@ export default function Navbar() {
                             </div>
                         </div>}
                         <div>
-                            {profileState && user.freelancer && <div className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
+                            {profileState && user.freelancer && <div ref={menuRef} className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 

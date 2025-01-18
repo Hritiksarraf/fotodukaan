@@ -123,7 +123,7 @@ export default function Footer() {
                 <div className="my-6 h-[2px] bg-gradient-to-r from-blue-500 to-blue-600 sm:mx-auto lg:my-8" />
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <span className="text-sm text-gray-200 sm:text-center text-center m-auto ">
-                        Made with ❤️ by Dev'n'Des
+                    © Lions studio Private Limited™
 
 
                     </span>

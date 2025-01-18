@@ -23,6 +23,7 @@ import jwt from "jsonwebtoken";
 
 export default function page() {
   const { id } = useParams();
+  console.log('i am woww' , id)
   const [loading, setLoading] = useState(true);
   const [freelancerData, setFreelancerData] = useState({
     freelancerDetails: {}
@@ -155,6 +156,7 @@ export default function page() {
 
 
   const getUser = async () => {
+    console.log('hey ere',id)
     const response = await fetch(`/api/freelancer/${id}`, {
       method: "GET",
       headers: {
@@ -162,7 +164,8 @@ export default function page() {
       },
     });
     const data = await response.json();
-    // console.log(data)
+    console.log('hey ere',id)
+    console.log(data)
     setFreelancerData(data);
 
     setLoading(false);
@@ -308,7 +311,7 @@ export default function page() {
 
                 </div>
                 <div className=''>
-                  <PricePicker freelancerData={freelancerData} />
+                  {/* <PricePicker freelancerData={freelancerData} /> */}
                 </div>
                 {/* <div className="hidden md:block mt-4">
                   
@@ -501,7 +504,7 @@ export default function page() {
             <p className='text-lg text-gray-600 '> {freelancerData.stars.star.toFixed(1)} star rating star rating | {freelancerData.stars.noOfPeople} Review</p>
           </div>
           <div className=''>
-            <Slider {...settings}>
+            {/* <Slider {...settings}>
               {Array.isArray(TestimonialData) && TestimonialData?.slice().reverse().map(({ id, profilePhoto, name, text, star, createdAt }) => {
 
 
@@ -524,16 +527,14 @@ export default function page() {
                     case 1:
                       return 'Worst';
                     default:
-                      return ''; // In case of an unexpected star value
+                      return ''; 
                   }
                 })();
 
                 return (
                   <>
                     <div key={id} className='relative w-[90vw] md:w-[18vw] mx-auto bg-gradient-to-r h-[21rem] md:h-full from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                      {/* <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
-                        <img src={img} alt="" className='rounded-full h-24 w-24' />
-                      </div> */}
+                      
                       <div className='h-5 flex items-end '>
                         {Array(5).fill(0).map((_, index) => (
                           index < star ? (
@@ -551,9 +552,6 @@ export default function page() {
                       </div>
                       <div className='flex flex-col items-center mt-5'>
                         <p className='text-sm h-28 md:h-20  text-gray-500'>{truncatedText} {text.split(' ').length > 18 && <button onClick={() => handleReadMoreClick({ profilePhoto, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
-
-                        {/* <p className='text-xl font-bold my-4'>{name}</p> */}
-                        {/* <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p> */}
                       </div>
                       <div className='flex py-5 items-center gap-x-4'>
                         <div className='block w-10 h-10 rounded-full '>
@@ -565,128 +563,13 @@ export default function page() {
                   </>
                 )
               })}
-            </Slider >
+            </Slider > */}
           </div>
         </div>
 
-        {/* Modal */}
-        {selectedReview && (
-          <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customModalStyles} contentLabel="Review Modal">
-            <div className="text-center">
-              <img src={selectedReview.profilePhoto} alt={selectedReview.name} className="rounded-full  md:w-24 h-24 mx-auto mb-4 object-cover" />
-              <h2 className="text-2xl font-bold mb-2">{selectedReview.name}</h2>
-              <div className="flex justify-center mb-4">
-                {Array(5)
-                  .fill(0)
-                  .map((_, index) =>
-                    index < selectedReview.star ? (
-                      <StarIcon key={index} size="small" className="text-yellow-500" />
-                    ) : (
-                      <StarBorderIcon key={index} size="small" className="text-yellow-500" />
-                    )
-                  )}
-              </div>
-              <p className="text-gray-700">{selectedReview.text}</p>
-              <button
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-                onClick={closeModal}
-              >
-                Close
-              </button>
-            </div>
-          </Modal>
-        )}
+       
 
-        <section className="my-5 mx-5 border-y-2">
-          <h1 className="text-2xl py-2 font-bold">Write a review</h1>
-          <div
-            className="my-2 cursor-pointer"
-            onClick={() => {
-              setIsReviewModalOpen(true);
-            }}
-          >
-            <div className="flex flex-col md:flex-row md:gap-x-5 gap-3 md:gap-0 md:items-center text-xl">
-              <div className="">
-
-                <Rating
-                  name="user-rating"
-                  value={userRating}
-                  precision={1}
-                  onChange={(e, newValue) => setUserRating(newValue)}
-                />
-              </div>
-              <textarea
-                placeholder="Write your review here..."
-                value={userReview}
-                onChange={(e) => setUserReview(e.target.value)}
-                className="w-[88vw] md:w-[35vw] p-2 border text-lg rounded-lg"
-                rows="1"
-              />
-              <div className='w-full text-lg '>
-                <button
-                  onClick={() => {
-                    setIsReviewModalOpen(true);
-                  }}
-                  className=" bg-blue-500 text-white text-sm py-3 px-4   rounded-lg hover:bg-blue-600 transition duration-200"
-                >
-                  Submit Review
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Modal for writing a review */}
-          <Modal
-            isOpen={isReviewModalOpen}
-            onRequestClose={() => {
-              setIsReviewModalOpen(false);
-            }}
-            style={customModalStyles}
-            contentLabel="Review Modal"
-          >
-            <div className="text-center p-4">
-              <h2 className="text-2xl font-bold mb-4">Submit Your Review</h2>
-
-
-
-              {/* Text Area for Review */}
-              <textarea
-                placeholder="Write your review here..."
-                value={userReview}
-                onChange={(e) => setUserReview(e.target.value)}
-                className="w-full mb-4 p-2 border rounded-lg"
-                rows="4"
-              />
-
-              {/* Star Rating Selection */}
-              <div className="mb-4">
-                <p className="text-lg mb-2">Rating:</p>
-                <Rating
-                  name="user-rating"
-                  value={userRating}
-                  precision={1}
-                  onChange={(e, newValue) => setUserRating(newValue)}
-                />
-              </div>
-
-              {/* Submit Button */}
-              <button
-                onClick={handleSubmitReview}
-                className="mt-4 bg-blue-500 text-white py-2 px-4 mx-2 rounded-lg hover:bg-blue-600 transition duration-200"
-              >
-                Submit Review
-              </button>
-
-              {/* Close Button */}
-              <button
-                onClick={() => setIsReviewModalOpen(false)}
-                className="mt-2 bg-red-500 mx-2 py-2 px-4 rounded-lg hover:bg-red-600 transition duration-200 text-white hover:text-gray-700"
-              >
-                Cancel
-              </button>
-            </div>
-          </Modal>
-        </section>
+        
 
         <section className='my-2'>
           <div>

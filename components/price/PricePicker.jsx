@@ -167,14 +167,14 @@ export default function PricePicker({ freelancerData }) {
     return (
         <div>
             <h3 className="text-lg font-bold mb-2">Check Sure Price</h3>
-            <div className="flex gap-4 flex-wrap flex-row">
+            <div className="flex gap-4 flex-wrap flex-row ">
                 <select
                     value={selectedCategory}
                     onChange={(e) => {
                         setSelectedCategory(e.target.value);
                         setSelectedSubcategory('');
                     }}
-                    className="px-1 py-2 border w-[40vw] text-sm md:w-40 rounded"
+                    className="px-1 py-2 border w-[40vw] text-sm md:w-[9vw] rounded"
                 >
                     <option className='' value="">Select Category</option>
                     {Object.keys(freelancerData.freelancerDetails).map((category) => (
@@ -185,7 +185,7 @@ export default function PricePicker({ freelancerData }) {
                 <select
                     value={selectedSubcategory}
                     onChange={(e) => setSelectedSubcategory(e.target.value)}
-                    className="px-1 py-2 border w-[40vw] text-sm md:w-40 rounded"
+                    className="px-1 py-2 border w-[40vw] text-sm md:w-[10vw] rounded"
                 >
                     <option value="">Select Subcategory</option>
                     {freelancerData.freelancerDetails[selectedCategory]?.subcategories.map((sub, index) => (
@@ -196,7 +196,7 @@ export default function PricePicker({ freelancerData }) {
                 <select
                     value={timeOption}
                     onChange={(e) => setTimeOption(e.target.value)}
-                    className="px-1 py-2 border w-[40vw] text-sm md:w-36 rounded"
+                    className="px-1 py-2 border w-[40vw] text-sm md:w-[8vw] rounded"
                 >
                     <option value="fullDayPrice">Full Day</option>
                     <option value="halfDayPrice">Half Day</option>
@@ -221,7 +221,7 @@ export default function PricePicker({ freelancerData }) {
                 </div>
             )}
 
-            <div className='flex items-center gap-5'>
+            <div className='flex items-center gap-5 w-[29vw] mt-2'>
                 {/* Button is enabled only when category, subcategory, and time option are selected */}
                 {/* <button
                     onClick={updatePrice}
@@ -238,7 +238,7 @@ export default function PricePicker({ freelancerData }) {
                 )}
 
                 {/* <Link href={`/booking/${freelancerData._id}`} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded">Book Now</Link> */}
-                <a onClick={sendprops} className="flex ml-auto text-white bg-pink-500 border-0 py-2 my-2 px-6 cursor-pointer focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>
+                
             </div>
 
             <div>
@@ -308,6 +308,9 @@ export default function PricePicker({ freelancerData }) {
                             <p className="text-gray-500 text-sm py-1 ">No dates selected.</p>
                         )}
                     </div>
+                </div>
+                <div className='mt-2 flex  justify-end'>
+                <a onClick={sendprops} className="  inline-block text-white bg-pink-500 border-0 py-3 my-2 px-6 text-lg cursor-pointer focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>
                 </div>
 
 
