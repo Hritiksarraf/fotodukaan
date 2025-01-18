@@ -213,6 +213,7 @@ function FreelancerCard({
                                     onClose={() => setOpen(false)}
                                     aria-labelledby="modal-title"
                                     aria-describedby="modal-description"
+                                    
                                 >
                                     <Box
                                         sx={{
