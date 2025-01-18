@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useBooking } from "../../app/(root)/context/BookingContext";
 import Button from "@mui/material/Button";
 import { DesktopDatePicker } from '@mui/x-date-pickers';
+import jwt from 'jsonwebtoken';
 
 export default function PricePicker({ freelancerData }) {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -152,8 +153,6 @@ export default function PricePicker({ freelancerData }) {
         const token = localStorage.getItem("token");
             if (token) {
               const decodedUser = jwt.decode(token);
-              setLocalUser(decodedUser);
-              setLoading(false);
             }
             else {
               alert('please login before making an order')
@@ -299,7 +298,7 @@ export default function PricePicker({ freelancerData }) {
                     />
                     <button
                         onClick={() => setIsCalendarOpen(false)}
-                        className="mt-4 bg-blue-500 ml-8 text-white py-2 px-4 rounded"
+                        className="mt-4 bg-blue-500 ml-2 text-white py-2 px-4 rounded"
                     >
                         Done
                     </button>

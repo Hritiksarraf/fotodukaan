@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
 
 function LoginPage() {
@@ -54,7 +54,7 @@ function LoginPage() {
 
     const data = { phone, password };
     setLoading(true);
-    
+
     try {
       let res = await fetch('/api/log-in', {
         method: 'POST',
@@ -78,7 +78,7 @@ function LoginPage() {
           progress: undefined,
           theme: 'light',
         });
-        localStorage.setItem('token',response.token)
+        localStorage.setItem('token', response.token)
         setTimeout(() => {
           router.push('/'); // Redirect to dashboard after login
         }, 2000);
@@ -94,7 +94,7 @@ function LoginPage() {
           theme: 'light',
         });
       }
-      
+
     } catch (error) {
       setLoading(false);
       toast.error('Failed to log in', {
@@ -113,7 +113,7 @@ function LoginPage() {
   return (
     <div>
       <section className="bg-gradient-to-b from-white to-blue-200 h-[100vh]">
-      <ToastContainer/>
+        <ToastContainer />
         <div className="flex flex-col items-center my-auto justify-center h-[80vh] px-6 py-8 mx-auto md:h-screen lg:py-0">
           <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
@@ -129,17 +129,17 @@ function LoginPage() {
                     Your Phone Number
                   </label>
                   <input
-                    type="tel"
+                    type="text"
                     name="phone"
                     id="phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-blue-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="7061652485"
-                    pattern="^[0-9]{10}$" // Ensures exactly 10 digits
-  inputMode="numeric" // Ensures numeric input on mobile
-  maxLength={10} // Prevents entering more than 10 digits
-  title="Please enter a 10-digit phone number"
+
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/\D/g, ''); // Filters non-numeric characters
+                    }}
                   />
                 </div>
                 <div>

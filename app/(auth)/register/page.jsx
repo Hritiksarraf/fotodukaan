@@ -735,6 +735,9 @@ export default function Page() {
                                                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     placeholder="7061652485"
                                                     required
+                                                    onInput={(e) => {
+                                                        e.target.value = e.target.value.replace(/\D/g, ''); // Filters non-numeric characters
+                                                      }}
                                                 />
                                                 {formErrors.phone && <p className="text-red-600">{formErrors.phone}</p>}
                                             </div>

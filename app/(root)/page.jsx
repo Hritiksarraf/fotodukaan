@@ -357,7 +357,7 @@ export default function Home() {
 
       </section>
       {/* Hero Section */}
-      <section className="  bg-cover flex flex-col-reverse -z-50 md:flex-row bg-gradient-to-t md:bg-gradient-to-r from-blue-800 to-blue-400   bg-center w-full h-[85vh] pt-20  text-center md:text-left ">
+      <section className="  bg-cover flex flex-col-reverse -z-50 md:flex-row bg-gradient-to-t md:bg-gradient-to-r from-blue-800 to-blue-400   bg-center w-full min-h-[85vh] h-full pt-20  text-center md:text-left ">
         <div className=" md:w-[70vw] p-5 md:p-10 md:px-15">
 
           <h1 className="text-6xl md:text-[10vh] pt-5 md:mt-0 font-bold text-center md:text-left text-white">Find the Best Freelancers <p className="text-yellow-500 h-[5vh] " >{' '}<span className=' text-3xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
@@ -382,7 +382,7 @@ export default function Home() {
             // src='https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
             src='https://wedding-planner-ui-by-mani.vercel.app/endpic1.jpg'
             // src='https://unsplash.com/photos/beautiful-indian-bride-and-groom-hand-with-mehandi-design-BDWH_GDKVCIhttps://plus.unsplash.com/premium_photo-1670524465634-93cf255ffa8b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5kaWFuJTIwd2VkZGluZyUyMGltYWdlfGVufDB8fDB8fHwwhttps://plus.unsplash.com/premium_photo-1670524465634-93cf255ffa8b?q=80&w=3254&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-            className=" rounded-lg shadow-lg md:w-[60vw]  object-cover rounded-b-[10rem] md:rounded-br-[0rem] md:rounded-bl-[25rem]  h-[40vh] md:h-full"
+            className=" rounded-lg shadow-lg md:w-[60vw] w-full  object-cover rounded-b-[10rem] md:rounded-br-[0rem] md:rounded-bl-[25rem]  h-[40vh] md:h-full"
             alt="Camera"
           />
         </div>
@@ -776,27 +776,27 @@ export default function Home() {
               required
             />
             <input
-  useClassNames="false"
-  data-aos="zoom-in"
-  data-aos-delay="100"
-  data-aos-duration="1000"
-  mirror="false"
-  style={{
-    WebkitAppearance: "none", // For Chrome, Safari
-    MozAppearance: "textfield", // For Firefox
-    appearance: "none", // General fallback
-  }}
-  className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black h-12 p-2 my-2"
-  type="tel" // Use 'tel' instead of 'number' to avoid arrows
-  id="phone"
-  name="phone"
-  placeholder="Your Phone No"
-  required
-  pattern="^[0-9]{10}$" // Ensures exactly 10 digits
-  inputMode="numeric" // Ensures numeric input on mobile
-  maxLength={10} // Prevents entering more than 10 digits
-  title="Please enter a 10-digit phone number"
-/>
+              useClassNames="false"
+              data-aos="zoom-in"
+              data-aos-delay="100"
+              data-aos-duration="1000"
+              mirror="false"
+              style={{
+                WebkitAppearance: "none", // For Chrome, Safari
+                MozAppearance: "textfield", // For Firefox
+                appearance: "none", // General fallback
+              }}
+              className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black h-12 p-2 my-2"
+              type="tel" // Use 'tel' instead of 'number' to avoid arrows
+              id="phone"
+              name="phone"
+              placeholder="Your Phone No"
+              required
+              pattern="^[0-9]{10}$" // Ensures exactly 10 digits
+              inputMode="numeric" // Ensures numeric input on mobile
+              maxLength={10} // Prevents entering more than 10 digits
+              title="Please enter a 10-digit phone number"
+            />
 
             <textarea
               useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"

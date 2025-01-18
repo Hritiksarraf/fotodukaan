@@ -148,7 +148,7 @@ export default function SearchBar() {
         {/* Search Button */}
         <Link
           href={isSearchDisabled ? "#" : `/freelancer/type/${category}/${subCategory}/${place}`}
-          className={`w-full sm:w-auto px-4 py-2 text-sm rounded-md text-white ${isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"}`}
+          className={`w-full sm:min-w-40 sm:w-auto px-4 py-2 text-sm rounded-md text-white ${isSearchDisabled ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500"}`}
         >
           Find Freelancer
         </Link>

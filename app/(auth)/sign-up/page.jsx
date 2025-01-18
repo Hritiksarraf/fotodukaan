@@ -292,6 +292,9 @@ export default function Pages() {
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/\D/g, ''); // Filters non-numeric characters
+                    }}
                   />
                   {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
                 </div>
