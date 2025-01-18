@@ -149,6 +149,18 @@ export default function PricePicker({ freelancerData }) {
             return;
         }
 
+        const token = localStorage.getItem("token");
+            if (token) {
+              const decodedUser = jwt.decode(token);
+              setLocalUser(decodedUser);
+              setLoading(false);
+            }
+            else {
+              alert('please login before making an order')
+              router.push('/log-in')
+              return;
+            }
+
 
         const formattedTimeOption =
             timeOption === 'extraHourPrice' ? `${timeOption},${extraHours}` : timeOption;

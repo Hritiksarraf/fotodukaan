@@ -241,7 +241,7 @@ export default function Page() {
                 if (!errors[category]) errors[category] = {};
 
                 // Validate subcategories
-               
+
 
                 // Validate prices
                 if (!errors[category].price) errors[category].price = {};
@@ -792,27 +792,27 @@ export default function Page() {
                             <h1 className="text-xl font-bold mt-4 mb-10 leading-tight tracking-tight text-black md:text-4xl ">
                                 Select Your Services
                             </h1>
-                            <form action="">
+                            <div action="">
                                 <div className="flex flex-col md:flex-row md:flex-wrap bg-white items-center justify-center md:w-[70vw]  ">
                                     {categories.map((category) => (
                                         <div key={category.name} className="w-[80vw] mx-auto">
                                             <button onClick={() => handleCategoryClick(category.name)} className={`flex gap-5 shadow-md justify-center items-center w-full md:w-[70vw] p-4  text-left border-b rounded-lg my-2  md:mx-auto ${selectedCategories[category.name] ? 'bg-blue-600 text-white' : 'bg-yellow-400'}`}>
-                                            <span>
-    {(() => {
-      switch (category.name) {
-        case 'Traditional Photography':
-          return 'Candid Photographer';
-        case 'Candid Photography':
-          return 'Candid Photographer';
-        case 'Traditional Videography':
-          return 'Traditional Videographer';
-        case 'Cinematography':
-          return 'Cinematographer';
-        default:
-          return category.name;
-      }
-    })()}
-  </span>
+                                                <span>
+                                                    {(() => {
+                                                        switch (category.name) {
+                                                            case 'Traditional Photography':
+                                                                return 'Traditional Photographer';
+                                                            case 'Candid Photography':
+                                                                return 'Candid Photographer';
+                                                            case 'Traditional Videography':
+                                                                return 'Traditional Videographer';
+                                                            case 'Cinematography':
+                                                                return 'Cinematographer';
+                                                            default:
+                                                                return category.name;
+                                                        }
+                                                    })()}
+                                                </span>
                                                 {/* <span>{selectedCategories[category.name]?.subcategories.length || 0}</span> */}
                                             </button>
                                             {selectedCategories[category.name] && (
@@ -1093,7 +1093,7 @@ export default function Page() {
                                     <button onClick={handlestep2} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
 
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </section>
                 )}

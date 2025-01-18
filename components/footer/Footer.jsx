@@ -31,25 +31,21 @@ export default function Footer() {
                             </h2>
                             <ul className="text-white font-medium">
                                 <li className="mb-4">
-                                    <Link href="#home" smooth className="hover:underline hover:text-blue-800">
+                                    <Link href="/" smooth className="hover:underline hover:text-blue-800">
                                         HOME
                                     </Link>
                                 </li>
                                 <li className="mb-4">
-                                    <Link href="#products" smooth className="hover:underline hover:text-blue-800">
-                                        PRODUCT
+                                    <Link href="/about-us" smooth className="hover:underline hover:text-blue-800">
+                                    ABOUT US
                                     </Link>
                                 </li>
                                 <li className="mb-4">
-                                    <Link href="#testimonials" smooth className="hover:underline pt-4 hover:text-blue-800">
-                                        TESTIMONIALS
+                                    <Link href="/contact" smooth className="hover:underline pt-4 hover:text-blue-800">
+                                        CONTACT US
                                     </Link>
                                 </li>
-                                <li className="mb-4">
-                                    <Link href="#about" smooth className="hover:underline hover:text-blue-800">
-                                        ABOUT US
-                                    </Link>
-                                </li>
+                               
                             </ul>
                         </div>
                         <div>
@@ -123,7 +119,7 @@ export default function Footer() {
                 <div className="my-6 h-[2px] bg-gradient-to-r from-blue-500 to-blue-600 sm:mx-auto lg:my-8" />
                 <div className="sm:flex sm:items-center sm:justify-between">
                     <span className="text-sm text-gray-200 sm:text-center text-center m-auto ">
-                    © Lionsking Private Limited™
+                    © Lionsking Studio Private Limited™
 
 
                     </span>

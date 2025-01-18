@@ -129,14 +129,17 @@ function LoginPage() {
                     Your Phone Number
                   </label>
                   <input
-                    type="text"
+                    type="tel"
                     name="phone"
                     id="phone"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-blue-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="7061652485"
-                    required
+                    pattern="^[0-9]{10}$" // Ensures exactly 10 digits
+  inputMode="numeric" // Ensures numeric input on mobile
+  maxLength={10} // Prevents entering more than 10 digits
+  title="Please enter a 10-digit phone number"
                   />
                 </div>
                 <div>
