@@ -233,7 +233,7 @@ export default function page() {
   };
 
 
-  if (loading || reviewLoading) {
+  if (loading) {
     return (<div className='min-h-[80vh] w-[100vw]'>
       <Box sx={{ display: 'flex' }}>
         <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
