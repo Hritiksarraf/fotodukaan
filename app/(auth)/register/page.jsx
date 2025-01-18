@@ -563,7 +563,7 @@ export default function Page() {
     };
     const [steps, setStep] = useState({
         stepsItems: ["Details", "Service", "Profile"],
-        currentStep: 2
+        currentStep: 1
     });
 
     const handlestep2 = () => {
