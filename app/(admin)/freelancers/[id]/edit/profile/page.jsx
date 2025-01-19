@@ -11,50 +11,6 @@ import { useParams } from "next/navigation";
 import Link from 'next/link';
 
 
-const cityArray = [
-    "Mumbai, Maharashtra",
-    "Delhi, National Capital Territory",
-    "Bangalore (Bengaluru), Karnataka",
-    "Hyderabad, Telangana",
-    "Ahmedabad, Gujarat",
-    "Chennai, Tamil Nadu",
-    "Kolkata, West Bengal",
-    "Pune, Maharashtra",
-    "Jaipur, Rajasthan",
-    "Surat, Gujarat",
-    "Lucknow, Uttar Pradesh",
-    "Kanpur, Uttar Pradesh",
-    "Nagpur, Maharashtra",
-    "Indore, Madhya Pradesh",
-    "Patna, Bihar",
-    "Bhopal, Madhya Pradesh",
-    "Vadodara, Gujarat",
-    "Ludhiana, Punjab",
-    "Agra, Uttar Pradesh",
-    "Nashik, Maharashtra",
-    "Coimbatore, Tamil Nadu",
-    "Kochi (Cochin), Kerala",
-    "Visakhapatnam, Andhra Pradesh",
-    "Ghaziabad, Uttar Pradesh",
-    "Thiruvananthapuram, Kerala",
-    "Varanasi, Uttar Pradesh",
-    "Rajkot, Gujarat",
-    "Meerut, Uttar Pradesh",
-    "Faridabad, Haryana",
-    "Amritsar, Punjab",
-    "Jodhpur, Rajasthan",
-    "Madurai, Tamil Nadu",
-    "Raipur, Chhattisgarh",
-    "Aurangabad, Maharashtra",
-    "Gwalior, Madhya Pradesh",
-    "Ranchi, Jharkhand",
-    "Guwahati, Assam",
-    "Bhubaneswar, Odisha",
-    "Mysore, Karnataka",
-    "Jabalpur, Madhya Pradesh",
-    "Goa, Maharashtra",
-    "Muzaffarpur, Bihar"
-];
 export default function ProfileUpdateForm() {
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
@@ -192,7 +148,7 @@ export default function ProfileUpdateForm() {
         setUploading(false);
     };
 
-    const uniqueSortedCities = [...new Set(cityArray.map(city => city.split(",")[0]))].sort();
+    
 
     if (loading) {
         return (

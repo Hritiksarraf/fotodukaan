@@ -71,8 +71,10 @@ export async function POST(req) {
         { status: 404 }
       );
     }
+    console.log('1')
     const paidonweb=(Number(totalAmount)-(paymentData.amount / 100)<2);
     // Step 4: Create the order based on the data received
+    console.log('2')
     const newOrder = new Order({
       customerName: name,
       freelancerName: freelancer.name,
@@ -96,15 +98,16 @@ export async function POST(req) {
       paidOnWeb:paidonweb,
       orderId: paymentData.id, // Using Razorpay payment ID as orderId
     });
-
+    console.log('3')
     // Save the order to the database
     await newOrder.save();
 
         const orderId = newOrder._id;
-
+        console.log('4')
     // Update the user's order array
     const eventtitle=service+" "+event+" "+time;
     const freelancerUserUpdate = await Freelancer.findById(userid);
+    console.log('6')
     if (freelancerUserUpdate) {
       
       // Freelancer exists, update the freelancer's orders array
@@ -130,6 +133,7 @@ export async function POST(req) {
       userUpdate.booking.push(orderId);
       await userUpdate.save();
     }
+    console.log('7')
 
     // Update the freelancer's order array
     const freelancerUpdate = await Freelancer.findById(freelancerid);

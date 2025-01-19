@@ -3,36 +3,16 @@ import { connectToDB } from "@/lib/mongodb/mongoose";
 
 export const GET=async(req,{params})=>{
     try {
+        await connectToDB();
+    
+        const order = await Order.findOne({ _id: params.id })
         
-        await connectToDB()
-        const order = await Order.findByIdAndDelete(params.id)
-        if(!order){
-            return new Response(
-                JSON.stringify({ error: "failed to delete the order",success:false }),
-                {
-                    status: 500,
-                    headers: { "Content-Type": "application/json" }
-                }
-            );
-        }
-            
-            
-        return new Response(
-            JSON.stringify({ message: "order deleted successfully",success:true }),
-            {
-                status: 200,
-                headers: { "Content-Type": "application/json" }
-            }
-        );
-    } catch (error) {
-        return new Response(
-            JSON.stringify({ error: "failed to delete the order",success:false }),
-            {
-                status: 500,
-                headers: { "Content-Type": "application/json" }
-            }
-        );
-    }
+    
+        return new Response(JSON.stringify(order), { status: 200 });
+      } catch (err) {
+        console.error(err);
+        return new Response("Failed to get user", { status: 500 });
+      }
 }
 
 export const POST = async(req,{params})=>{

@@ -25,8 +25,11 @@ function page() {
         console.log("token")
         const decodedUser = jwt.decode(token);
         if(!decodedUser.isAdmin){
-          router.push("/")
+          router.push("/adminlogin")
         }
+    }
+    else{
+      router.push("/adminlogin")
     }
     }, [])
   useEffect(()=>{

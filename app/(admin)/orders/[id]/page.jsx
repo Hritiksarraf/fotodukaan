@@ -2,9 +2,10 @@
 import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
+import Location from '@/components/location/Location'
 
 function page() {
-    const {id} = useParams()
+    const { id } = useParams()
     const router = useRouter()
     const [order, setOrder] = useState({
         customerName: "",
@@ -20,32 +21,54 @@ function page() {
         totalAmount: "",
         paidAmount: ""
     })
-    const getOrder = async()=>{
-        const response = await fetch(`/api/order/${id} `)
+    const [place, setPlace] = useState('');
+    const [readyToSubmit, setReadyToSubmit] = useState(false); // New state to track readiness
+
+    const getOrder = async () => {
+        const response = await fetch(`/api/admin/order/${id}`)
         const data = await response.json()
-        if(!data.success){
+        setOrder({
+            customerName: data.customerName,
+            freelancerName: data.freelancerName,
+            customerEmail: data.customerEmail,
+            freelancerEmail: data.freelancerEmail,
+            customerPhone: data.customerPhone,
+            freelancerPhone: data.freelancerPhone,
+            pinCode: data.pinCode,
+            address: data.address,
+            city: data.city,
+            date: data.date,
+            totalAmount: data.totalAmount,
+            paidAmount: data.paidAmount
+        })
+        setPlace(data.city);
+        if (!data.success) {
             toast.error('failed to fetch the order')
-        }else{
-            console.log("o",data)
-            setOrder({
-                customerName:data.order.customerName,
-                freelancerName:data.order.freelancerName,
-                customerEmail:data.order.customerEmail,
-                freelancerEmail:data.order.freelancerEmail,
-                customerPhone:data.order.customerPhone,
-                freelancerPhone:data.order.freelancerPhone,
-                pinCode:data.order.pinCode,
-                address:data.order.address,
-                city:data.order.city,
-                date:data.order.date,
-                totalAmount:data.order.totalAmount,
-                paidAmount:data.order.paidAmount
-            })
+        } else {
+            console.log("o", data)
         }
     }
-    useEffect(()=>{
+
+
+     useEffect(() => {
+            // Update freelancerData.city when place changes
+            setOrder((prevState) => ({
+                ...prevState,
+                city: place,
+            }));
+        }, [place]);
+    
+        useEffect(() => {
+            // Enable submission only if city is updated
+            if (order.city === place) {
+                setReadyToSubmit(true);
+            }
+        }, [order.city, place]);
+
+
+    useEffect(() => {
         getOrder()
-    },[])
+    }, [])
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setOrder((prevState) => ({
@@ -53,24 +76,24 @@ function page() {
             [name]: value,
         }));
     };
-    const handleSubmit=async(e)=>{
-        e.preventDefault(); 
-        if (!order.customerName ||!order.customerEmail ||!order.customerPhone ||!order.freelancerName || !order.freelancerEmail || !order.freelancerPhone   || !order.address || !order.pinCode || !order.city ) {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!order.customerName || !order.customerEmail || !order.customerPhone || !order.freelancerName || !order.freelancerEmail || !order.freelancerPhone || !order.address || !order.pinCode || !order.city) {
             alert("Please fill out all required fields.");
             return;
         }
         console.log("hello")
-        const response = await fetch(`/api/admin/order/${id}`,{
-            method:'POST',
-            headers:{
+        const response = await fetch(`/api/admin/order/${id}`, {
+            method: 'POST',
+            headers: {
                 'Content-Type': 'application/json',
             },
-            body:JSON.stringify(order),
+            body: JSON.stringify(order),
         })
         console.log("hi")
         const data = await response.json()
-        console.log("res",data)
-        if(!data.success){
+        console.log("res", data)
+        if (!data.success) {
             toast.message("failed to update the order", {
                 position: 'top-left',
                 autoClose: 5000,
@@ -80,9 +103,9 @@ function page() {
                 draggable: true,
                 progress: undefined,
                 theme: 'light',
-        })
+            })
 
-        }else{
+        } else {
             toast.success("Order updated successfully", {
                 position: 'top-left',
                 autoClose: 5000,
@@ -92,7 +115,7 @@ function page() {
                 draggable: true,
                 progress: undefined,
                 theme: 'light',
-        })
+            })
             router.push("/orders")
             // getOrder()
         }
@@ -114,40 +137,7 @@ function page() {
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-bold mb-2">freelancer name</label>
-                        <input
-                            type="text"
-                            name="freelancerName"
-                            value={order.freelancerName}
-                            onChange={handleInputChange}
-                            className="w-full border border-gray-300 p-2 rounded-lg"
-                            required
-                        />
-                    </div>
-
-                    <div className="mb-4">
-                        <label className="block text-sm font-bold mb-2">customer email</label>
-                        <input
-                            type="email"
-                            name="customerEmail"
-                            value={order.customerEmail}
-                            onChange={handleInputChange}
-                            className="w-full border border-gray-300 p-2 rounded-lg"
-                            required
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-sm font-bold mb-2">freelancer email</label>
-                        <input
-                            type="email"
-                            name="freelancerEmail"
-                            value={order.freelancerEmail}
-                            onChange={handleInputChange}
-                            className="w-full border border-gray-300 p-2 rounded-lg"
-                            required
-                        />
-                    </div>
+                    
 
                     <div className="mb-4">
                         <label className="block text-sm font-bold mb-2">Address</label>
@@ -195,20 +185,10 @@ function page() {
                     </div>
 
                     <div className="mb-4">
-                        <label className="block text-sm font-bold mb-2">City</label>
-                        <select
-                            name="city"
-                            id="city"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5"
-                            onChange={handleInputChange}
-                            value={order.city}
-                            required
-                        >
-                            
-                            <option value="">Select your city</option>
-                            <option value="Patna">Patna</option>
-                            <option value="Muzzferpur">Muzzferpur</option> 
-                        </select>
+                        <p className="block text-sm font-semibold mb-2 text-gray-700">City</p>
+                        <div className="w-full border rounded-xl py-1">
+                            <Location onSelectLocation={setPlace} />
+                        </div>
                     </div>
 
                     <button
@@ -220,7 +200,7 @@ function page() {
                 </form>
             </div>
         </div>
-)
+    )
 }
 
 export default page

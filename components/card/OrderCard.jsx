@@ -17,7 +17,7 @@ function OrderCard({
     isInside = false,
     path = '/'
 }) {
-    console.log("ooo0", orders)
+    // console.log("ooo0", orders)
 
     const [openOrder, setOpenOrder] = useState(false)
     const [open, setOpen] = useState(false)
@@ -77,38 +77,30 @@ function OrderCard({
             }, 4000); // 3000 milliseconds = 3 seconds
         }
     }
-    const handleDelete = async (id) => {
-        const response = await fetch(`/api/admin/order/${id}`)
-        const data = await response.json()
-        if (!data.success) {
-            toast.error('failed to delete order', {
-                position: 'top-left',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            })
-        } else {
-            toast.success('order deleted', {
-                position: 'top-left',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: 'light',
-            })
-            window.location.reload()
-            if (isInside) {
-                router.route(`${path}`)
-            }
-        }
-    }
     const handleCancel = async (item) => {
+        console.log(selectedOrderId,reason,selectedCancel)
+    try {
+      const response = await fetch('/api/order/cancle', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ orderId:selectedOrderId, reason:reason, who:selectedCancel }),
+      });
+
+      if (response.ok) {
+        // window.location.reload();
+        alert('Order canceled successfully');
+      } else {
+        alert('Failed to cancel the order');
+      }
+    } catch (error) {
+      alert('An error occurred while canceling the order');
+    }
+  };
+
+    
+    const handleCancel2 = async (item) => {
         if (!reason) {
             alert('please enter the reason to cancel the order')
         } else {
@@ -118,7 +110,7 @@ function OrderCard({
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ id: selectedOrderId, userCancelReason: reason }),
+                    body: JSON.stringify({ id: selectedOrderId, reason: reason, }),
                     cache: "no-store"
                 })
                 const data = await response.json()
@@ -221,7 +213,7 @@ function OrderCard({
                         </div>
                         </div>
 
-                        {cancel &&
+                        {cancel && !item?.customerCancel && !item?.freelancerCancel && !item?.freelancerAproved &&
                             <div className='absolute bottom-3 right-16 hover:cursor-pointer'>
                                 <CancelPresentationRoundedIcon onClick={() => { setSelectedOrderId(item._id); setOpen(true) }} className={`rounded-xl text-4xl text-red-500  disabled:cursor-not-allowed `} >Cancel</CancelPresentationRoundedIcon>
                                 <h1 className='text-xs text-red-500 -mt-1'>Cancle</h1>

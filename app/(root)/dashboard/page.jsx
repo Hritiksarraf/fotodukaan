@@ -25,6 +25,10 @@ function OrdersPage() {
   const [orderId, setOrderId] = useState("");
   const router = useRouter();
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
+  const [cancelOrderId, setCancelOrderId] = useState(null);
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -63,25 +67,26 @@ function OrdersPage() {
     fetchOrders();
   }, [localUser]);
 
-  const handleCancelOrder = async (orderId) => {
+
+  const handleCancelOrder = async (orderId, reason) => {
+    const who = 'freelancer'
     try {
-      const response = await fetch("/api/cancel-order", {
-        method: "POST",
+      const response = await fetch('/api/order/cancle', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ orderId }),
+        body: JSON.stringify({ orderId, reason, who }),
       });
 
       if (response.ok) {
-        setOrders((prevOrders) =>
-          prevOrders.filter((order) => order._id !== orderId)
-        );
+        setOrders((prevOrders) => prevOrders.filter((order) => order._id !== orderId));
+        alert('Order canceled successfully');
       } else {
-        alert("Failed to cancel the order");
+        alert('Failed to cancel the order');
       }
     } catch (error) {
-      alert("An error occurred while canceling the order");
+      alert('An error occurred while canceling the order');
     }
   };
 
@@ -316,10 +321,10 @@ function OrdersPage() {
                                 {" "}
                                 <span className="font-normal"> </span>{" "}
                                 {order.freelancerAproved ? (
-                                  <div className="flex item-center justify-center">
+                                  <div className="flex ">
                                     <span className="text-green-600">Yes</span>
 
-                                    {order.freelancerAproved &&
+                                    {/* {order.freelancerAproved &&
                                       !order.additionalDetails[0].amountPaid ? (
                                       <button
                                         onClick={() => { handleAmountPaid(order._id) }}
@@ -329,7 +334,7 @@ function OrdersPage() {
                                       </button>
                                     ) : (
                                       <p className="ml-20 mr-auto">Payment is completed by coustomer</p>
-                                    )}
+                                    )} */}
                                   </div>
                                 ) : (
                                   <span className="text-red-500">No</span>
@@ -337,8 +342,8 @@ function OrdersPage() {
                               </h1>
                             </div>
 
-                            {!order.freelancerAproved && (
-                              <div className="flex gap-2 justify-between">
+                            {!order.freelancerCancel && !order.customerCancel && !order.freelancerAproved && (
+                              <div className="flex flex-col gap-2 justify-between">
                                 <button
                                   onClick={(e) =>
                                     sendOTP(e, order._id, order.customerPhone)
@@ -347,14 +352,98 @@ function OrdersPage() {
                                 >
                                   SEND OTP To Start Work
                                 </button>
-                                <button
-                                  href={`/`}
-                                  className="flex mt-4 mr-auto text-white bg-red-500 items-center  border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded"
-                                >
-                                  Cancel
-                                </button>
+                                
                               </div>
                             )}
+                            {(!order.freelancerCancel && !order.customerCancel && !order.freelancerAproved) && <div className='flex justify-between'>
+                                  <button
+                                    onClick={() => {
+                                      setCancelOrderId(order._id);
+                                      setShowCancelModal(true);
+                                    }}
+                                    className="flex mt-4 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded"
+                                  >
+                                    Cancel
+                                  </button>
+
+
+
+
+
+                                  {showCancelModal && (
+                                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                      <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] md:w-[40vw]">
+                                        <h2 className="text-xl font-bold mb-4">Cancel Order</h2>
+                                        <p className='my-2 text-gray-400 font-bold'>This will be considered toward your refund</p>
+                                        <textarea
+                                          value={cancelReason}
+                                          onChange={(e) => setCancelReason(e.target.value)}
+                                          className="w-full p-2 border rounded"
+                                          placeholder="Enter the reason for cancellation"
+                                          rows="4"
+                                          required
+                                          error={!!formError}
+                                          helperText={formError}
+                                        ></textarea>
+                                        {cancelReason.trim() === '' && (
+                                          <p className="text-red-500 text-sm mt-1">
+                                            Reason for cancellation is required.
+                                          </p>
+                                        )}
+                                        <div className="flex justify-end mt-4">
+                                          <button
+                                            onClick={() => setShowCancelModal(false)}
+                                            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 mr-2"
+                                          >
+                                            Close
+                                          </button>
+                                          <button
+                                            onClick={async () => {
+                                              if (cancelReason.trim() === '') {
+                                                return; // Prevent calling the function if the reason is empty
+                                              }
+                                              await handleCancelOrder(cancelOrderId, cancelReason);
+                                              setShowCancelModal(false);
+                                            }}
+                                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                          >
+                                            Cancel Order
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+
+
+
+                                </div>}
+                                {(order.freelancerCancel || order.customerCancel) && (
+                                  <div className="flex flex-col justify-between">
+                                    <p className='text-red-500'>Cancel Date:- {order.additionalDetails.find((detail) => detail.cancel)?.cancel
+                                      ?.cancelTime || "date missing"}</p>
+                                    {order.customerCancel && (
+                                      <p className='text-red-500 font-bold text-xl'>
+                                        Costumer canceled this order giving reason:-{" "}
+                                        <span className='text-gray-500'>{
+                                          order.additionalDetails.find((detail) => detail.cancel)?.cancel
+                                            ?.reason || "No reason provided"
+                                        }</span>
+
+                                      </p>
+
+                                    )}
+                                    {order.freelancerCancel && (
+                                      <p className='text-red-500 font-bold text-xl'>
+                                        You canceled this order giving reason:-{" "}
+                                        <span className='text-gray-500'>{
+                                          order.additionalDetails.find((detail) => detail.cancel)?.cancel
+                                            ?.reason || "No reason provided"
+                                        }</span>
+                                      </p>
+                                    )}
+                                    
+                                  </div>
+                                )}
                           </div>
                           <div></div>
                         </div>
