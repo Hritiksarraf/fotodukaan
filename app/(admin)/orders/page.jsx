@@ -108,7 +108,7 @@ import OrderCard from '@/components/card/OrderCard'
       }
   }
     return (
-      <div className='w-full min-h-screen flex flex-col items-center justify-center '>
+      <div className='w-full min-h-screen flex flex-col '>
         <div className='w-full text-center font-bold text-3xl mb-5'>ORDERS </div>
         <OrderCard
         orders={order}

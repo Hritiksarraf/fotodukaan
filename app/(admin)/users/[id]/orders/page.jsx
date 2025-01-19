@@ -27,7 +27,8 @@ export default function page() {
     fetchOrders()
   },[])
   return (
-    <div className='w-full min-h-screen flex flex-col items-center justify-center '>
+    <div className='w-full min-h-screen flex flex-col '>
+      <h1 className='text-3xl font-bold '>Users Orders</h1>
       <OrderCard
       orders={user||[]}
       onEdit={true}

@@ -43,7 +43,7 @@ function Page() {
     }, []);
 
     return (
-        <div className="w-full min-h-screen flex flex-col items-center justify-center">
+        <div className="w-full min-h-screen flex flex-col ">
             {loading ? (
                 <p>Loading orders...</p> // Display a loading message or spinner
             ) : orders.length > 0 ? (

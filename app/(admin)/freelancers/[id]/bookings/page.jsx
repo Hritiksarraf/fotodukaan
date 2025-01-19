@@ -32,7 +32,7 @@ function page() {
         getFeelancer()
     },[])
     return (
-        <div className='w-full min-h-screen flex flex-col items-center justify-center'>
+        <div className='w-full min-h-screen flex flex-col'>
             <div className='text-center text-2xl font-bold'>
                 BOOKINGS
             </div>
