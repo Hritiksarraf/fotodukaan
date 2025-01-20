@@ -27,7 +27,8 @@ function OrderCard({
     const [reason, setReason] = useState(null)
     const [finalorders, setFinalOrders] = useState(orders)
     const [selectedOrder, setSelectedOrder] = useState(null);
-    const [openPayment, setOpenPayment] = useState(false)
+    const [openPayment, setOpenPayment] = useState(false);
+    
 
     const router = useRouter()
     useEffect(() => {
@@ -319,18 +320,97 @@ function OrderCard({
                                             bgcolor: 'white',
                                             p: 4,
                                             borderRadius: 2,
-                                            width: 400,
+                                            width: 500,
                                         }}
                                     >
                                         <div>
                                             <div>
                                                 <h1 className='border-b-2 font-bold text-blue-900'>Payment Details</h1>
-                                                <div className='text-sm text-gray-600 font-bold'>Payment id: <span className='font-medium'>{selectedOrder?.orderId || ""}</span> </div>
+                                                <div className='text-sm text-gray-600 font-bold'>Payment id: <span className='font-medium'>{selectedOrder?.orderId || ""} <button
+                                                    className='ml-2 px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600'
+                                                    onClick={() => {
+                                                        if (selectedOrder?.orderId) {
+                                                            navigator.clipboard.writeText(selectedOrder.orderId);
+                                                            alert('Payment ID copied to clipboard!');
+                                                        } else {
+                                                            alert('No Payment ID available to copy!');
+                                                        }
+                                                    }}
+                                                >
+                                                    Copy
+                                                </button></span> </div>
                                                 <div className='text-sm text-gray-600 font-bold'>Total Amount: <span className='font-medium'>{selectedOrder?.totalAmount || ""}</span> </div>
                                                 <div className='text-sm text-gray-600 font-bold'>Paid Amount: <span className='font-medium'>{selectedOrder?.paidAmount || ""}</span> </div>
                                                 <div className='text-sm text-gray-600 font-bold'>Discount Given: <span className='font-medium'> {selectedOrder?.discount || ""}</span></div>
                                                 <div className='text-sm text-gray-600 font-bold'>Full Payment on website: <span className='font-medium'> {!selectedOrder?.paidOnWeb ? 'No' : 'Yes'}</span></div>
                                             </div>
+
+
+                                            <div>
+                                                {(selectedOrder?.customerCancel || selectedOrder?.freelancerCancel) &&
+                                                    <div>
+                                                        <h1 className='border-b-2 font-bold text-red-900'>Cancelation Details</h1>
+                                                        <div className="flex flex-col justify-between">
+
+
+                                                            <div className='text-sm text-gray-600 font-bold'>Canceled by: <span className='font-medium'>{selectedOrder?.customerCancel ? "Customer" : "Freelancer"}</span>  </div>
+
+                                                            <p className='text-sm text-gray-600 font-bold'>Cancel Date:  <span className='font-medium'> {selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel
+                                                                ?.cancelTime || "date missing"} </span></p>
+
+                                                            <div className='text-sm text-gray-600 font-bold'>Reason of cancel: <span className='font-medium'>{
+                                                                selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel
+                                                                    ?.reason || "No reason provided"
+                                                            }</span> </div>
+
+                                                            <div className='flex items-center '>
+                                                                <p>Booking:</p>
+
+                                                                <div className='flex flex-wrap'>{item.date.split(",").map((date, index) => (
+                                                                    <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
+                                                                        {date}
+                                                                    </p>
+                                                                ))}</div>
+
+                                                            </div>
+
+
+
+
+                                                            {selectedOrder.freelancerCancel && (
+                                                                <p className='text-red-500 font-bold text-xl'>
+                                                                    Freelancer canceled this order giving reason:-{" "}
+                                                                    <span className='text-gray-500'>{
+                                                                        selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel
+                                                                            ?.reason || "No reason provided"
+                                                                    }</span>
+                                                                </p>
+                                                            )}
+                                                            <div className='my-2'>
+                                                                {
+                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Eligible
+                                                                    </button>
+                                                                }
+                                                                {
+                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button className='rounded-xl bg-red-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Not Eligible
+                                                                    </button>
+                                                                }
+                                                            </div>
+                                                            {
+                                                                !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible &&
+                                                                <div className='text-green-600'>
+                                                                    <p>Write the refunded amount</p>
+                                                                    <div className='flex gap-2'>
+                                                                        <input type="text" className='w-24 p-2 border border-gray-300 rounded-xl' />
+                                                                        <button className='rounded-xl bg-blue-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Refund</button>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+
                                         </div>
                                     </Box>
                                 </Modal>
