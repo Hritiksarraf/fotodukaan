@@ -27,7 +27,7 @@ function OrderCard({
     const [reason, setReason] = useState(null)
     const [finalorders, setFinalOrders] = useState(orders)
     const [selectedOrder, setSelectedOrder] = useState(null);
-
+    const [openPayment, setOpenPayment] = useState(false)
 
     const router = useRouter()
     useEffect(() => {
@@ -78,28 +78,28 @@ function OrderCard({
         }
     }
     const handleCancel = async (item) => {
-        console.log(selectedOrderId,reason,selectedCancel)
-    try {
-      const response = await fetch('/api/order/cancle', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ orderId:selectedOrderId, reason:reason, who:selectedCancel }),
-      });
+        console.log(selectedOrderId, reason, selectedCancel)
+        try {
+            const response = await fetch('/api/order/cancle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId: selectedOrderId, reason: reason, who: selectedCancel }),
+            });
 
-      if (response.ok) {
-        // window.location.reload();
-        alert('Order canceled successfully');
-      } else {
-        alert('Failed to cancel the order');
-      }
-    } catch (error) {
-      alert('An error occurred while canceling the order');
-    }
-  };
+            if (response.ok) {
+                // window.location.reload();
+                alert('Order canceled successfully');
+            } else {
+                alert('Failed to cancel the order');
+            }
+        } catch (error) {
+            alert('An error occurred while canceling the order');
+        }
+    };
 
-    
+
     const handleCancel2 = async (item) => {
         if (!reason) {
             alert('please enter the reason to cancel the order')
@@ -176,41 +176,34 @@ function OrderCard({
                         <div className=''>
                         </div>
                         <div className='flex flex-col gap-y-2'>
-                        <div>
-                            <h1 className='border-b-2 font-bold text-blue-900'>Freelancers Details</h1>
-                            <div className='text-sm text-gray-600 font-bold'>Name: <span className='font-medium'>{item?.freelancerName || ""}</span></div>
-                            <div className='text-sm text-gray-600 font-bold'>Phone: <span className='font-medium'> {item?.freelancerPhone || ""}</span></div>
-                        </div>
-                        <div>
-                            <h1 className='border-b-2 font-bold text-blue-900'>Customer Details</h1>
-                            <div className='text-sm text-gray-600 font-bold'>Name: <span className='font-medium' >{item.customerName}</span> </div>
-                            <div className='text-sm text-gray-600 font-bold'>Phone: <span className='font-medium'>{item?.customerPhone || ""}</span> </div>
-                        </div>
-                        <div>
-                            <h1 className='border-b-2 font-bold text-blue-900'>Service Details</h1>
-
-                            <p className='text-sm text-gray-600 font-bold'>Address: <span className='font-medium'>   {item?.address || ""}</span></p>
-                            <div className='flex items-center '>
-                                <p>Date:</p>
-
-                                <div className='flex flex-wrap'>{item.date.split(",").map((date, index) => (
-                                    <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
-                                        {date}
-                                    </p>
-                                ))}</div>
-
+                            <div>
+                                <h1 className='border-b-2 font-bold text-blue-900'>Freelancers Details</h1>
+                                <div className='text-sm text-gray-600 font-bold'>Name: <span className='font-medium'>{item?.freelancerName || ""}</span></div>
+                                <div className='text-sm text-gray-600 font-bold'>Phone: <span className='font-medium'> {item?.freelancerPhone || ""}</span></div>
                             </div>
-                            <p className='text-sm text-gray-600 font-bold'>City: <span className='font-medium'>{item?.city || ""}</span> </p>
-                            <p className='text-sm text-gray-600 font-bold'>Pincode: <span className='font-medium'> {item?.pinCode || ""}</span></p>
-                        </div>
-                        <div>
-                            <h1 className='border-b-2 font-bold text-blue-900'>Payment Details</h1>
-                            <div className='text-sm text-gray-600 font-bold'>Payment id: <span className='font-medium'>{item?.orderId || ""}</span> </div>
-                            <div className='text-sm text-gray-600 font-bold'>Total Amount: <span className='font-medium'>{item?.totalAmount || ""}</span> </div>
-                            <div className='text-sm text-gray-600 font-bold'>Paid Amount: <span className='font-medium'>{item?.paidAmount || ""}</span> </div>
-                            <div className='text-sm text-gray-600 font-bold'>Discount Given: <span className='font-medium'> {item?.discount || ""}</span></div>
-                            <div className='text-sm text-gray-600 font-bold'>Full Payment on website: <span className='font-medium'> {!item?.paidOnWeb ? 'No' : 'Yes'}</span></div>
-                        </div>
+                            <div>
+                                <h1 className='border-b-2 font-bold text-blue-900'>Customer Details</h1>
+                                <div className='text-sm text-gray-600 font-bold'>Name: <span className='font-medium' >{item.customerName}</span> </div>
+                                <div className='text-sm text-gray-600 font-bold'>Phone: <span className='font-medium'>{item?.customerPhone || ""}</span> </div>
+                            </div>
+                            <div>
+                                <h1 className='border-b-2 font-bold text-blue-900'>Service Details</h1>
+
+                                <p className='text-sm text-gray-600 font-bold'>Address: <span className='font-medium'>   {item?.address || ""}</span></p>
+                                <div className='flex items-center '>
+                                    <p>Date:</p>
+
+                                    <div className='flex flex-wrap'>{item.date.split(",").map((date, index) => (
+                                        <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
+                                            {date}
+                                        </p>
+                                    ))}</div>
+
+                                </div>
+                                <p className='text-sm text-gray-600 font-bold'>City: <span className='font-medium'>{item?.city || ""}</span> </p>
+                                <p className='text-sm text-gray-600 font-bold'>Pincode: <span className='font-medium'> {item?.pinCode || ""}</span></p>
+                            </div>
+
                         </div>
 
                         {cancel && !item?.customerCancel && !item?.freelancerCancel && !item?.freelancerAproved &&
@@ -300,12 +293,51 @@ function OrderCard({
                             </div>
                         }
 
-                        <div className='flex justify-between'>
+                        <div className='flex gap-2'>
                             {!item.admineApproved &&
                                 <div className=' flex items-center justify-center mt-5'>
-                                    <button disabled={(item?.admineApproved || false)} className={`rounded-xl bg-blue-500 px-4 py-2 hover:bg-blue-400 text-white ${(item?.admineApproved || false) ? "cursor-not-allowed" : ""} `} onClick={() => handleApprove(item?._id)}>Approve</button>
+                                    <button disabled={(item?.admineApproved || false)} className={`rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white ${(item?.admineApproved || false) ? "cursor-not-allowed" : ""} `} onClick={() => handleApprove(item?._id)}>Approve</button>
                                 </div>
                             }
+
+
+
+                            <div className='  flex items-center justify-center mt-5 hover:cursor-pointer'>
+                                <button onClick={() => { setSelectedOrder(item); setOpenPayment(true) }} className={`rounded-xl bg-blue-500 px-4 py-2 hover:bg-blue-400 text-white`} >payment details</button>
+                                <Modal
+                                    open={openPayment}
+                                    onClose={() => setOpenPayment(false)}
+                                    aria-labelledby="modal-title"
+                                    aria-describedby="modal-description"
+                                >
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            top: '50%',
+                                            left: '50%',
+                                            transform: 'translate(-50%, -50%)',
+                                            bgcolor: 'white',
+                                            p: 4,
+                                            borderRadius: 2,
+                                            width: 400,
+                                        }}
+                                    >
+                                        <div>
+                                            <div>
+                                                <h1 className='border-b-2 font-bold text-blue-900'>Payment Details</h1>
+                                                <div className='text-sm text-gray-600 font-bold'>Payment id: <span className='font-medium'>{selectedOrder?.orderId || ""}</span> </div>
+                                                <div className='text-sm text-gray-600 font-bold'>Total Amount: <span className='font-medium'>{selectedOrder?.totalAmount || ""}</span> </div>
+                                                <div className='text-sm text-gray-600 font-bold'>Paid Amount: <span className='font-medium'>{selectedOrder?.paidAmount || ""}</span> </div>
+                                                <div className='text-sm text-gray-600 font-bold'>Discount Given: <span className='font-medium'> {selectedOrder?.discount || ""}</span></div>
+                                                <div className='text-sm text-gray-600 font-bold'>Full Payment on website: <span className='font-medium'> {!selectedOrder?.paidOnWeb ? 'No' : 'Yes'}</span></div>
+                                            </div>
+                                        </div>
+                                    </Box>
+                                </Modal>
+                            </div>
+
+
+
                             {/* {onDelete &&
                             <div className=' absolute top-3 right-3'>
                                 <DeleteForeverRoundedIcon className='rounded-xl text-4xl text-red-500 ' onClick={() => handleDelete(item?._id)}>Delete the Order</DeleteForeverRoundedIcon>
@@ -319,6 +351,7 @@ function OrderCard({
                                 </div>
                             }
                         </div>
+
 
 
 
