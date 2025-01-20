@@ -85,7 +85,7 @@ function Navbar() {
             {admin && (
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <Link
-                  href="/freelancers"
+                  href="/dashboard/freelancer"
                   className="text-blue-600 hover:text-gray-400"
                 >
                   Freelancers
@@ -133,7 +133,7 @@ function Navbar() {
                           handleOrderChange("notapproved", "Work Started")
                         }
                       >
-                        Work Started
+                        Work Not Started
                       </div>
                       <div
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
@@ -141,7 +141,7 @@ function Navbar() {
                           handleOrderChange("freelancerapprove", "Work Not Started")
                         }
                       >
-                        Work Not Started
+                        Work Started
                       </div>
                       <div
                         className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
