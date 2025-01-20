@@ -85,7 +85,7 @@ function Navbar() {
             {admin && (
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <Link
-                  href="/dashboard/freelancer"
+                  href="/freelancers"
                   className="text-blue-600 hover:text-gray-400"
                 >
                   Freelancers

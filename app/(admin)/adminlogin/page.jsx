@@ -68,7 +68,7 @@ const handleLogin = async (e) => {
         });
         localStorage.setItem('token',response.token)
         setTimeout(() => {
-        router.push('/dashboard/freelancer'); // Redirect to dashboard after login
+        router.push('/freelancers'); // Redirect to dashboard after login
         }, 2000);
     } else {
         toast.error(response.error || 'Login Failed', {
