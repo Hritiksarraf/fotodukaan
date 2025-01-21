@@ -7,8 +7,9 @@ function page() {
     const {id}=useParams()
     const [user, setUser] = useState(null)
     const [freelancer, setFreelancer] = useState(null)
+    const [booking, setBooking] = useState([])
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("adminToken");
         if (token) {
             console.log("token")
             const decodedUser = jwt.decode(token);
@@ -24,7 +25,21 @@ function page() {
         console.log("id",id)
         const response = await fetch(`/api/freelancer/${id}`);
         const data = await response.json();
-        console.log('got freelancer', data)
+        console.log('got freelancerss', data)   
+            if(Array.isArray(data?.booking)&&data?.booking?.length>0){
+            const response = await fetch(`/api/admin/freelancer/${id}`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    orderIds: data?.booking
+                })
+            })
+            const data2 = await response.json();   
+            console.log("dd",data2.bookings)  
+            setBooking(data2?.bookings)
+        }
         setFreelancer(data);
     };
     useEffect(()=>{
@@ -37,7 +52,7 @@ function page() {
                 BOOKINGS
             </div>
             <OrderCard
-            orders={freelancer?.bookings||[]}
+            orders={booking}
             onDelete={true}
             onEdit={true}
             />

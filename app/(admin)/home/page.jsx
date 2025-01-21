@@ -34,13 +34,14 @@ function page() {
     
   }
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("adminToken");
     if (token) {
-        console.log("token")
-        const decodedUser = jwt.decode(token);
-        console.log("d",decodedUser)
-        setUser(decodedUser);
-        fetchFreelancerArray(decodedUser?.freelacers||[])
+      console.log("token")
+      const decodedUser = jwt.decode(token);
+      console.log("d",decodedUser)
+      setUser(decodedUser);
+      fetchFreelancerArray(decodedUser?.freelacers||[])
+      
         if(!decodedUser.isAdmin){
           router.push("/")
         }
@@ -67,7 +68,7 @@ function page() {
       const data = await response.json()
       console.log("dd",data)
       if(data.success&&data.token){
-        localStorage.setItem("token",data?.token)
+        localStorage.setItem("adminToken",data?.token)
         toast.success('freelancer aprooved Successfuly')
         window.location.reload();
       }else{

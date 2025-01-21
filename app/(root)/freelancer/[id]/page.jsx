@@ -208,13 +208,25 @@ export default function page() {
     return match && match[2].length === 11 ? match[2] : null;
   }
   let minamount = Number.MAX_VALUE;
+  let minfullamount = Number.MAX_VALUE;
   Object.keys(freelancerData?.freelancerDetails).forEach((key) => {
     const details = freelancerData?.freelancerDetails[key];
-    const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
-    const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
-
-    minamount = Math.min(minamount, fullDayPrice, weddingPrice);
+    let halfDayPrice= details?.price?.halfDayPrice||"";
+    let fullDayPrice = Number(details?.price?.fullDayPrice)||0;
+    minfullamount=Math.min(minfullamount, fullDayPrice) 
+    if(halfDayPrice==="" || halfDayPrice===null){
+      halfDayPrice=0
+      if(minamount===Number.MAX_VALUE){
+        minamount=Math.min(minamount,halfDayPrice)
+      }
+    }else{
+      halfDayPrice=Number(halfDayPrice)
+      minamount=Math.min(minamount,halfDayPrice)
+    }
   });
+  if(minamount===Number.MAX_VALUE){
+    minamount=minfullamount===Number.MAX_VALUE?0:minfullamount
+  }
 
 
   const [flippedCardIndex, setFlippedCardIndex] = useState(null);

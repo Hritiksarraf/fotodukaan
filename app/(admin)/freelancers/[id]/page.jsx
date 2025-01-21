@@ -12,7 +12,7 @@ function page() {
     const router = useRouter()
     const { id } = useParams();
     useEffect(() => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("adminToken");
       if (token) {
           console.log("token")
           const decodedUser = jwt.decode(token);
@@ -73,7 +73,7 @@ function page() {
         const data = await response.json()
         console.log("dd",data)
         if(data.success&&data.token){
-          localStorage.setItem("token",data?.token)
+          localStorage.setItem("adminToken",data?.token)
           toast.success('freelancer aprooved Successfuly', {
             position: 'top-left',
             autoClose: 5000,

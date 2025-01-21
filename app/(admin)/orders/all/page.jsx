@@ -12,13 +12,7 @@ function page() {
         if (!data.success) {
             toast.error('failed to fetch orders')
         } else {
-            let arr = []
-            data.orders?.map((order) => {
-                if (order.admineApproved) {
-                    arr.push(order)
-                }
-            })
-            setOrder(arr)
+            setOrder(data.orders)
             // window.location.reload()
         }
     }
@@ -38,7 +32,7 @@ function page() {
     }, [])
     return (
         <div className='w-full min-h-screen flex flex-col '>
-            <div className='w-full text-center font-bold text-3xl mb-5'>ORDERS APPROVED BY ADMIN </div>
+            <div className='w-full text-center font-bold text-3xl mb-5'>ALL ORDERS </div>
             <OrderCard
                 orders={order}
                 onDelete={true}

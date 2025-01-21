@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import jwt from 'jsonwebtoken'
 import { Input } from '@mui/material';
 import FreelancerCard from '@/components/card/FreelancerCard';
@@ -19,19 +19,24 @@ function page() {
     setSearchResult(data)
 
   };
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  const getAdmin=useCallback(()=>{
+    const token = localStorage.getItem("adminToken");
     if (token) {
         console.log("token")
         const decodedUser = jwt.decode(token);
         if(!decodedUser.isAdmin){
           router.push("/adminlogin")
+          return
         }
+        // window.location.reload()
     }
     else{
       router.push("/adminlogin")
     }
-    }, [])
+  },[])
+  useEffect(() => {
+    getAdmin()
+  }, [getAdmin])
   useEffect(()=>{
     // window.location.reload();
     getFeelancer()

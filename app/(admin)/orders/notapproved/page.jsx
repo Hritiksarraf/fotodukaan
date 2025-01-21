@@ -14,7 +14,7 @@ const getOrders=async()=>{
     }else{
         let arr =[]
         data.orders?.map((order)=>{
-            if(!order.freelancerAproved&&!order.freelancerCancel){
+            if(!order.freelancerAproved){
                 arr.push(order)
             }
         })
@@ -23,7 +23,7 @@ const getOrders=async()=>{
     }
 }
 useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("adminToken");
     if (token) {
         console.log("token")
         const decodedUser = jwt.decode(token);

@@ -495,13 +495,25 @@ export default function Home() {
               //   ? text.split(' ').slice(0, 20).join(' ')
               //   : text;
               let minamount = Number.MAX_VALUE;
+              let minfullamount = Number.MAX_VALUE;
               Object.keys(freelancerDetails).forEach((key) => {
                 const details = freelancerDetails[key];
-                const fullDayPrice = Number(details?.price?.fullDayPrice) || Number.MAX_VALUE;
-                const weddingPrice = Number(details?.weddingPrice?.fullDayPrice) || Number.MAX_VALUE;
-
-                minamount = Math.min(minamount, fullDayPrice, weddingPrice);
+                let halfDayPrice= details?.price?.halfDayPrice||"";
+                let fullDayPrice = Number(details?.price?.fullDayPrice)||0;
+                minfullamount=Math.min(minfullamount, fullDayPrice) 
+                if(halfDayPrice==="" || halfDayPrice===null){
+                  halfDayPrice=0
+                  if(minamount===Number.MAX_VALUE){
+                    minamount=Math.min(minamount,halfDayPrice)
+                  }
+                }else{
+                  halfDayPrice=Number(halfDayPrice)
+                  minamount=Math.min(minamount,halfDayPrice)
+                }
               });
+              if(minamount===Number.MAX_VALUE){
+                minamount=minfullamount===Number.MAX_VALUE?0:minfullamount
+              }
 
               return (
                 <>

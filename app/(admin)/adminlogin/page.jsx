@@ -66,7 +66,7 @@ const handleLogin = async (e) => {
         progress: undefined,
         theme: 'light',
         });
-        localStorage.setItem('token',response.token)
+        localStorage.setItem('adminToken',response.token)
         setTimeout(() => {
         router.push('/freelancers'); // Redirect to dashboard after login
         }, 2000);

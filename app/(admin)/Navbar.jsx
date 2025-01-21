@@ -11,15 +11,25 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // For dropdown menu
   const router = useRouter();
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+
+  const updateAdminState = () => {
+    const token = localStorage.getItem("adminToken");
     if (token) {
       const decodedUser = jwt.decode(token);
-      if (decodedUser?.isAdmin) {
-        setAdmin(decodedUser?.isAdmin);
+      if(decodedUser){
+        setAdmin(true)
+      }else{
+        setAdmin(false)
       }
+    } else {
+      setAdmin(false)
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    // Update state when component mounts
+    updateAdminState();
+  }, [updateAdminState]);
 
   const handleOrderChange = (key, displayName) => {
     setOrder(displayName); // Update display name
@@ -32,7 +42,7 @@ function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("adminToken");
     router.push("/adminlogin");
     window.location.reload();
   };
@@ -82,87 +92,99 @@ function Navbar() {
         >
           <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-12 p-4 md:p-0">
             {/* Center Links */}
-            {admin && (
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <Link
-                  href="/freelancers"
-                  className="text-blue-600 hover:text-gray-400"
-                >
-                  Freelancers
-                </Link>
-                <Link
-                  href="/users"
-                  className="text-blue-600 hover:text-gray-400"
-                >
-                  Users
-                </Link>
+              {
+                admin&&(
+                  <div className="flex flex-col md:flex-row items-center gap-6">
+                    <Link
+                      href="/freelancers"
+                      className="text-blue-600 hover:text-gray-400"
+                    >
+                      Freelancers
+                    </Link>
+                    <Link
+                      href="/users"
+                      className="text-blue-600 hover:text-gray-400"
+                    >
+                      Users
+                    </Link>
 
-                {/* Dropdown Menu for Orders */}
-                <div
-                  className="relative text-blue-600 font-bold btn-select hover:text-gray-400 cursor-pointer"
-                  onClick={() => setIsOpen(!isOpen)} // Toggle dropdown visibility
-                >
-                  {order}
-                  {isOpen && (
-                    <div className="absolute bg-white border w-80 rounded-md shadow-md mt-2 z-10">
-                      <div
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() => handleOrderChange("orders", "New Orders")}
-                      >
-                        New Orders
-                      </div>
-                      <div
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() =>
-                          handleOrderChange("usercancel", "Canceled by User")
-                        }
-                      >
-                        Canceled by User
-                      </div>
-                      <div
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() =>
-                          handleOrderChange("freelancercancel", "Canceled by Freelancer")
-                        }
-                      >
-                        Canceled by Freelancer
-                      </div>
-                      <div
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() =>
-                          handleOrderChange("notapproved", "Work Started")
-                        }
-                      >
-                        Work Not Started
-                      </div>
-                      <div
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() =>
-                          handleOrderChange("freelancerapprove", "Work Not Started")
-                        }
-                      >
-                        Work Started
-                      </div>
-                      <div
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                        onClick={() =>
-                          handleOrderChange("adminapprove", "Old Orders")
-                        }
-                      >
-                        Old Orders
-                      </div>
+                    {/* Dropdown Menu for Orders */}
+                    <div
+                      className="relative text-blue-600 font-bold btn-select hover:text-gray-400 cursor-pointer"
+                      onClick={() => setIsOpen(!isOpen)} // Toggle dropdown visibility
+                    >
+                      {order}
+                      {isOpen && (
+                        <div className="absolute bg-white border w-80 rounded-md shadow-md mt-2 z-10">
+                          <div
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => handleOrderChange("orders", "New Orders")}
+                          >
+                            New Orders
+                          </div>
+                          <div
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() =>
+                              handleOrderChange("usercancel", "Canceled by User")
+                            }
+                          >
+                            Canceled by User
+                          </div>
+                          <div
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() =>
+                              handleOrderChange("freelancercancel", "Canceled by Freelancer")
+                            }
+                          >
+                            Canceled by Freelancer
+                          </div>
+                          <div
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() =>
+                              handleOrderChange("freelancerapprove", "Work Started")
+                            }
+                          >
+                            Work Started
+                          </div>
+                          <div
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() =>
+                              handleOrderChange("notapproved", "Work Not Started")
+                            }
+                          >
+                            Work Not Started
+                          </div>
+                          <div
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() =>
+                              handleOrderChange("adminapprove", "Old Orders")
+                            }
+                          >
+                            Old Orders
+                          </div>
+                          <div
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() =>
+                              handleOrderChange("all", "All Orders")
+                            }
+                          >
+                            All Orders
+                          </div>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
-            )}
+                  </div>
+                )
+              }
+            
 
             {/* Login/Logout Button */}
             <button
               onClick={handleLogout}
-              className="py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full"
+              className={`py-2 px-4 text-white font-medium bg-blue-800 hover:bg-gray-700 active:bg-gray-900 rounded-full ${admin?"":"hidden"}`}
+              disabled={!admin}
             >
-              {admin ? "Logout" : "Login"}
+              Logout 
             </button>
           </div>
         </div>

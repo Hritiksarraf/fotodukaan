@@ -28,7 +28,7 @@ function OrderCard({
     const [finalorders, setFinalOrders] = useState(orders)
     const [selectedOrder, setSelectedOrder] = useState(null);
     const [openPayment, setOpenPayment] = useState(false);
-    
+    const [value, setValue] = useState("")
 
     const router = useRouter()
     useEffect(() => {
@@ -145,6 +145,55 @@ function OrderCard({
             }
         }
     }
+    const handleEligible= async(id)=>{
+        try {
+            console.log(id)
+            const response = await fetch('/api/admin/payment/eligible', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId: id }),
+            });
+
+            if (response.ok) {
+                // window.location.reload();
+                alert('Order eligible for refund');
+            } else {
+                alert('Failed to make the order eligible');
+            }
+        } catch (error) {
+            alert('An error occurred while canceling the order');
+        }
+    }
+    const handleRefund= async(id)=>{
+        try {
+            console.log(id)
+            if(!value)
+                {
+                alert('Please enter the amount to refund')
+                return
+            }            
+            const response = await fetch('/api/admin/payment/refund', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ orderId: id,amt:value }),
+            });
+            
+            if (response.ok) {
+                // window.location.reload();
+                alert('refund successfull');
+                setValue("")
+                setOpenPayment(false)
+            } else {
+                alert('Failed to refund the order');
+            }
+        } catch (error) {
+            alert('An error occurred while canceling the order');
+        }
+    }
     if (!orders) {
         return (<div className='min-h-[80vh] w-[100vw]'>
             <Box sx={{ display: 'flex' }}>
@@ -194,7 +243,7 @@ function OrderCard({
                                 <div className='flex items-center '>
                                     <p>Date:</p>
 
-                                    <div className='flex flex-wrap'>{item.date.split(",").map((date, index) => (
+                                    <div className='flex flex-wrap'>{item?.date?.split(",").map((date, index) => (
                                         <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
                                             {date}
                                         </p>
@@ -388,7 +437,7 @@ function OrderCard({
                                                             )}
                                                             <div className='my-2'>
                                                                 {
-                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Eligible
+                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button onClick={()=>handleEligible(selectedOrder?._id)} className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Eligible
                                                                     </button>
                                                                 }
                                                                 {
@@ -401,8 +450,8 @@ function OrderCard({
                                                                 <div className='text-green-600'>
                                                                     <p>Write the refunded amount</p>
                                                                     <div className='flex gap-2'>
-                                                                        <input type="text" className='w-24 p-2 border border-gray-300 rounded-xl' />
-                                                                        <button className='rounded-xl bg-blue-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Refund</button>
+                                                                        <input type="text" className='w-24 p-2 border border-gray-300 rounded-xl' value={value} onChange={(e)=>setValue(e.target.value)} />
+                                                                        <button className='rounded-xl bg-blue-500 px-4 py-2 hover:bg-blue-400 text-white inline-block 'onClick={()=>handleRefund(selectedOrder?._id)}>Refund</button>
                                                                     </div>
                                                                 </div>
                                                             }
