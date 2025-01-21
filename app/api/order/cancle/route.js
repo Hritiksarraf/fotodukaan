@@ -28,6 +28,20 @@ export const POST = async (req) => {
       );
     }
 
+    // find the freelancer
+    const freelancer = await Freelancer.findOne({ _id: order?.freelancerId });
+    if (!freelancer) {
+      return new Response(
+        JSON.stringify({ error: "Freelancer not found." }),
+        { status: 404 }
+      );
+    }
+    const orderDate = order.date
+    const orderDateArray = orderDate.split(",");
+    const dateSet = new Set(orderDateArray.map(date => new Date(date).toISOString()));
+    const filteredBigArray = freelancer.blockedDates.filter(item => !dateSet.has(item.date.toISOString()));
+    freelancer.blockedDates = filteredBigArray;
+    await freelancer.save({validateBeforeSave: false});
     // Update cancellation status based on `who`
     if (who === "user") {
       order.customerCancel = true;
@@ -60,7 +74,6 @@ export const POST = async (req) => {
 
     // Save the updated order
     await order.save();
-
     return new Response(
       JSON.stringify({ message: "Order updated successfully.", order }),
       { status: 200 }

@@ -36,7 +36,7 @@ const getOrders=async()=>{
     }
 }
 useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("adminToken");
     if (token) {
         console.log("token")
         const decodedUser = jwt.decode(token);
