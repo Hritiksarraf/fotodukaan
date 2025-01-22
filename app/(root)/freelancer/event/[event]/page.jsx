@@ -84,7 +84,7 @@ export default function Page() {
   return (
     <div className="pt-24 min-h-[80vh]">
       <div>
-        <SearchBar />
+        <SearchBar cat={decodedEvent} />
       </div>
       
       {filteredCategory ? (

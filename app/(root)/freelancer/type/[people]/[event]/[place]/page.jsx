@@ -57,7 +57,7 @@ export default function Page() {
   return (
     <div className="pt-24 min-h-[80vh]">
         <div>
-            <SearchBar/>
+            <SearchBar cat={decodedpeople} subCat={decodedevent} places={decodedplace} />
         </div>
       {data.length === 0 ? (
         <p className='text-center text-2xl mt-10 md:text-5xl'>No freelancers found for {decodedevent} {decodedpeople} in {decodedplace}.</p>

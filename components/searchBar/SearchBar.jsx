@@ -99,10 +99,10 @@ const categories = [
 ];
 
 
-export default function SearchBar() {
-  const [category, setCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
-  const [place, setPlace] = useState(""); // State to store location
+export default function SearchBar({cat,subCat,places}) {
+  const [category, setCategory] = useState(cat?cat :'');
+  const [subCategory, setSubCategory] = useState(subCat?subCat:'');
+  const [place, setPlace] = useState(places?places:''); // State to store location
   let isSearchDisabled = !category;
   if(!subCategory && place){
     isSearchDisabled=true;
