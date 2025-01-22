@@ -209,11 +209,14 @@ export default function page() {
   }
   let minamount = Number.MAX_VALUE;
   let minfullamount = Number.MAX_VALUE;
+  let minwedamount = Number.MAX_VALUE;
   Object.keys(freelancerData?.freelancerDetails).forEach((key) => {
     const details = freelancerData?.freelancerDetails[key];
     let halfDayPrice= details?.price?.halfDayPrice||"";
     let fullDayPrice = Number(details?.price?.fullDayPrice)||0;
     minfullamount=Math.min(minfullamount, fullDayPrice) 
+    let wedPrice = Number(details?.weddingPrice?.fullDayPrice)||0;
+    minwedamount=Math.min(minwedamount,wedPrice)
     if(halfDayPrice==="" || halfDayPrice===null){
       halfDayPrice=0
       if(minamount===Number.MAX_VALUE){
@@ -225,7 +228,7 @@ export default function page() {
     }
   });
   if(minamount===Number.MAX_VALUE){
-    minamount=minfullamount===Number.MAX_VALUE?0:minfullamount
+    minamount=((minfullamount===Number.MAX_VALUE)?(minwedamount===Number.MAX_VALUE?0:minwedamount):minfullamount)
   }
 
 
