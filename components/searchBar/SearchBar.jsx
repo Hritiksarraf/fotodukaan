@@ -9,6 +9,7 @@ import Location from '../location/Location';
 const categories = [
   {
   name: 'Traditional Photography',
+  displayName: 'Traditional Photographer',
   subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
   pricing: {
       fullDayPrice: true,
@@ -23,6 +24,7 @@ const categories = [
   },
   {
   name: 'Candid Photography',
+  displayName: 'Candid Photographer',
   subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
   pricing: {
       fullDayPrice: true,
@@ -37,6 +39,7 @@ const categories = [
   },
   {
   name: 'Traditional Videography',
+  displayName: 'Traditional Videographer',
   subcategories: ['Wedding', 'Toure & Travel', 'Pre wedding', 'Birthday', 'Anniversary', 'Engagement', 'Event', 'New Born Baby', 'Corporate', 'Brand Promotion', 'Fashion', 'Other'],
   pricing: {
       fullDayPrice: true,
@@ -51,6 +54,7 @@ const categories = [
   },
   {
   name: 'Cinematography',
+  displayName: 'Cinematographer',
   subcategories: ['Wedding', 'Corporate', 'Toure & Travel', 'Pre wedding', 'Maternity', 'Birthday', 'Anniversary', 'Engagement', 'Portfolio', 'Food', 'New Born Baby', 'Fashion', 'Event', 'Brand Promotion', 'Other'],
   pricing: {
       fullDayPrice: true,
@@ -65,6 +69,7 @@ const categories = [
   },
   {
   name: 'Drone',
+  displayName: 'Drone',
   subcategories: ['Wedding', 'Corporate', 'Event', 'Other'],
   pricing: {
       fullDayPrice: true,
@@ -75,6 +80,7 @@ const categories = [
   },
   {
   name: 'Crane',
+  displayName: 'Crane',
   subcategories: [ 'Events'],
   pricing: {
       fullDayPrice: true,
@@ -82,6 +88,7 @@ const categories = [
   },
   {
   name: 'LED wall',
+  displayName: 'LED wall',
   subcategories: ['Events'],
   ledDetails: { size: '' },
   pricing: {
@@ -90,6 +97,7 @@ const categories = [
   },
   {
   name: 'LED TV',
+  displayName: 'LED TV',
   subcategories: ['Events'],
   ledDetails: { size: '' },
   pricing: {
@@ -119,11 +127,11 @@ export default function SearchBar({cat,subCat,places}) {
         <select
           value={category}
           onChange={(e) => { setCategory(e.target.value); setSubCategory(""); }} // Reset subCategory on category change
-          className="w-full sm:w-[8vw] border-gray-300 rounded-md p-1 md:p-2"
+          className="w-full sm:w-[8vw] bg-white border-gray-300 rounded-md p-1 md:p-2"
         >
           <option value="">Category</option>
           {categories.map((cat, index) => (
-            <option key={index} value={cat.name} className='mx-2 w-[20vw] '> {cat.name} </option>
+            <option key={index} value={cat.name} className='mx-2 w-[20vw] '>  {cat.displayName} </option>
           ))}
         </select>
         
@@ -131,7 +139,7 @@ export default function SearchBar({cat,subCat,places}) {
         <select
           value={subCategory}
           onChange={(e) => setSubCategory(e.target.value)}
-          className="w-full sm:w-[10vw] border-gray-300 rounded-md p-1 md:p-2"
+          className="w-full sm:w-[10vw] bg-white border-gray-300 rounded-md p-1 md:p-2"
           disabled={!subcategories.length} // Disable if no subcategories available
         >
           <option value="">Sub Category</option>
@@ -142,7 +150,7 @@ export default function SearchBar({cat,subCat,places}) {
 
         {/* Location Component */}
         <div className="w-full sm:w-[10vw]">
-          <Location onSelectLocation={setPlace} />
+          <Location onSelectLocation={setPlace} place={places} />
         </div>
 
         {/* Search Button */}

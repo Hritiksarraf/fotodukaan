@@ -212,10 +212,10 @@ function OrdersPage() {
   if (error) return <p className="text-red-500 pt-32">{error}</p>;
 
   return (
-    <div className="pt-32 bg-blue-100">
+    <div className="md:pt-32 pt-20 bg-blue-100">
       <div id="recaptcha-container"></div>
       {!enterOtp && (
-        <div className="min-h-screen p-8 bg-blue-100">
+        <div className="min-h-screen md:p-8 p-4 bg-blue-100">
           <h1 className="text-3xl text-blue-900 font-bold text-center mb-6">
             Welcome <span className="text-yellow-600">{localUser.name}</span>{" "}
             These Are The Order You GOT!
@@ -230,7 +230,7 @@ function OrdersPage() {
               <div className="md:w-[55vw] mx-auto  flex flex-col flex-wrap">
                 {orders.map((order) => {
                   return (
-                    <section className="text-gray-600 body-font overflow-hidden my-5  bg-gradient-to-r from-white to-white">
+                    <section className="text-gray-600 body-font overflow-hidden my-5  bg-gradient-to-r from-white to-white rounded-2xl">
                       <div className="container lg:w-[60vw] p-4 md:p-5 py-2 mx-auto  bg-white  ">
                         <div className=" mx-auto p-5 flex flex-wrap   ">
                           {/* <img alt="ecommerce" className="lg:w-1/2 aspect-square w-full lg:h-auto h-64 object-cover object-center rounded" src={'https://gratisography.com/wp-content/uploads/2024/03/gratisography-funflower-800x525.jpg'} /> */}
@@ -246,10 +246,10 @@ function OrdersPage() {
                               <h2 className="text-sm title-font text-gray-700 tracking-widest">
                                 Service Address
                               </h2>
-                              <h1 className="text-xl font-bold">
+                              <h1 className="sm:text-xl text-lg font-bold">
                                 {order.city} - {order.pinCode}
                               </h1>
-                              <p className="leading-relaxed ">
+                              <p className="leading-relaxed  ">
                                 {order.address}
                               </p>
                             </div>
@@ -260,7 +260,7 @@ function OrdersPage() {
                               </h2>
                               <div className='flex flex-wrap'>
                                 {order.date.split(",").map((date, index) => (
-                                  <p key={index} className="text-xl font-bold mb-1 px-2 border-r-2 ">
+                                  <p key={index} className="md:text-xl text-sm font-bold mb-1 px-2 border-r-2 ">
                                     {date}
                                   </p>
                                 ))}
@@ -272,7 +272,7 @@ function OrdersPage() {
                               <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">
                                 Service Type
                               </h2>
-                              <h1 className="text-xl font-bold">
+                              <h1 className="md:text-xl text-lg font-bold">
                                 {order.service} - {order.event}
                               </h1>
                             </div>
@@ -280,7 +280,7 @@ function OrdersPage() {
                               <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">
                                 Service Duration
                               </h2>
-                              <h1 className="text-xl font-bold">
+                              <h1 className="md:text-xl text-lg font-bold">
                                 {order.time
                                   .split(",")
                                   .map((value, index) =>
@@ -296,20 +296,18 @@ function OrdersPage() {
                               </h1>
                             </div>
                             <div>
-                              <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">
+                              <h2 className="text-sm title-font  text-gray-700 mt-3 tracking-widest">
                                 Amount
                               </h2>
 
-                              <h1 className="text-xl font-bold">
+                              <h1 className="md:text-xl text-lg font-bold">
                                 {" "}
                                 <span className="font-bold text-lg">
                                   Amount you will get after completion of work{" "}
                                 </span>{" "}
                                 - ₹
                                 {(
-                                  order.totalAmount -
-                                  order.discount -
-                                  order.paidAmount
+                                  order.totalAmount*0.8
                                 ).toFixed(2)}
                               </h1>
                             </div>
@@ -361,7 +359,7 @@ function OrdersPage() {
                                       setCancelOrderId(order._id);
                                       setShowCancelModal(true);
                                     }}
-                                    className="flex mt-4 text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded"
+                                    className="flex mt-4  text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-yellow-600 rounded"
                                   >
                                     Cancel
                                   </button>
@@ -374,7 +372,7 @@ function OrdersPage() {
                                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                                       <div className="bg-white p-6 rounded-lg shadow-lg w-[90vw] md:w-[40vw]">
                                         <h2 className="text-xl font-bold mb-4">Cancel Order</h2>
-                                        <p className='my-2 text-gray-400 font-bold'>This will be considered toward your refund</p>
+                                        <p className='my-2 text-gray-400 font-bold'>Multiple Canceled Order will leed to deletion of your account</p>
                                         <textarea
                                           value={cancelReason}
                                           onChange={(e) => setCancelReason(e.target.value)}
@@ -419,12 +417,12 @@ function OrdersPage() {
                                 </div>}
                                 {(order.freelancerCancel || order.customerCancel) && (
                                   <div className="flex flex-col justify-between">
-                                    <p className='text-red-500'>Cancel Date:- {order.additionalDetails.find((detail) => detail.cancel)?.cancel
+                                    <p className='text-red-500 font-bold'>Cancel Date:- {order.additionalDetails.find((detail) => detail.cancel)?.cancel
                                       ?.cancelTime || "date missing"}</p>
                                     {order.customerCancel && (
-                                      <p className='text-red-500 font-bold text-xl'>
+                                      <p className='text-red-500 font-bold md:text-xl text-sm'>
                                         Costumer canceled this order giving reason:-{" "}
-                                        <span className='text-gray-500'>{
+                                        <span className='text-gray-500 text-sm'>{
                                           order.additionalDetails.find((detail) => detail.cancel)?.cancel
                                             ?.reason || "No reason provided"
                                         }</span>
@@ -433,9 +431,9 @@ function OrdersPage() {
 
                                     )}
                                     {order.freelancerCancel && (
-                                      <p className='text-red-500 font-bold text-xl'>
+                                      <p className='text-red-500 font-bold md:text-xl text-sm'>
                                         You canceled this order giving reason:-{" "}
-                                        <span className='text-gray-500'>{
+                                        <span className='text-gray-500 text-sm'>{
                                           order.additionalDetails.find((detail) => detail.cancel)?.cancel
                                             ?.reason || "No reason provided"
                                         }</span>

@@ -13,6 +13,8 @@ import Link from 'next/link';
 import Modal from 'react-modal';
 import SearchBar from '@/components/searchBar/SearchBar';
 import Location from '@/components/location/Location';
+import emailjs from '@emailjs/browser';
+import { useRef } from 'react';
 
 export default function Home() {
 
@@ -348,6 +350,29 @@ export default function Home() {
   }, [])
 
   const isSearchDisabled = !category;
+
+
+  //for support mail
+  const form = useRef();
+  
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm('service_d7664kk', 'template_5qmppy8', form.current, {
+        publicKey: 'h8XZ93qdMng-duPB2',
+      })
+      .then(
+        () => {
+          alert('message sent Successfully')
+          console.log('SUCCESS!');
+        },
+        (error) => {
+          alert('message faild to send')
+          console.log('FAILED...', error.text);
+        },
+      );
+  };
 
 
 
@@ -750,7 +775,8 @@ export default function Home() {
         </div>
         <div className="h-full" >
           <form
-            action="https://formspree.io/f/mgvewagv"
+            ref={form}
+            onSubmit={(e)=>sendEmail(e)}
             method="post"
             className="flex flex-col items-center justify-center "
           >
@@ -778,7 +804,7 @@ export default function Home() {
               placeholder="Your name"
               required
             />
-            <input
+            {/* <input
               useClassNames="false" data-aos="zoom-in" data-aos-delay="100" data-aos-duration="1000" mirror="false"
               className="w-4/5 lg:w-1/3 bg-blue-100 border-yellow-600 border-2 rounded-md dark:text-black text-black   h-12 p-2 my-2 "
               type="email"
@@ -786,7 +812,7 @@ export default function Home() {
               name="email"
               placeholder="Email"
               required
-            />
+            /> */}
             <input
               useClassNames="false"
               data-aos="zoom-in"

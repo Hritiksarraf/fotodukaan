@@ -146,8 +146,8 @@ function OrdersPage() {
 
 
   return (
-    <div className='pt-32 bg-blue-100'>
-      <div className="min-h-screen p-8 bg-blue-100">
+    <div className='md:pt-32 pt-20 bg-blue-100'>
+      <div className="min-h-screen p-4 bg-blue-100">
         <Script src="https://checkout.razorpay.com/v1/checkout.js"></Script>
         <h1 className="text-3xl text-blue-900 font-bold text-center mb-6">Welcome <span className='text-yellow-600'>{localUser.name}</span> This is Your Order History!</h1>
 
@@ -158,14 +158,16 @@ function OrdersPage() {
             <div className='md:w-[55vw] mx-auto  flex flex-col flex-wrap'>
               {orders.map((order) => {
                 return (
-                  <section className="text-gray-600 body-font overflow-hidden my-5  bg-gradient-to-r from-white to-white">
-                    <div className="container lg:w-[60vw] p-4 md:p-5 py-2 mx-auto  bg-white  ">
+                  <section className="text-gray-600 body-font overflow-hidden my-5  bg-gradient-to-r from-white to-white rounded-2xl">
+                    <div className="container lg:w-[60vw] p-2 md:p-5 py-2 mx-auto  bg-white  ">
                       <div className=" mx-auto p-5 flex flex-wrap   ">
+                      
                         {/* <img alt="ecommerce" className="lg:w-1/2 aspect-square w-full lg:h-auto h-64 object-cover object-center rounded" src={'https://gratisography.com/wp-content/uploads/2024/03/gratisography-funflower-800x525.jpg'} /> */}
                         <div className=" w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+                        <h1 className=" text-sm title-font font-medium mb-1 text-gray-700 ">Order id: <span className='text-gray-400'>{order._id}</span> </h1>
                           <Link href={`/freelancer/${order.freelancerId}`}>
-                            <h2 className="text-sm title-font text-gray-700 tracking-widest">Freelancer</h2>
-                            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{order.freelancerName}</h1>
+                            <h2 className="text-sm title-font text-gray-700 tracking-widest  ">Freelancer</h2>
+                            <h1 className=" text-3xl title-font font-medium mb-1 text-blue-700 underline">{order.freelancerName}</h1>
                           </Link>
                           <div className="flex mb-4">
 
@@ -174,8 +176,8 @@ function OrdersPage() {
                           </div>
                           <div>
                             <h2 className="text-sm title-font text-gray-700 tracking-widest">Service Address</h2>
-                            <h1 className='text-xl font-bold'>{order.city} - {order.pinCode}</h1>
-                            <p className="leading-relaxed ">{order.address}</p>
+                            <h1 className='md:text-xl text-lg font-bold'>{order.city} - {order.pinCode}</h1>
+                            <p className="leading-relaxed text-sm md:text-lg ">{order.address}</p>
                           </div>
 
 
@@ -184,7 +186,7 @@ function OrdersPage() {
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Date</h2>
                             <div className='flex flex-wrap'>
                               {order.date.split(",").map((date, index) => (
-                                <p key={index} className="text-xl font-bold mb-1 px-2 border-r-2 ">
+                                <p key={index} className="md:text-xl text-sm font-bold mb-1 px-2 border-r-2 ">
                                   {date}
                                 </p>
                               ))}
@@ -193,13 +195,13 @@ function OrdersPage() {
 
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Service Type</h2>
-                            <h1 className='text-xl font-bold'>{order.service} - {order.event}</h1>
+                            <h1 className='md:text-xl text-lg font-bold'>{order.service} - {order.event}</h1>
                           </div>
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">
                               Service Duration
                             </h2>
-                            <h1 className="text-xl font-bold">
+                            <h1 className="md:text-xl text-lg font-bold">
                               {order.time
                                 .split(",")
                                 .map((value, index) =>
@@ -216,11 +218,11 @@ function OrdersPage() {
                           </div>
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Amount</h2>
-                            <h1 className='text-xl font-bold'> <span className='font-normal'> Paid Amount</span> - ₹{order.paidAmount}</h1>
-                            <h1 className='text-xl font-bold'> <span className='font-normal'>discount Amount</span> - ₹{order.discount}</h1>
-                            <h1 className='text-xl font-bold'> <span className='font-normal text-lg'>When freelancer visit you need to pay </span> - ₹{(order.totalAmount - order.discount - order.paidAmount).toFixed(2)}</h1>
+                            <h1 className='text-xl font-bold'> <span className=' font-medium text-lg md:text-xl'> Paid Amount</span> - ₹{order.paidAmount}</h1>
+                            <h1 className='text-xl font-bold'> <span className='font-medium text-lg md:text-xl'>discount Amount</span> - ₹{order.discount}</h1>
+                            <h1 className='text-xl font-bold'> <span className='font-medium text-lg md:text-xl'>When freelancer visit you need to pay </span> - ₹{(order.totalAmount - order.discount - order.paidAmount).toFixed(2)}</h1>
                           </div>
-
+                                {order.freelancerAproved && <h1 className='text-xl font-bold'> <span className='font-medium text-lg md:text-xl text-green-500'>Order Completed !! 🎉</span></h1>}
 
                           {(!order.freelancerCancel && !order.customerCancel && !order.freelancerAproved) && <div className='flex justify-between'>
                             <button
@@ -285,11 +287,11 @@ function OrdersPage() {
 
                           </div>}
                           {(order.freelancerCancel || order.customerCancel) && (
-                            <div className="flex flex-col justify-between">
-                              <p className='text-red-500'>Cancel Date:- {order.additionalDetails.find((detail) => detail.cancel)?.cancel
+                            <div className="flex flex-col justify-between mt-2">
+                              <p className='text-red-500 text-sm md:text-lg font-bold'>Cancel Date:- {order.additionalDetails.find((detail) => detail.cancel)?.cancel
                                 ?.cancelTime || "date missing"}</p>
                               {order.customerCancel && (
-                                <p className='text-red-500 font-bold text-xl'>
+                                <p className='text-red-500 font-bold text-sm md:text-xl'>
                                   You canceled this order giving reason:-{" "}
                                   <span className='text-gray-500'>{
                                     order.additionalDetails.find((detail) => detail.cancel)?.cancel
@@ -300,7 +302,7 @@ function OrdersPage() {
 
                               )}
                               {order.freelancerCancel && (
-                                <p className='text-red-500 font-bold text-xl'>
+                                <p className='text-red-500 font-bold text-sm md:text-xl'>
                                   Freelancer canceled this order giving reason:-{" "}
                                   <span className='text-gray-500'>{
                                     order.additionalDetails.find((detail) => detail.cancel)?.cancel
@@ -309,13 +311,13 @@ function OrdersPage() {
                                 </p>
                               )}
                               {
-                                !order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && order.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <p className='text-green-600'>We will Soon check eligiblity and refund the amount in 7-10 days</p>
+                                !order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && order.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <p className='text-green-600 text-sm md:text-lg my-2'>We will Soon check eligiblity and refund the amount in 7-10 days</p>
                               }
                               {
-                                !order.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <p className='text-red-600'>You are not eligible for refund</p>
+                                !order.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <p className='text-red-600 text-sm md:text-lg my-2'>You are not eligible for refund</p>
                               }
                               {
-                                order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && <p className='text-green-600'>Refund amount of {order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundAmount}  has been inicieded on {order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundTime} and will reflect in your bank account in 5-7 days</p>
+                                order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && <p className='text-green-600 text-sm md:text-lg my-2'>Refund amount of {order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundAmount}  has been inicieded on {order.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundTime} and will reflect in your bank account in 5-7 days</p>
                               }
                             </div>
                           )}

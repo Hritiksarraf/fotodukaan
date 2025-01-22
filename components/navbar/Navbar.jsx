@@ -167,7 +167,7 @@ export default function Navbar() {
                             <select
                                 value={category}
                                 onChange={handleCategoryChange}
-                                className="text-[#0E2041] font-bold btn-select w-36      hover:text-gray-400"
+                                className="text-[#0E2041] font-bold btn-select w-36 bg-white     hover:text-gray-400"
                             >
                                 <option value="">Select Category</option>
                                 <option value="Traditional Photography">Traditional Photographer</option>

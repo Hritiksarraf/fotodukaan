@@ -21,7 +21,7 @@ import OrderCard from '@/components/card/OrderCard'
         }else{
           let arr =[]
           data.orders?.map((order)=>{
-              if(!order.freelancerAproved&&!order.freelancerCancel&&!order.admineApproved&&!order.userCancel){
+              if(!order.admineApproved){
                   arr.push(order)
               }
           })

@@ -28,7 +28,7 @@ export default function page() {
   },[])
   return (
     <div className='w-full min-h-screen flex flex-col '>
-      <h1 className='text-3xl font-bold '>Users Orders</h1>
+      <h1 className='text-3xl font-bold text-center'>Users Orders</h1>
       <OrderCard
       orders={user||[]}
       onEdit={true}

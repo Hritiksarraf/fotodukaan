@@ -145,7 +145,7 @@ function OrderCard({
             }
         }
     }
-    const handleEligible= async(id)=>{
+    const handleEligible = async (id) => {
         try {
             console.log(id)
             const response = await fetch('/api/admin/payment/eligible', {
@@ -158,7 +158,7 @@ function OrderCard({
 
             if (response.ok) {
                 // window.location.reload();
-                alert('Order eligible for refund');
+                alert('changed eligiblity');
             } else {
                 alert('Failed to make the order eligible');
             }
@@ -166,22 +166,21 @@ function OrderCard({
             alert('An error occurred while canceling the order');
         }
     }
-    const handleRefund= async(id)=>{
+    const handleRefund = async (id) => {
         try {
             console.log(id)
-            if(!value)
-                {
+            if (!value) {
                 alert('Please enter the amount to refund')
                 return
-            }            
+            }
             const response = await fetch('/api/admin/payment/refund', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ orderId: id,amt:value }),
+                body: JSON.stringify({ orderId: id, amt: value }),
             });
-            
+
             if (response.ok) {
                 // window.location.reload();
                 alert('refund successfull');
@@ -238,6 +237,9 @@ function OrderCard({
                             </div>
                             <div>
                                 <h1 className='border-b-2 font-bold text-blue-900'>Service Details</h1>
+                                <div className='text-[1rem] text-gray-600 font-bold flex-col'>
+                                    <p className='text-[1rem] text-gray-600 font-bold'></p><p className='font-bold text-wrap text-green-700'> {item?.service || ""} in {item?.event} - {item?.time.split(',')[0] == 'extraHourPrice' ? item?.time.split(',')[1] + ' Hour' : ''}</p>
+                                </div>
 
                                 <p className='text-sm text-gray-600 font-bold'>Address: <span className='font-medium'>   {item?.address || ""}</span></p>
                                 <div className='flex items-center '>
@@ -252,7 +254,15 @@ function OrderCard({
                                 </div>
                                 <p className='text-sm text-gray-600 font-bold'>City: <span className='font-medium'>{item?.city || ""}</span> </p>
                                 <p className='text-sm text-gray-600 font-bold'>Pincode: <span className='font-medium'> {item?.pinCode || ""}</span></p>
+                                {(item?.customerCancel || item?.freelancerCancel) && <div className='text-lg text-red-600 font-bold'>Canceled:
+                                     {item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && !item.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund &&  <span className='font-medium text-yellow-600'>Refund Pending</span> }
+                                     {item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && item.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund &&  <span className='font-medium text-green-700'>Refund Done</span> }
+                                     {!item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible &&  <span className='font-medium text-red-500'>Not  Eligible</span> }
+                                     </div>}
                             </div>
+                            
+                                            
+                                           
 
                         </div>
 
@@ -346,7 +356,7 @@ function OrderCard({
                         <div className='flex gap-2'>
                             {!item.admineApproved &&
                                 <div className=' flex items-center justify-center mt-5'>
-                                    <button disabled={(item?.admineApproved || false)} className={`rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white ${(item?.admineApproved || false) ? "cursor-not-allowed" : ""} `} onClick={() => handleApprove(item?._id)}>Approve</button>
+                                    <button disabled={(item?.admineApproved || false)} className={`rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white ${(item?.admineApproved || false) ? "cursor-not-allowed" : ""} `} onClick={() => handleApprove(item?._id)}>Seen</button>
                                 </div>
                             }
 
@@ -394,6 +404,8 @@ function OrderCard({
                                                 <div className='text-sm text-gray-600 font-bold'>Full Payment on website: <span className='font-medium'> {!selectedOrder?.paidOnWeb ? 'No' : 'Yes'}</span></div>
                                             </div>
 
+                                           
+
 
                                             <div>
                                                 {(selectedOrder?.customerCancel || selectedOrder?.freelancerCancel) &&
@@ -415,34 +427,25 @@ function OrderCard({
                                                             <div className='flex items-center '>
                                                                 <p>Booking:</p>
 
-                                                                <div className='flex flex-wrap'>{item.date.split(",").map((date, index) => (
+                                                                <div className='flex flex-wrap'>{selectedOrder.date.split(",").map((date, index) => (
                                                                     <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
                                                                         {date}
                                                                     </p>
                                                                 ))}</div>
 
                                                             </div>
-
-
-
-
-                                                            {selectedOrder.freelancerCancel && (
-                                                                <p className='text-red-500 font-bold text-xl'>
-                                                                    Freelancer canceled this order giving reason:-{" "}
-                                                                    <span className='text-gray-500'>{
-                                                                        selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel
-                                                                            ?.reason || "No reason provided"
-                                                                    }</span>
-                                                                </p>
-                                                            )}
                                                             <div className='my-2'>
                                                                 {
-                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button onClick={()=>handleEligible(selectedOrder?._id)} className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Eligible
+                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button onClick={() => handleEligible(selectedOrder?._id)} className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Eligible
                                                                     </button>
                                                                 }
                                                                 {
-                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button className='rounded-xl bg-red-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Not Eligible
+                                                                    !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && !selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <button onClick={() => handleEligible(selectedOrder?._id)} className='rounded-xl bg-red-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>Not Eligible
                                                                     </button>
+                                                                }
+                                                                {
+                                                                    selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund  && <p  className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>The amount of {selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundAmount} has been inicieted on {selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundTime}
+                                                                    </p>
                                                                 }
                                                             </div>
                                                             {
@@ -450,8 +453,8 @@ function OrderCard({
                                                                 <div className='text-green-600'>
                                                                     <p>Write the refunded amount</p>
                                                                     <div className='flex gap-2'>
-                                                                        <input type="text" className='w-24 p-2 border border-gray-300 rounded-xl' value={value} onChange={(e)=>setValue(e.target.value)} />
-                                                                        <button className='rounded-xl bg-blue-500 px-4 py-2 hover:bg-blue-400 text-white inline-block 'onClick={()=>handleRefund(selectedOrder?._id)}>Refund</button>
+                                                                        <input type="text" className='w-24 p-2 border border-gray-300 rounded-xl' value={value} onChange={(e) => setValue(e.target.value)} />
+                                                                        <button className='rounded-xl bg-blue-500 px-4 py-2 hover:bg-blue-400 text-white inline-block ' onClick={() => handleRefund(selectedOrder?._id)}>Refund</button>
                                                                     </div>
                                                                 </div>
                                                             }

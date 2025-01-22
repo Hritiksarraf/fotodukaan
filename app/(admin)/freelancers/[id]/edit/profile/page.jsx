@@ -161,12 +161,13 @@ export default function ProfileUpdateForm() {
     }
 
     return (
-        <div className='min-h-75vh] pt-32 overflow-x-hidden'>
+        <div className='min-h-75vh]  overflow-x-hidden'>
             <div className='flex justify-center' >
-                <div className='flex text-black md:w-[50vw] w-[90vw]   justify-center gap-10 font-bold rounded-xl shadow-xl  '>
+                <div className='flex text-black md:w-[50vw] w-[90vw]   justify-center gap-10 font-bold rounded-xl shadow-xl  border border-yellow-500 py-2 '>
                     <Link href={`/freelancers/${id}/edit/gallery`} className='bg-yellow-500 mb-3 underline-offset-1 text-white px-4 rounded-xl py-2' >Gallery</Link>
                     <Link href={`/freelancers/${id}/edit/profile`} className='bg-yellow-500 mb-3 underline-offset-1 text-white px-4 rounded-xl py-2' >Profile</Link>
                     <Link href={`/freelancers/${id}/edit/service`} className='bg-yellow-500 mb-3 underline-offset-1 text-white px-4 rounded-xl py-2' >Service</Link>
+                    <Link href={`/freelancers/${id}/edit/calender`} className='bg-yellow-500 mb-3 underline-offset-1 text-white px-4 rounded-xl py-2' >Calander</Link>
                 </div>
             </div>
             <div className="min-h-screen flex justify-center items-center p-10">

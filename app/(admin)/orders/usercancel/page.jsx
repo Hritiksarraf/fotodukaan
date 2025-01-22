@@ -14,7 +14,7 @@ function page() {
         } else {
 
             console.log(data.orders)
-            const canceledOrders = await data.orders?.filter(order => order.userCancel);
+            const canceledOrders = await data.orders?.filter(order => order.customerCancel);
             setOrder(canceledOrders)
             // window.location.reload()
         }

@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-export default function Location({ onSelectLocation }) {
-  const [input, setInput] = useState("");
+export default function Location({ onSelectLocation, place }) {
+  const [input, setInput] = useState(place?place:'');
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     if (input === "") {
-      setSuggestions(["Delhi", "Bangalore", "Mumbai", "Pune", "Patna"]);
+      setSuggestions(["New Delhi", "Bengaluru", "Mumbai", "Pune", "Patna"]);
     }
   }, [input]);
 
@@ -71,6 +71,7 @@ export default function Location({ onSelectLocation }) {
       {showDropdown && suggestions.length > 0 && (
         <ul className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-48 overflow-y-auto">
           {loading && <li className="px-4 py-2 text-sm text-gray-500">Loading...</li>}
+          
           {!loading &&
             suggestions.slice(0, 5).map((suggestion, index) => (
               <li
@@ -79,7 +80,7 @@ export default function Location({ onSelectLocation }) {
                 onTouchStart={() => handleSelect(suggestion)}
                 className="dropdown-item px-4 py-2 cursor-pointer hover:bg-gray-100"
                 tabIndex={-1}
-              >
+              ><span> 📍 </span>
                 {suggestion}
               </li>
             ))}
