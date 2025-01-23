@@ -92,51 +92,30 @@ export default function Pages() {
   function OTPVerify(e) {
     e.preventDefault();
     setLoading(true);
-  
-    // Check if `window.confirmationResult` exists to prevent potential errors
-    if (!window.confirmationResult) {
-      setLoading(false);
-      toast.error('OTP verification failed. Please try again later.', {
-        position: 'top-left',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light',
-      });
-      return;
-    }
-  
-    // Verify OTP
     window.confirmationResult
       .confirm(otpValue)
       .then(async (res) => {
-        // OTP is correct
-        handleSignUp(); // Proceed to sign-up
+        // console.log(res);
+        
+        handleSignUp();
       })
       .catch((err) => {
-        // Handle invalid OTP error
+        // console.log('Invalid OTP:', err);
         setLoading(false);
-  
-        // Log error for debugging purposes
-        console.error('OTP verification failed:', err);
-  
-        // Provide user feedback
-        toast.error('Invalid OTP. Please try again.', {
-          position: 'top-left',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        // toast.error('Invalid OTP. Please try again.', {
+        //   position: 'top-left',
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: 'light',
+        // });
+        alert('Inviled otp')
       });
   }
-  
+
   const handleSignUp = async () => {
     
     const data = { name, email, phone, password };
