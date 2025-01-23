@@ -191,6 +191,7 @@ function OrdersPage() {
       .catch((err) => {
         // console.log("Invalid OTP:", err);
         setOtpLoading(false);
+        alert('Inviled otp')
       });
   }
 

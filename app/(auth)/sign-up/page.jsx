@@ -41,7 +41,7 @@ export default function Pages() {
               console.log('reCAPTCHA expired');
             },
           },
-          
+
         );
         window.recaptchaVerifier.render().then((widgetId) => {
           window.recaptchaWidgetId = widgetId;
@@ -96,7 +96,7 @@ export default function Pages() {
       .confirm(otpValue)
       .then(async (res) => {
         // console.log(res);
-        
+
         handleSignUp();
       })
       .catch((err) => {
@@ -117,7 +117,7 @@ export default function Pages() {
   }
 
   const handleSignUp = async () => {
-    
+
     const data = { name, email, phone, password };
     // console.log(name, email, phone, password )
     try {
@@ -129,12 +129,12 @@ export default function Pages() {
         body: JSON.stringify(data)
       });
       setLoading(false);
-      
-      
+
+
 
       let response = await res.json();
       console.log(response);
-      if(response.success){
+      if (response.success) {
         console.log(response);
         toast.success('Signup Successful', {
           position: 'top-left',
@@ -146,10 +146,10 @@ export default function Pages() {
           progress: undefined,
           theme: 'light',
         });
-        
+
       }
-      else{
-        toast.error( response.error, {
+      else {
+        toast.error(response.error, {
           position: 'top-left',
           autoClose: 5000,
           hideProgressBar: false,
@@ -163,8 +163,8 @@ export default function Pages() {
       setTimeout(() => {
         router.push('/log-in');
       }, 2000);
-      
-      
+
+
     } catch (error) {
       // console.log(error)
       toast.error('Signup Failed', {
@@ -187,10 +187,10 @@ export default function Pages() {
 
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       {otp && <section className='bg-gradient-to-b from-white to-blue-200 h-[100vh] w-[100vw] flex flex-col gap-8 justify-center items-center'>
         <div className='flex flex-col gap-8 justify-center items-center '>
-        <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+          <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <Image
               className="mr-2"
               src="/assets/logo-light.png"
@@ -199,41 +199,41 @@ export default function Pages() {
               alt="fotodukaan logo"
             />
           </Link>
-      
-      <div><h1 className='text-black text-3xl md:text-5xl'>Please Verify Your OTP</h1></div>
-                <div className="bg-white text-emerald-500 w-fit mx-auto p-4 rounded-full">
-                  <BsFillShieldLockFill className='' size={30} />
-                </div>
-                <label
-                  htmlFor="otp"
-                  className="font-bold text-xl  text-blue-600 text-center"
-                >
-                  Enter your OTP
-                </label>
-                <div className='text-5xl '>
-                <OTPInput
-      value={otpValue}
-      onChange={setOtpValue}
-      numInputs={6}
-      renderSeparator={<span className='m-1'></span>}
-      renderInput={(props) => <input {...props} />}
-    />
-    </div>
-                <button
-                  onClick={OTPVerify}
-                  className="bg-emerald-600 px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
-                >
-                  {loading && (
-                    <CgSpinner size={20} className="mt-1 animate-spin" />
-                  )}
-                  <span>Verify OTP</span>
-                </button>
-                </div>
-              </section>}
-      
-      {!otp && <section className="bg-gradient-to-b from-white to-blue-200 h-[100vh]">
-      <div id='recaptcha-container'></div>
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+
+          <div><h1 className='text-black text-3xl md:text-5xl'>Please Verify Your OTP</h1></div>
+          <div className="bg-white text-emerald-500 w-fit mx-auto p-4 rounded-full">
+            <BsFillShieldLockFill className='' size={30} />
+          </div>
+          <label
+            htmlFor="otp"
+            className="font-bold text-xl  text-blue-600 text-center"
+          >
+            Enter your OTP
+          </label>
+          <div className='text-5xl '>
+            <OTPInput
+              value={otpValue}
+              onChange={setOtpValue}
+              numInputs={6}
+              renderSeparator={<span className='m-1'></span>}
+              renderInput={(props) => <input {...props} />}
+            />
+          </div>
+          <button
+            onClick={OTPVerify}
+            className="bg-emerald-600 px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
+          >
+            {loading && (
+              <CgSpinner size={20} className="mt-1 animate-spin" />
+            )}
+            <span>Verify OTP</span>
+          </button>
+        </div>
+      </section>}
+
+      {!otp && <section className="bg-gradient-to-b from-white min-h-[100vh] to-blue-200 ">
+        <div id='recaptcha-container'></div>
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto pb-8 lg:py-8">
           <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <Image
               className="mr-2"
@@ -316,16 +316,16 @@ export default function Pages() {
                   {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                 </div>
                 <button
-                type="submit"
+                  type="submit"
                   onClick={onSignup}
-                  className="bg-blue-600 w-full px-32 flex gap-1 items-center justify-center py-2.5 text-white rounded"
+                  className="bg-blue-600 w-full px-auto flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
                   {verifyLoading && (
                     <CgSpinner size={20} className="mt-1 animate-spin" />
                   )}
                   <span> Sign Up</span>
                 </button>
-                
+
                 <p className="text-sm font-light text-gray-500 dark:text-black">
                   Already have an account?{' '}
                   <Link href="/log-in" className="font-medium text-primary-600 hover:underline dark:text-blue-500">
@@ -337,7 +337,7 @@ export default function Pages() {
           </div>
         </div>
       </section>}
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

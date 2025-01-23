@@ -99,16 +99,17 @@ export default function Pages() {
       .catch((err) => {
         // console.log('Invalid OTP:', err);
         setLoading(false);
-        toast.error('Invalid OTP. Please try again.', {
-          position: 'top-left',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light',
-        });
+        // toast.error('Invalid OTP. Please try again.', {
+        //   position: 'top-left',
+        //   autoClose: 5000,
+        //   hideProgressBar: false,
+        //   closeOnClick: true,
+        //   pauseOnHover: true,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: 'light',
+        // });
+        alert('Inviled otp')
       });
   }
 

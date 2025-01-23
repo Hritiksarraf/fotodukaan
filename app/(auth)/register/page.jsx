@@ -318,6 +318,10 @@ export default function Page() {
             alert('please select city')
             return
         }
+        if (!isTermsAccepted) {
+            alert("You must accept the Terms and Conditions to proceed.");
+            return;
+        }
         const errors = validate();
 
         if (Object.keys(errors).length === 0) {
@@ -349,16 +353,7 @@ export default function Page() {
                 })
                 .catch((error) => {
 
-                    toast.error('error sending otp try again', {
-                        position: 'top-left',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                        theme: 'light',
-                    });
+                    alert('error sending otp try again')
                 });
         } else {
             setFormErrors(errors);
@@ -460,16 +455,17 @@ export default function Page() {
             .catch((err) => {
                 // console.log('Invalid OTP:', err);
                 setLoading(false);
-                toast.error('Invalid OTP. Please try again.', {
-                    position: 'top-left',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
-                });
+                // toast.error('Invalid OTP. Please try again.', {
+                //     position: 'top-left',
+                //     autoClose: 5000,
+                //     hideProgressBar: false,
+                //     closeOnClick: true,
+                //     pauseOnHover: true,
+                //     draggable: true,
+                //     progress: undefined,
+                //     theme: 'light',
+                // });
+                alert('Inviled otp')
             });
     }
 
@@ -566,7 +562,8 @@ export default function Page() {
         currentStep: 1
     });
 
-    const handlestep2 = () => {
+    const handlestep2 = (e) => {
+        e.preventDefault()
         const isValid = Object.values(selectedCategories).some(
             (category) => category.subcategories && category.subcategories.length > 0
         );
@@ -795,7 +792,7 @@ export default function Page() {
                             <h1 className="text-xl font-bold mt-4 mb-10 leading-tight tracking-tight text-black md:text-4xl ">
                                 Select Your Services
                             </h1>
-                            <div action="">
+                            <form onSubmit={(e)=>{handlestep2(e)}} action="">
                                 <div className="flex flex-col md:flex-row md:flex-wrap bg-white items-center justify-center md:w-[70vw]  ">
                                     {categories.map((category) => (
                                         <div key={category.name} className="w-[80vw] mx-auto">
@@ -1093,10 +1090,10 @@ export default function Page() {
                                 </div>
                                 <div className='flex justify-between w-[100%] md:mb-5'>
                                     <button onClick={() => setStep(prevState => ({ ...prevState, currentStep: 1 }))} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">back</button>
-                                    <button onClick={handlestep2} className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
+                                    <button type='submit' className="mt-4  md:w-[15%]  text-white bg-blue-400 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Next</button>
 
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </section>
                 )}
@@ -1206,7 +1203,7 @@ export default function Page() {
                                                     onChange={(e) => setIsTermsAccepted(e.target.checked)}
                                                 />
                                                 <label htmlFor="terms" className='mx-2'>
-                                                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer ">Terms and Conditions</a>
+                                                    I accept the <a href="https://drive.google.com/file/d/1hyvhQeo9hE7DqvGILuvkREfYSjG1IHcd/view?usp=drive_link" target="_blank" rel="noopener noreferrer " >Terms and Conditions</a>
                                                 </label>
                                             </div>
 

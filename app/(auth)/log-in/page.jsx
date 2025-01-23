@@ -112,9 +112,9 @@ function LoginPage() {
 
   return (
     <div>
-      <section className="bg-gradient-to-b from-white to-blue-200 h-[100vh]">
+      <section className="bg-gradient-to-b from-white to-blue-200 ">
         <ToastContainer />
-        <div className="flex flex-col items-center my-auto justify-center h-[80vh] px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center my-auto justify-center  px-6 py-8 mx-auto min-h-[100vh]  lg:py-8">
           <Link href="/" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <Image className="mr-2" src="/assets/logo-light.png" width={150} height={50} alt="fotodukaan logo" />
           </Link>
