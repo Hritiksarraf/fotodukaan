@@ -4,8 +4,9 @@ import Freelancer from "@/lib/models/Register";
 export const GET=async(req,_)=>{
     try {
         const orders = await Order.find()
+        const reversedOrders = orders.reverse();
         return new Response(
-            JSON.stringify({ message: "found the orders",orders,success:true }),
+            JSON.stringify({ message: "found the orders",orders:reversedOrders,success:true }),
             {
                 status: 200,
                 headers: { "Content-Type": "application/json" }

@@ -20,13 +20,13 @@ export const POST = async (req, { params }) => {
         }
 
         // Fetch orders using the IDs stored in the user's orders array
-        const orders = await Order.find({ _id: { $in: user.orders } }); // Assuming user.orders is an array of order IDs (strings)
-
+        const orders = await Order.find({ _id: { $in: user.booking } }); // Assuming user.orders is an array of order IDs (strings)
+        const reversedOrders = orders.reverse();
         return new Response(
             JSON.stringify({
                 message: "User and orders found successfully",
                 user,
-                orders, // Include the orders in the response
+                orders:reversedOrders, // Include the orders in the response
                 success: true,
             }),
             {

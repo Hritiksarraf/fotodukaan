@@ -4,6 +4,7 @@ export const POST=async(req)=>{
     try {
         const {id} = await req.json()
         const orders = await Order.find({freelacerId:id})
+        const reversedOrders = orders.reverse();
         if(!orders){
             return new Response(
                 JSON.stringify({ success: false,message:"failed to find the orders" }),
@@ -14,7 +15,7 @@ export const POST=async(req)=>{
             );
         }
         return new Response(
-            JSON.stringify({ success: true, orders , message:"orders found successfully"}),
+            JSON.stringify({ success: true, orders:reversedOrders , message:"orders found successfully"}),
             {
                 status: 200,
                 headers: { "Content-Type": "application/json" }
