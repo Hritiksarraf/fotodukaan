@@ -77,15 +77,15 @@ function page() {
              <h1 className='text-3xl font-bold text-center my-2'>Users</h1>
             <div className='w-full flex items-center justify-center mb-5'>
                 <input
-                    className='w-[50%] rounded-lg placeholder:text-center text-xl  p-3 border border-gray-400 text-black placeholder-gray-300 '
+                    className='md:w-[50%] w-[95vw] rounded-lg placeholder:text-center text-xl  p-3 border border-gray-400 text-black placeholder-gray-300 '
                     placeholder='search users by name / phone number'
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-            <div className='h-full w-[90%] flex flex-wrap gap-x-4 justify-center  mx-4 '>
+            <div className='h-full  flex flex-wrap gap-x-4 gap-y-4 justify-center items-center   mx-4 '>
                 {searchResult?.map((user) => (
-                    <div className='flex flex-col bg-white shadow-2xl rounded-xl p-4 w-[22vw] relative' key={user?._id}>
+                    <div className='flex flex-col bg-white shadow-2xl rounded-xl p-4 md:w-[23vw] w-[95vw] relative' key={user?._id}>
                         <p className='text-sm text-gray-400 font-bold'>Id :  <span className='text-gray-500 font-medium'> {user?._id}</span></p>
                         <div className='rounded-full w-full flex items-center gap-x-3 '>
                             <img src={user?.profilePhoto} className='size-16 rounded-full border-4 border-gary-700' alt="freelancer image" />

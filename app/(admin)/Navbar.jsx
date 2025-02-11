@@ -20,9 +20,11 @@ function Navbar() {
         setAdmin(true)
       }else{
         setAdmin(false)
+        router.push("/adminlogin");
       }
     } else {
       setAdmin(false)
+      router.push("/adminlogin");
     }
   };
 

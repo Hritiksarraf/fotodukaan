@@ -1,10 +1,11 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { use, useState,useEffect } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
+import jwt from "jsonwebtoken";
 
 function LoginPage() {
 const [phone, setPhone] = useState('');
@@ -20,6 +21,21 @@ const validatePhoneNumber = (phone) => {
 const validatePassword = (password) => {
     return password.length >= 8; // Ensure the password is at least 8 characters long
 };
+
+  const updateAdminState = () => {
+    const token = localStorage.getItem("adminToken");
+    if (token) {
+      const decodedUser = jwt.decode(token);
+      if(decodedUser){
+        router.push("/freelancers");
+      }
+    } 
+  };
+
+  useEffect(() => {
+    updateAdminState();
+  }, [])
+  
 
 const handleLogin = async (e) => {
     e.preventDefault();
@@ -68,7 +84,7 @@ const handleLogin = async (e) => {
         });
         localStorage.setItem('adminToken',response.token)
         setTimeout(() => {
-        router.push('/freelancers'); // Redirect to dashboard after login
+        window.location.reload() // Redirect to dashboard after login
         }, 2000);
     } else {
         toast.error(response.error || 'Login Failed', {

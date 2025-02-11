@@ -167,13 +167,13 @@ function FreelancerCard({
         <div className='w-full min-h-screen flex flex-col items-center  '>
             <div className='w-full flex  justify-center mb-5'>
                 <input
-                    className='w-[50%] rounded-lg placeholder:text-center text-xl  p-3 border border-gray-400 text-black placeholder-gray-300 '
+                    className='md:w-[50%] w-[90vw] rounded-lg placeholder:text-center text-xl  p-3 border border-gray-400 text-black placeholder-gray-300 '
                     placeholder='Search Freelancers by name / phone number'
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-            <div className='h-full w-[96%] flex flex-wrap gap-3   '>
+            <div className='h-full justify-center items-center flex flex-wrap gap-3 mb-8   '>
                 {searchResult?.map((fr) => (
                     <div className='relative flex flex-col bg-white shadow-2xl border p-5 rounded-xl md:w-[23vw] w-[90vw] ' key={fr._id}>
                         <div className='flex items-center gap-x-5'>

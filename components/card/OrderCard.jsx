@@ -205,7 +205,7 @@ function OrderCard({
     return (
         <div className='w-full h-full flex flex-col '>
             <div className='flex items-center justify-center'>
-                <div className='w-[55vw] mx-10 my-5 flex relative'>
+                <div className='md:w-[55vw] w-[98vw] mx-10 my-5 flex relative'>
                     <input
                         placeholder='search order by id'
                         value={search}
@@ -220,7 +220,7 @@ function OrderCard({
             {!finalorders && <h1>no order</h1>}
             <div className='h-full w-[100%] gap-4  mb-5 flex items-center justify-center flex-wrap'>
                 {finalorders && finalorders.map((item) => (
-                    <div key={item._id} className='bg-white rounded-xl p-6 shadow-2xl w-[24vw] relative border border-gray-300'>
+                    <div key={item._id} className='bg-white rounded-xl p-6 shadow-2xl md:w-[24vw] w-[95vw] relative border border-gray-300'>
                         <p className='text-xs text-gray-600 font-bold'>Order id: <span className='font-medium text-blue-900'>{item?._id || ""}</span></p>
                         <div className=''>
                         </div>

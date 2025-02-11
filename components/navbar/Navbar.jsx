@@ -46,7 +46,11 @@ export default function Navbar() {
     function handleLogout() {
         localStorage.removeItem('token');
         router.push('/') // Redirect to home page
-        window.location.reload();   // Reload the page to refresh the state
+        // setUser(null)
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+           // Reload the page to refresh the state  
     }
 
     const handleCategoryChange = (e) => {
