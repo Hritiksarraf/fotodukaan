@@ -149,10 +149,10 @@ export default function ProfileUpdateForm() {
         if (selectedFile) {
             const formData = new FormData();
             formData.append("file", selectedFile);
-            formData.append("upload_preset", "social");
-            formData.append("cloud_name", "hritiksarraf");
+            formData.append("upload_preset", "fotodukan");
+            formData.append("cloud_name", "dncdida5w");
 
-            const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
+            const imgResponse = await fetch("https://api.cloudinary.com/v1_1/dncdida5w/image/upload", {
                 method: "POST",
                 body: formData,
             });

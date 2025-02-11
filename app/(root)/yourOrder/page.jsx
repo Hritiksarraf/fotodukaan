@@ -45,7 +45,7 @@ function OrdersPage() {
 
         if (response.ok) {
           const data = await response.json();
-          setOrders(data.orders.reverse());
+          setOrders(data.orders);
           setLeftAmount(data.totalAmount - data.discount - data.paidAmount)
         } else {
           setError('Failed to fetch orders');

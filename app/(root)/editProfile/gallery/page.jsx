@@ -71,11 +71,11 @@ export default function Page() {
         for (const file of selectedFile) {
             const imgData = new FormData();
             imgData.append("file", file);
-            imgData.append("upload_preset", "social");
-            imgData.append("cloud_name", "hritiksarraf");
+            imgData.append("upload_preset", "fotodukan");
+            imgData.append("cloud_name", "dncdida5w");
     
             try {
-                const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
+                const imgResponse = await fetch("https://api.cloudinary.com/v1_1/dncdida5w/image/upload", {
                     method: "POST",
                     body: imgData,
                 });

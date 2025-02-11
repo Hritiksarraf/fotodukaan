@@ -94,84 +94,44 @@ export default function Home() {
   const TestimonialData = [
     {
       id: 1,
-      name: "Hritik",
+      name: "Akshay Anand",
       text: "The photographers and videographers from this platform truly captured the essence of our event. Their professionalism and creativity exceeded all expectations.",
-      img: "https://www.shutterstock.com/image-photo/young-handsome-business-man-dressed-260nw-1487434763.jpg",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1737194790/Akshay_Anand_yso6h2.jpg",
       star: 5,
       skills: ['photographer', 'videographer', 'drone']
     },
     {
       id: 2,
-      name: "Mani",
+      name: "Chanadan",
       text: "Hiring a photographer through this platform was the best decision for our corporate event. The attention to detail and the quality of the photos were outstanding.",
-      img: "https://www.shutterstock.com/image-photo/have-great-idea-handsome-businessman-260nw-1282628038.jpg",
-      star: 4,
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1737194791/Chandan_Kumar_Singh_hpuknx.jpg",
+      star: 5,
       skills: ['photographer']
     },
     {
       id: 3,
-      name: "Piyush",
+      name: "Aradhana",
       text: "The drone operator captured breathtaking aerial shots of our wedding. The cinematic quality of the video blew everyone away. Highly recommended!",
-      img: "https://media.gettyimages.com/id/1310980400/photo/portrait-of-burnout-businesswoman-in-an-office.jpg?s=612x612&w=gi&k=20&c=fLkvB7hcl7zWJIOUBamNe0lbKIkc4kWFQ1vpQrVwTXQ=",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1739303165/WhatsApp_Image_2025-02-12_at_01.13.41_u9hnav.jpg",
       star: 5,
       skills: ['videographer', 'drone']
     },
     {
       id: 4,
-      name: "Saurav",
+      name: "Shruti and Ashwany",
       text: "From photography to videography, the team was on point. The visuals turned out beautifully, and their professionalism was evident throughout the event.",
-      img: "https://media.gettyimages.com/id/641199822/photo/businesswomen-at-workstation-in-start-up-office.jpg?s=612x612&w=gi&k=20&c=uk6k1ILVRf7yKT26DtfgemzQtOyISm72Egn5xr_XT_4=",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1739303167/WhatsApp_Image_2025-02-12_at_01.13.30_yb3ul2.jpg",
       star: 4,
       skills: ['photographer', 'videographer', 'drone']
     },
     {
       id: 5,
-      name: "Aditya",
+      name: "Hritik",
       text: "The entire experience, from booking a photographer to getting the final edits, was seamless. The quality and timeliness of the deliverables were impressive.",
-      img: "https://t4.ftcdn.net/jpg/01/42/20/17/360_F_142201762_qMCuIAolgpz4NbF5T5m66KQJzYzrEbUv.jpg",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1739303379/WhatsApp_Image_2025-02-07_at_14.50.13_yshmgz.jpg",
       star: 5,
       skills: ['photographer', 'videographer', 'drone']
     },
-    {
-      id: 6,
-      name: "Riya",
-      text: "The candid photography was superb! They really know how to capture those fleeting moments that matter the most. I couldn’t have asked for better photographers.",
-      img: "https://www.shutterstock.com/image-photo/portrait-happy-woman-smiling-camera-260nw-1531112350.jpg",
-      star: 5,
-      skills: ['photographer', 'candid photography']
-    },
-    {
-      id: 7,
-      name: "Amit",
-      text: "We hired a cinematographer through this platform, and the end result was incredible. The video quality was top-notch, and the storytelling was perfect for our corporate project.",
-      img: "https://www.shutterstock.com/image-photo/portrait-confident-young-man-standing-260nw-767916349.jpg",
-      star: 4,
-      skills: ['cinematographer', 'videographer']
-    },
-    {
-      id: 8,
-      name: "Sanya",
-      text: "The drone footage for our outdoor event was stunning. The wide angles and smooth shots added a cinematic feel to the final video. I highly recommend their drone services!",
-      img: "https://www.shutterstock.com/image-photo/young-woman-holding-paper-coffee-260nw-1172777339.jpg",
-      star: 5,
-      skills: ['drone', 'videographer']
-    },
-    {
-      id: 9,
-      name: "Karthik",
-      text: "The crane operator we hired added an extra layer of professionalism to our event's video production. The dynamic camera movements made our footage stand out. Exceptional service!",
-      img: "https://www.shutterstock.com/image-photo/smiling-handsome-young-man-260nw-729510768.jpg",
-      star: 5,
-      skills: ['crane operator', 'videographer']
-    },
-    {
-      id: 10,
-      name: "Anjali",
-      text: "The LED wall setup transformed our event’s visual experience. It was perfect for showcasing live footage and presentations. We were thrilled with the results.",
-      img: "https://www.shutterstock.com/image-photo/young-woman-glasses-sitting-coffee-260nw-1922522086.jpg",
-      star: 4,
-      skills: ['LED wall', 'event management']
-    }
   ];
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -652,7 +612,7 @@ export default function Home() {
                   <>
                     <div key={id} className='relative md:w-[30vw] mx-auto bg-gradient-to-r h-[21rem] md:h-80 from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
                       <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
-                        <img src={img} alt="" className='rounded-full h-24 w-24' />
+                        <img src={img} alt="" className='rounded-full h-24 w-24 object-cover ' />
                       </div>
                       <div className='flex flex-col items-center text-center mt-10'>
                         <p className='text-sm h-28 md:h-20 text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>

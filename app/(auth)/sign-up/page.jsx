@@ -24,6 +24,7 @@ export default function Pages() {
   const [loading, setLoading] = useState(false);
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
   const [verifyLoading, setVerifyLoading] = useState(false);
+  const [otpWEB, setOtpWEB] = useState('')
   const router = useRouter();
 
   function onCaptchVerify() {
@@ -53,7 +54,7 @@ export default function Pages() {
     }
   }
 
-  function onSignup(e) {
+async  function onSignup(e) {
     e.preventDefault();
     let formErrors = {};
     if (name.length < 3) {
@@ -75,45 +76,62 @@ export default function Pages() {
         return;
       }
 
-      const appVerifier = window.recaptchaVerifier;
-      const phoneNumber = '+91' + phone;
-      signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-        .then((confirmationResult) => {
-          window.confirmationResult = confirmationResult;
-          setOtp(true);
-          setVerifyLoading(false)
-        })
-        .catch((error) => {
-          console.error('Error sending OTP:', error);
-        });
+      // const appVerifier = window.recaptchaVerifier;
+      // const phoneNumber = '+91' + phone;
+      // signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+      //   .then((confirmationResult) => {
+      //     window.confirmationResult = confirmationResult;
+      //     setOtp(true);
+      //     setVerifyLoading(false)
+      //   })
+      //   .catch((error) => {
+      //     console.error('Error sending OTP:', error);
+      //   });
+
+      const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber: phone }),
+    });
+    const response = await res.json();
+    
+    if (response.status) {
+        setOtpWEB(response.otp);
+        setVerifyLoading(false)
+        setOtp(true);
+    }
+    else{
+        alert(response.message)
+        setVerifyLoading(false)
+    }
+
     }
   }
 
   function OTPVerify(e) {
     e.preventDefault();
     setLoading(true);
-    window.confirmationResult
-      .confirm(otpValue)
-      .then(async (res) => {
-        // console.log(res);
+    // window.confirmationResult
+    //   .confirm(otpValue)
+    //   .then(async (res) => {
 
-        handleSignUp();
-      })
-      .catch((err) => {
-        // console.log('Invalid OTP:', err);
-        setLoading(false);
-        // toast.error('Invalid OTP. Please try again.', {
-        //   position: 'top-left',
-        //   autoClose: 5000,
-        //   hideProgressBar: false,
-        //   closeOnClick: true,
-        //   pauseOnHover: true,
-        //   draggable: true,
-        //   progress: undefined,
-        //   theme: 'light',
-        // });
-        alert('Inviled otp')
-      });
+    //     handleSignUp();
+    //   })
+    //   .catch((err) => {
+    //     setLoading(false);
+    //     alert('Inviled otp')
+    //   });
+
+    if(otpValue == otpWEB){
+      handleSignUp();
+  }
+  else{
+    setLoading(false);
+      alert('Invalid OTP. Please try again.')
+  }
+
   }
 
   const handleSignUp = async () => {

@@ -52,7 +52,7 @@ function OrdersPage() {
 
         if (response.ok) {
           const data = await response.json();
-          setOrders(data.orders.reverse());
+          setOrders(data.orders);
           // console.log(data);
           setLeftAmount(data.totalAmount - data.discount - data.paidAmount);
         } else {
@@ -310,6 +310,10 @@ function OrdersPage() {
                                 {(
                                   order.totalAmount*0.8
                                 ).toFixed(2)}
+
+                                {order.paidOnWeb && <h1 className="font-bold text-sm text-green-600">
+                                  Contact fotodukaan for payment
+                                </h1> }
                               </h1>
                             </div>
                             <div>

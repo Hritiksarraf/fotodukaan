@@ -344,17 +344,36 @@ export default function Page() {
                 city: place,
             }));
 
-            const appVerifier = window.recaptchaVerifier;
-            const phoneNumber = '+91' + formData.phone;
-            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-                .then((confirmationResult) => {
-                    window.confirmationResult = confirmationResult;
-                    setStep((prevState) => ({ ...prevState, currentStep: 4 }));
-                })
-                .catch((error) => {
+            // const appVerifier = window.recaptchaVerifier;
+            // const phoneNumber = '+91' + formData.phone;
+            // signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+            //     .then((confirmationResult) => {
+            //         window.confirmationResult = confirmationResult;
+            //         setStep((prevState) => ({ ...prevState, currentStep: 4 }));
+            //     })
+            //     .catch((error) => {
 
-                    alert('error sending otp try again')
-                });
+            //         alert('error sending otp try again')
+            //     });
+
+            const res = await fetch("/api/send-otp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ phoneNumber: formData.phone }),
+            });
+            const response = await res.json();
+            
+            if (response.status) {
+                setOtp(response.otp);
+                setStep((prevState) => ({ ...prevState, currentStep: 4 }));
+            }
+            else{
+                alert(response.message)
+            }
+
+
         } else {
             setFormErrors(errors);
         }
@@ -372,10 +391,10 @@ export default function Page() {
             if (formData.profilePhoto) {
                 const imgData = new FormData();
                 imgData.append("file", formData.profilePhoto);
-                imgData.append("upload_preset", "social");
-                imgData.append("cloud_name", "hritiksarraf");
+                imgData.append("upload_preset", "fotodukan");
+                imgData.append("cloud_name", "dncdida5w");
 
-                const imgResponse = await fetch("https://api.cloudinary.com/v1_1/hritiksarraf/image/upload", {
+                const imgResponse = await fetch("https://api.cloudinary.com/v1_1/dncdida5w/image/upload", {
                     method: "POST",
                     body: imgData,
                 });
@@ -445,28 +464,26 @@ export default function Page() {
     function OTPVerify(e) {
         e.preventDefault();
         setLoading(true);
-        window.confirmationResult
-            .confirm(otpValue)
-            .then(async (res) => {
-                // console.log(res);
+        // window.confirmationResult
+        //     .confirm(otpValue)
+        //     .then(async (res) => {
+        //         // console.log(res);
 
-                handleRegister(e);
-            })
-            .catch((err) => {
-                // console.log('Invalid OTP:', err);
-                setLoading(false);
-                // toast.error('Invalid OTP. Please try again.', {
-                //     position: 'top-left',
-                //     autoClose: 5000,
-                //     hideProgressBar: false,
-                //     closeOnClick: true,
-                //     pauseOnHover: true,
-                //     draggable: true,
-                //     progress: undefined,
-                //     theme: 'light',
-                // });
-                alert('Inviled otp')
-            });
+        //         handleRegister(e);
+        //     })
+        //     .catch((err) => {
+               
+        //         setLoading(false);
+               
+        //         alert('Inviled otp')
+        //     });
+
+        if(otpValue == otp){
+            handleRegister(e);
+        }
+        else{
+            alert('Invalid OTP. Please try again.')
+        }
     }
 
     const handleButtonClick = (category) => {

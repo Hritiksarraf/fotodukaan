@@ -5,7 +5,7 @@ import User from "@/lib/models/User";
 import Freelancer from "@/lib/models/Register";
 
 // Secret from Razorpay dashboard (keep this secure)
-const RAZORPAY_WEBHOOK_SECRET = "FotodukaanPayAfterOrder";
+const RAZORPAY_WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET_FULL;
 
 export const POST = async (req) => {
   await connectToDB();
