@@ -11,6 +11,7 @@ import { auth } from '@/app/firebase.config';
 import { BsFillShieldLockFill } from "react-icons/bs";
 import { CgSpinner } from "react-icons/cg";
 import Location from '@/components/location/Location';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 const cityArray = [
@@ -160,6 +161,8 @@ export default function Page() {
     const [otpValue, setOtpValue] = useState('')
     const [loading, setLoading] = useState(false);
     const [place, setPlace] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [showPassword, setShowPassword] = useState(false);
 
 
     const [formData, setFormData] = useState({
@@ -297,6 +300,11 @@ export default function Page() {
         const errors = validate();
         if (Object.keys(errors).length === 0) {
             // Proceed to the next step if no errors
+            setFormErrors(errors);
+            if (confirmPassword !== formData.password) {
+                alert('password not match with confirm password')
+                return
+            }
             setStep((prevState) => ({ ...prevState, currentStep: 2 }));
         } else {
             setFormErrors(errors);
@@ -364,7 +372,7 @@ export default function Page() {
             //     body: JSON.stringify({ phoneNumber: formData.phone }),
             // });
             // const response = await res.json();
-            
+
             // if (response.status) {
             //     setOtp(response.otp);
             //     setStep((prevState) => ({ ...prevState, currentStep: 4 }));
@@ -473,16 +481,16 @@ export default function Page() {
         //         handleRegister(e);
         //     })
         //     .catch((err) => {
-               
+
         //         setLoading(false);
-               
+
         //         alert('Inviled otp')
         //     });
 
-        if(otpValue == otp){
+        if (otpValue == otp) {
             handleRegister(e);
         }
-        else{
+        else {
             alert('Invalid OTP. Please try again.')
         }
     }
@@ -752,7 +760,7 @@ export default function Page() {
                                                     required
                                                     onInput={(e) => {
                                                         e.target.value = e.target.value.replace(/\D/g, ''); // Filters non-numeric characters
-                                                      }}
+                                                    }}
                                                 />
                                                 {formErrors.phone && <p className="text-red-600">{formErrors.phone}</p>}
                                             </div>
@@ -774,6 +782,31 @@ export default function Page() {
                                                     required
                                                 />
                                                 {formErrors.password && <p className="text-red-600">{formErrors.password}</p>}
+                                            </div>
+                                            <div className='relative'>
+                                                <label htmlFor="ConfirmPassword" className="block mt-4 mb-2 text-sm font-medium text-black dark:text-black">
+                                                    Confirm Password
+                                                </label>
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    name="ConfirmPassword"
+                                                    id="ConfirmPassword"
+                                                    value={confirmPassword}
+                                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                                    placeholder="••••••••"
+                                                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-yellow-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    required
+                                                />
+
+
+                                                {/* Eye Icon Button */}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    className="absolute right-3 top-[57%] text-gray-600 dark:text-gray-900"
+                                                >
+                                                    {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                                </button>
                                             </div>
                                             <button
                                                 type="submit"
@@ -810,7 +843,7 @@ export default function Page() {
                             <h1 className="text-xl font-bold mt-4 mb-10 leading-tight tracking-tight text-black md:text-4xl ">
                                 Select Your Services
                             </h1>
-                            <form onSubmit={(e)=>{handlestep2(e)}} action="">
+                            <form onSubmit={(e) => { handlestep2(e) }} action="">
                                 <div className="flex flex-col md:flex-row md:flex-wrap bg-white items-center justify-center md:w-[70vw]  ">
                                     {categories.map((category) => (
                                         <div key={category.name} className="w-[80vw] mx-auto">

@@ -9,7 +9,7 @@ export default function Location({ onSelectLocation, place }) {
 
   useEffect(() => {
     if (input === "") {
-      setSuggestions(["New Delhi", "Bengaluru", "Mumbai", "Pune", "Patna"]);
+      setSuggestions([]);
     }
   }, [input]);
 

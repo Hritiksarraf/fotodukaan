@@ -5,11 +5,13 @@ import React, { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/navigation';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function LoginPage() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const validatePhoneNumber = (phone) => {
@@ -142,12 +144,12 @@ function LoginPage() {
                     }}
                   />
                 </div>
-                <div>
+                <div className='relative'>
                   <label htmlFor="password" className="block mb-2 text-sm font-medium text-black dark:text-black">
                     Password
                   </label>
                   <input
-                    type="password"
+                   type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     value={password}
@@ -156,6 +158,13 @@ function LoginPage() {
                     className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-blue-100 dark:border-gray-600 dark:placeholder-gray-800 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required
                   />
+                  <button
+                                      type="button"
+                                      onClick={() => setShowPassword(!showPassword)}
+                                      className="absolute right-3 top-[57%] text-gray-600 dark:text-gray-900"
+                                    >
+                                      {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                                    </button>
                 </div>
                 <div className="flex items-center justify-between">
                   <Link href="/forgotPassword" className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-700">Forgot password?</Link>
