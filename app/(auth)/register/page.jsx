@@ -356,23 +356,24 @@ export default function Page() {
             //         alert('error sending otp try again')
             //     });
 
-            const res = await fetch("/api/send-otp", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ phoneNumber: formData.phone }),
-            });
-            const response = await res.json();
+            // const res = await fetch("/api/send-otp", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //     },
+            //     body: JSON.stringify({ phoneNumber: formData.phone }),
+            // });
+            // const response = await res.json();
             
-            if (response.status) {
-                setOtp(response.otp);
-                setStep((prevState) => ({ ...prevState, currentStep: 4 }));
-            }
-            else{
-                alert(response.message)
-            }
+            // if (response.status) {
+            //     setOtp(response.otp);
+            //     setStep((prevState) => ({ ...prevState, currentStep: 4 }));
+            // }
+            // else{
+            //     alert(response.message)
+            // }
 
+            handleRegister(e);
 
         } else {
             setFormErrors(errors);
