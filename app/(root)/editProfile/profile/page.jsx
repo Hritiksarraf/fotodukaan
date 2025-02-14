@@ -179,10 +179,14 @@ export default function ProfileUpdateForm() {
                 id
             }),
         });
+        let res = await response.json();
+        console.log(response);
 
-        if (response.ok) {
+        if (res.token) {
+            localStorage.setItem('token', res.token)
             alert("Profile updated successfully");
-            setSelectedFile(null); // Clear the selected file after successful upload
+             // Clear the selected file after successful upload
+             window.location.reload();
         } else {
             alert("Failed to update profile");
         }
