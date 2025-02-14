@@ -150,6 +150,11 @@ export default function PricePicker({ freelancerData }) {
             return;
         }
 
+        if(!price){
+            alert("Please check the price.");
+            return;
+        }
+
         const token = localStorage.getItem("token");
             if (token) {
               const decodedUser = jwt.decode(token);
@@ -205,20 +210,29 @@ export default function PricePicker({ freelancerData }) {
                 </select>
 
                 <select
-                    value={timeOption}
-                    onChange={(e) => setTimeOption(e.target.value)}
-                    className="px-1 py-2 border w-[40vw] text-sm md:w-[8vw] rounded"
-                >
-                    <option value="fullDayPrice">Full Day</option>
-                    <option value="halfDayPrice">Half Day</option>
-                    <option value="extraHourPrice">Extra Hour</option>
-                </select>
+    value={timeOption}
+    onChange={(e) => setTimeOption(e.target.value)}
+    className="px-1 py-2 border w-[40vw] text-sm md:w-[8vw] rounded"
+>
+    <option value="">Select Time Option</option>
+    {Object.entries(freelancerData.freelancerDetails[selectedCategory]?.price || {}).map(
+        ([key, value]) =>
+            value && Number(value) > 0 && ( // Only include valid, non-zero options
+                <option key={key} value={key}>
+                    {key === "fullDayPrice" ? "Full Day" :
+                     key === "halfDayPrice" ? "Half Day" :
+                     key === "extraHourPrice" ? "Hourly" :
+                     key}
+                </option>
+            )
+    )}
+</select>
             </div>
 
             {/* Show extra hour dropdown when the "Extra Hour" option is selected */}
             {timeOption === 'extraHourPrice' && (
                 <div className="mt-4">
-                    <label htmlFor="extraHours" className="block text-sm font-semibold">Select Extra Hours</label>
+                    <label htmlFor="extraHours" className="block text-sm font-semibold">Select no of Hours</label>
                     <select
                         id="extraHours"
                         value={extraHours}
