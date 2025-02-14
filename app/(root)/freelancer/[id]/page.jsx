@@ -207,29 +207,32 @@ export default function page() {
     const match = url.match(regExp);
     return match && match[2].length === 11 ? match[2] : null;
   }
-  let minamount = Number.MAX_VALUE;
-  let minfullamount = Number.MAX_VALUE;
-  let minwedamount = Number.MAX_VALUE;
-  Object.keys(freelancerData?.freelancerDetails).forEach((key) => {
-    const details = freelancerData?.freelancerDetails[key];
-    let halfDayPrice= details?.price?.halfDayPrice||"";
-    let fullDayPrice = Number(details?.price?.fullDayPrice)||0;
-    minfullamount=Math.min(minfullamount, fullDayPrice) 
-    let wedPrice = Number(details?.weddingPrice?.fullDayPrice)||0;
-    minwedamount=Math.min(minwedamount,wedPrice)
-    if(halfDayPrice==="" || halfDayPrice===null){
-      halfDayPrice=0
-      if(minamount===Number.MAX_VALUE){
-        minamount=Math.min(minamount,halfDayPrice)
-      }
-    }else{
-      halfDayPrice=Number(halfDayPrice)
-      minamount=Math.min(minamount,halfDayPrice)
-    }
+  
+  let minPrice = Number.MAX_VALUE;
+
+  Object.keys(freelancerData?.freelancerDetails || {}).forEach((key) => {
+    const details = freelancerData.freelancerDetails[key];
+  
+    let halfDayPrice = details?.price?.halfDayPrice;
+    let fullDayPrice = details?.price?.fullDayPrice;
+    let weddingFullDayPrice = details?.weddingPrice?.fullDayPrice;
+  
+    // Convert to numbers only if they are valid (non-empty and non-zero)
+    halfDayPrice = halfDayPrice && Number(halfDayPrice) > 0 ? Number(halfDayPrice) : Number.MAX_VALUE;
+    fullDayPrice = fullDayPrice && Number(fullDayPrice) > 0 ? Number(fullDayPrice) : Number.MAX_VALUE;
+    weddingFullDayPrice = weddingFullDayPrice && Number(weddingFullDayPrice) > 0 ? Number(weddingFullDayPrice) : Number.MAX_VALUE;
+  
+    // Find the minimum of all valid prices
+    minPrice = Math.min(minPrice, halfDayPrice, fullDayPrice, weddingFullDayPrice);
   });
-  if(minamount===Number.MAX_VALUE){
-    minamount=((minfullamount===Number.MAX_VALUE)?(minwedamount===Number.MAX_VALUE?0:minwedamount):minfullamount)
-  }
+  
+  // If minPrice is still MAX_VALUE, set it to 0
+  minPrice = minPrice === Number.MAX_VALUE ? 0 : minPrice;
+  let minamount = minPrice;
+  
+  console.log("Minimum Freelancer Price:", minPrice);
+  
+
 
 
   const [flippedCardIndex, setFlippedCardIndex] = useState(null);

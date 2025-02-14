@@ -411,7 +411,7 @@ export default function page() {
                                                                         required
                                                                     />
                                                                 </div>
-                                                                {category.name === "Traditional Videography" || category.name === "Cinematography" && <div>
+                                                                {(category.name === "Traditional Videography" || category.name === "Cinematography") && (<div>
                                                                     <label htmlFor="Gimble" className="block mb-2 ">Gimble</label>
                                                                     <input
                                                                         type="text"
@@ -421,7 +421,7 @@ export default function page() {
                                                                         className="block w-[80vw] md:w-[20vw] bg-blue-100 p-2 border rounded mt-2"
                                                                         required
                                                                     />
-                                                                </div>}
+                                                                </div>)}
                                                             </div>
                                                         </div>
                                                     </div>

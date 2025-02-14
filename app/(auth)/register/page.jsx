@@ -956,17 +956,17 @@ export default function Page() {
                                                                             required
                                                                         />
                                                                     </div>
-                                                                    <div>
+                                                                    {(category.name === "Traditional Videography" || category.name === "Cinematography") &&( <div>
                                                                         <label htmlFor="Gimble" className="block mb-2 ">Gimble</label>
                                                                         <input
                                                                             type="text"
-                                                                            placeholder="Camera Lense"
+                                                                            placeholder="Gimble"
                                                                             value={selectedCategories[category.name]?.cameraDetails?.gimble || ''}
                                                                             onChange={(e) => handleCameraDetailsChange(category.name, 'gimble', e.target.value)}
                                                                             className="block w-[80vw] md:w-[20vw] bg-blue-100 p-2 border rounded mt-2"
                                                                             required
                                                                         />
-                                                                    </div>
+                                                                    </div>)}
                                                                 </div>
                                                             </div>
                                                         </div>
