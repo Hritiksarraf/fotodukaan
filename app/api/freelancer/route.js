@@ -1,7 +1,7 @@
 import Freelancer from "@/lib/models/Register";
 import { connectToDB } from "@/lib/mongodb/mongoose";
 
-export const GET = async (req) => {
+export const POST = async (req) => {
     try {
       await connectToDB()
   

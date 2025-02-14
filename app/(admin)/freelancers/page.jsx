@@ -12,7 +12,11 @@ function page() {
   const router = useRouter()
   const getFeelancer = async () => {
     console.log('getting freelancer')
-    const response = await fetch("/api/freelancer");
+    const response = await fetch("/api/freelancer", {
+      method: 'POST',
+      
+      body: JSON.stringify({ id: 12 }),
+    });
     const data = await response.json();
     console.log('got freelancer', data)
     setFreelancer(data);

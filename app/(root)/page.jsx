@@ -265,7 +265,13 @@ export default function Home() {
 
   const getFeelancer = async () => {
     // console.log('getting freelancer')
-    const response = await fetch("/api/freelancer");
+    const response = await fetch("/api/freelancer", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({}) // Send any required payload if needed
+  });
     const data = await response.json();
     // console.log('got freelancer', data)
     setFreelancer(data);

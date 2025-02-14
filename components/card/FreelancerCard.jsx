@@ -31,7 +31,13 @@ function FreelancerCard({
         try {
             setLoading(true)
             console.log('getting freelancer')
-            const response = await fetch("/api/freelancer");
+            const response = await fetch("/api/freelancer", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({}) // Send any required payload if needed
+            });
             const data = await response.json();
             console.log('got freelancers', data)
             if (approve) {
