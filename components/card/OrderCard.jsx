@@ -245,24 +245,30 @@ function OrderCard({
                                 <div className='flex items-center '>
                                     <p>Date:</p>
 
-                                    <div className='flex flex-wrap'>{item?.date?.split(",").map((date, index) => (
-                                        <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
-                                            {date}
-                                        </p>
-                                    ))}</div>
+                                    <div className='flex flex-wrap'>
+                                        {item?.date?.split(",").map((date, index) => {
+                                            const formattedDate = date.split("-").reverse().join("-"); // Converts yyyy-mm-dd to dd-mm-yyyy
+                                            return (
+                                                <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
+                                                    {formattedDate}
+                                                </p>
+                                            );
+                                        })}
+                                    </div>
+
 
                                 </div>
                                 <p className='text-sm text-gray-600 font-bold'>City: <span className='font-medium'>{item?.city || ""}</span> </p>
                                 <p className='text-sm text-gray-600 font-bold'>Pincode: <span className='font-medium'> {item?.pinCode || ""}</span></p>
                                 {(item?.customerCancel || item?.freelancerCancel) && <div className='text-lg text-red-600 font-bold'>Canceled:
-                                     {item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && !item.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund &&  <span className='font-medium text-yellow-600'>Refund Pending</span> }
-                                     {item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && item.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund &&  <span className='font-medium text-green-700'>Refund Done</span> }
-                                     {!item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible &&  <span className='font-medium text-red-500'>Not  Eligible</span> }
-                                     </div>}
+                                    {item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && !item.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && <span className='font-medium text-yellow-600'>Refund Pending</span>}
+                                    {item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && item.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && <span className='font-medium text-green-700'>Refund Done</span>}
+                                    {!item.additionalDetails.find((detail) => detail.cancel)?.cancel?.eligible && <span className='font-medium text-red-500'>Not  Eligible</span>}
+                                </div>}
                             </div>
-                            
-                                            
-                                           
+
+
+
 
                         </div>
 
@@ -404,7 +410,7 @@ function OrderCard({
                                                 <div className='text-sm text-gray-600 font-bold'>Full Payment on website: <span className='font-medium'> {!selectedOrder?.paidOnWeb ? 'No' : 'Yes'}</span></div>
                                             </div>
 
-                                           
+
 
 
                                             <div>
@@ -427,11 +433,17 @@ function OrderCard({
                                                             <div className='flex items-center '>
                                                                 <p>Booking:</p>
 
-                                                                <div className='flex flex-wrap'>{selectedOrder.date.split(",").map((date, index) => (
-                                                                    <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
-                                                                        {date}
-                                                                    </p>
-                                                                ))}</div>
+                                                                <div className='flex flex-wrap'>
+                                                                    {selectedOrder.date.split(",").map((date, index) => {
+                                                                        const formattedDate = date.split("-").reverse().join("-"); // Converts yyyy-mm-dd to dd-mm-yyyy
+                                                                        return (
+                                                                            <p key={index} className="text-sm text-gray-600 px-2 border-r-2 font-medium">
+                                                                                {formattedDate}
+                                                                            </p>
+                                                                        );
+                                                                    })}
+                                                                </div>
+
 
                                                             </div>
                                                             <div className='my-2'>
@@ -444,7 +456,7 @@ function OrderCard({
                                                                     </button>
                                                                 }
                                                                 {
-                                                                    selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund  && <p  className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>The amount of {selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundAmount} has been inicieted on {selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundTime}
+                                                                    selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refund && <p className='rounded-xl bg-green-500 px-4 py-2 hover:bg-blue-400 text-white inline-block '>The amount of {selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundAmount} has been inicieted on {selectedOrder.additionalDetails.find((detail) => detail.cancel)?.cancel?.refundTime}
                                                                     </p>
                                                                 }
                                                             </div>

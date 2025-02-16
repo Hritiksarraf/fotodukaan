@@ -15,7 +15,13 @@ function page() {
     const [searchResult, setSearchResult] = useState(null)
     const router = useRouter()
     const getUsers = async () => {
-        const response = await fetch("/api/admin/user")
+        const response = await fetch("/api/admin/user", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ /* your request payload here */ }),
+          });          
         const data = await response.json()
         if (!data.success) {
             toast.error('failed to fetch users')

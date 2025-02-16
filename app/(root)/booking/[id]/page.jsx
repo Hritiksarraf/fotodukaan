@@ -530,11 +530,14 @@ export default function OrderForm() {
                     {/* Date */}
                     <p className="block text-lg font-semibold mb-1 text-black">Date</p>
                     <div className='flex flex-wrap'>
-                      {bookingData.selectedDates.split(",").map((date, index) => (
-                        <p key={index} className="text-lg mb-1 px-2 border-r-2 text-gray-700">
-                          {date}
-                        </p>
-                      ))}
+                    {bookingData.selectedDates.split(",").map((date, index) => {
+  const formattedDate = date.split("-").reverse().join("-"); // Converts yyyy-mm-dd to dd-mm-yyyy
+  return (
+    <p key={index} className="text-lg mb-1 px-2 border-r-2 text-gray-700">
+      {formattedDate}
+    </p>
+  );
+})}
                     </div>
 
                     {/* Duration */}

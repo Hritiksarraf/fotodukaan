@@ -312,7 +312,10 @@ function BlockedDatesCalendar() {
                 allEvents?.map((item, index) => (
                   item && typeof item === 'object' ? ( // Check if item is an object
                     <div key={index} className='p-5 md:w-[25vw] w-[90vw] border-2 bg-blue-200 rounded-xl'>
-                      <p>Date - {item.date ? new Date(item.date).toISOString().split('T')[0] : "N/A"}</p>
+                      <p>
+  Date - {item.date ? new Date(item.date).toLocaleDateString("en-GB") : "N/A"}
+</p>
+
                       <p>Event - {item.event || "No event information available"}</p>
                     </div>
                   ) : null // Skip if item is not an object

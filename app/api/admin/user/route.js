@@ -1,6 +1,6 @@
 import User from "@/lib/models/User";
 
-export const GET=async(req,res)=>{
+export const POST=async(req,res)=>{
     try {
         const users = await User.find()
         if(!users)

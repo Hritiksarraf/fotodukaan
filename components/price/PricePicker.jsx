@@ -320,19 +320,22 @@ export default function PricePicker({ freelancerData }) {
                 <div className="">
                     <h4 className="text-sm font-semibold">Selected Dates:</h4>
                     <div className="flex flex-wrap gap-2 mt-1">
-                        {selectedDates.length > 0 ? (
-                            selectedDates.map((date, index) => (
-                                <span
-                                    key={index}
-                                    className="px-2 py-1 bg-blue-200 text-blue-700 text-xs rounded border border-blue-300"
-                                >
-                                    {date}
-                                </span>
-                            ))
-                        ) : (
-                            <p className="text-gray-500 text-sm py-1 ">No dates selected.</p>
-                        )}
-                    </div>
+  {selectedDates.length > 0 ? (
+    selectedDates.map((date, index) => {
+      const formattedDate = date.split("-").reverse().join("-"); // Converts yyyy-mm-dd to dd-mm-yyyy
+      return (
+        <span
+          key={index}
+          className="px-2 py-1 bg-blue-200 text-blue-700 text-xs rounded border border-blue-300"
+        >
+          {formattedDate}
+        </span>
+      );
+    })
+  ) : (
+    <p className="text-gray-500 text-sm py-1">No dates selected.</p>
+  )}
+</div>
                 </div>
                 <div className='mt-2 flex  justify-end'>
                 <a onClick={sendprops} className="  inline-block text-white bg-pink-500 border-0 py-3 my-2 px-6 text-lg cursor-pointer focus:outline-none hover:bg-yellow-600 rounded">Book Now</a>

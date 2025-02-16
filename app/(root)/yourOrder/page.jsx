@@ -185,11 +185,15 @@ function OrdersPage() {
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Date</h2>
                             <div className='flex flex-wrap'>
-                              {order.date.split(",").map((date, index) => (
-                                <p key={index} className="md:text-xl text-sm font-bold mb-1 px-2 border-r-2 ">
-                                  {date}
-                                </p>
-                              ))}
+                            {order.date.split(",").map((date, index) => {
+  const formattedDate = date.split("-").reverse().join("-"); // Converts yyyy-mm-dd to dd-mm-yyyy
+  return (
+    <p key={index} className="md:text-xl text-sm font-bold mb-1 px-2 border-r-2">
+      {formattedDate}
+    </p>
+  );
+})}
+
                             </div>
                           </div>
 
