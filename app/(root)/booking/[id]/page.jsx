@@ -230,12 +230,23 @@ export default function OrderForm() {
   // Apply coupon logic
   const applyCoupon = () => {
     if (orderData.couponCode === "TRYFIRST" && freelancerData.booking.length === 0) {
-      setDiscount(Math.round(tokenAmount * 0.5)); // 90% discount
-      setTokenAmount(Math.round(tokenAmount * 0.5));
+      setDiscount(Math.round(originalTokenAmount * 0.1)); // 90% discount
+      if(fullPayment){
+        setTokenAmount(Math.round(originalTokenAmount * 0.9));
+      }
+      else{
+        setTokenAmount(Math.round(originalTokenAmount * 0.1));
+      }
       setCouponApplied(true);
       setIsCouponValid(true);
-      setCouponMessage('Coupon applied successfully You got 50% off!');
+      setCouponMessage('Coupon applied successfully You got 50% off on token amount!');
     } else {
+      if(fullPayment){
+        setTokenAmount(Math.round(originalTokenAmount));
+      }
+      else{
+        setTokenAmount(Math.round(originalTokenAmount * 0.2));
+      }
       setCouponApplied(true);
       setIsCouponValid(false);
       setCouponMessage('Invalid coupon code.');
@@ -547,7 +558,7 @@ export default function OrderForm() {
 
 
                 <div>
-                  <label className="block text-sm font-semibold mb-2  text-gray-700">Customer Name</label>
+                  <label className="block text-sm font-semibold mb-2  text-gray-700">Name</label>
                   <input
                     type="text"
                     name="customerName"
@@ -561,7 +572,7 @@ export default function OrderForm() {
 
                 {/* Full Address */}
                 <div>
-                  <label className="block text-sm font-semibold mb-2 text-gray-700">Full Address</label>
+                  <label className="block text-sm font-semibold mb-2 text-gray-700">Work Location (full address)</label>
                   <input
                     type="text"
                     name="address"
@@ -645,7 +656,7 @@ export default function OrderForm() {
                     type="button"
                     className="mt-3 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-all"
                     onClick={applyCoupon}
-                    disabled={couponApplied}
+                    // disabled={couponApplied}
                   >
                     {couponApplied ? "Coupon Applied" : "Apply Coupon"}
                   </button>
@@ -668,6 +679,7 @@ export default function OrderForm() {
                       id="fullPayment"
                       checked={fullPayment}
                       onChange={(e) => {
+                        setCouponApplied(false);
 
                         !fullPayment ? setTokenAmount(originalTokenAmount) : setTokenAmount(Math.round(originalTokenAmount * 0.2))
                         setFullPayment(!fullPayment)

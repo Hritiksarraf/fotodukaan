@@ -127,14 +127,15 @@ export default function Pages() {
     //     alert('Inviled otp')
     //   });
 
-    if (otpValue == otpWEB) {
-      handleSignUp();
-    }
-    else {
-      setLoading(false);
-      alert('Invalid OTP. Please try again.')
-    }
-
+    // if (otpValue == otpWEB) {
+    //   handleSignUp();
+    // }
+    // else {
+    //   setLoading(false);
+    //   alert('Invalid OTP. Please try again.')
+    // }
+    setVerifyLoading(true)
+    handleSignUp();
   }
 
   const handleSignUp = async () => {
@@ -181,6 +182,7 @@ export default function Pages() {
           theme: 'light',
         });
       }
+      setVerifyLoading(false)
       setTimeout(() => {
         router.push('/log-in');
       }, 2000);
@@ -201,9 +203,9 @@ export default function Pages() {
     }
   };
 
-  useEffect(() => {
-    onCaptchVerify();
-  }, []);
+  // useEffect(() => {
+  //   onCaptchVerify();
+  // }, []);
 
 
   return (
@@ -365,7 +367,7 @@ export default function Pages() {
                 {errors.confirmPassword && <p className="text-red-500 text-sm -mt-5">{errors.confirmPassword}</p>}
                 <button
                   type="submit"
-                  onClick={onSignup}
+                  onClick={(e)=>{OTPVerify(e)}}
                   className="bg-blue-600 w-full px-auto flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
                   {verifyLoading && (
