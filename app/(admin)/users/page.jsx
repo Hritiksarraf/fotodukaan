@@ -136,7 +136,7 @@ function page() {
                                         <div className="flex items-center justify-center mt-5">
                                             <Button
                                                 className="rounded-xl bg-blue-400 text-white"
-                                                onClick={() => handleDelete()}
+                                                onClick={() => handleDelete(selectedUser)}
                                             >
                                                 Delete
                                             </Button>
