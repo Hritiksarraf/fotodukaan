@@ -23,24 +23,34 @@ function page() {
     const getFeelancer = async () => {
         console.log('getting freelancer')
         console.log("id",id)
-        const response = await fetch(`/api/freelancer/${id}`);
-        const data = await response.json();
-        console.log('got freelancerss', data)   
-            if(Array.isArray(data?.booking)&&data?.booking?.length>0){
-            const response = await fetch(`/api/admin/freelancer/${id}`,{
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    orderIds: data?.booking
-                })
-            })
-            const data2 = await response.json();   
-            console.log("dd",data2.bookings)  
-            setBooking(data2?.bookings)
-        }
-        setFreelancer(data);
+        // const response = await fetch(`/api/freelancer/${id}`);
+        // const data = await response.json();
+        // console.log('got freelancerss', data)   
+        //     if(Array.isArray(data?.booking)&&data?.orders?.length>0){
+        //     const response = await fetch(`/api/admin/freelancer/${id}`,{
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({
+        //             orderIds: data?.booking
+        //         })
+        //     })
+        //     const data2 = await response.json();   
+        //     console.log("dd",data2.bookings)  
+        //     setBooking(data2?.bookings)
+        // }
+        // setFreelancer(data);
+        const response = await fetch("/api/dashBoard", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: id }),
+          });
+            const data = await response.json();
+            console.log("data",data)
+            setBooking(data.orders)
     };
     useEffect(()=>{
         // window.location.reload();

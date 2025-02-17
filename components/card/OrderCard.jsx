@@ -32,6 +32,7 @@ function OrderCard({
 
     const router = useRouter()
     useEffect(() => {
+        console.log('here is the order',orders)
         setFinalOrders(orders)
     }, [orders])
     useEffect(() => {
