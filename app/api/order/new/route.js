@@ -11,7 +11,7 @@ export async function POST(req) {
   await connectToDB();
 
   // Log headers to confirm Razorpay signature header presence
-  console.log("Headers:", req.headers);
+  // console.log("Headers:", req.headers);
 
   // Step 1: Retrieve the signature from headers and raw body as ArrayBuffer
   const signature = req.headers.get("x-razorpay-signature"); // Use .get() method
@@ -24,11 +24,11 @@ export async function POST(req) {
     .update(rawBodyString)
     .digest("hex");
 
-  console.log("Expected Signature:", expectedSignature);
-  console.log("Signature from Header:", signature);
+  // console.log("Expected Signature:", expectedSignature);
+  // console.log("Signature from Header:", signature);
 
   if (expectedSignature !== signature) {
-    console.log("Invalid webhook signature");
+    // console.log("Invalid webhook signature");
     return new Response(
       JSON.stringify({ error: "Invalid webhook signature" }),
       { status: 400 }
@@ -37,7 +37,7 @@ export async function POST(req) {
 
   // Step 3: Parse the JSON payload after signature verification
   const payload = JSON.parse(rawBodyString);
-  console.log(payload);
+  // console.log(payload);
 
   try {
     // Extract necessary details from the payload
@@ -65,7 +65,7 @@ export async function POST(req) {
     // Fetch freelancer details
     const freelancer = await Freelancer.findById(freelancerid);
     if (!freelancer) {
-      console.log("Freelancer not found");
+      // console.log("Freelancer not found");
       return new Response(
         JSON.stringify({ error: "Freelancer not found" }),
         { status: 404 }
