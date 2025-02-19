@@ -127,13 +127,13 @@ export default function Pages() {
     //     alert('Inviled otp')
     //   });
 
-    // if (otpValue == otpWEB) {
-    //   handleSignUp();
-    // }
-    // else {
-    //   setLoading(false);
-    //   alert('Invalid OTP. Please try again.')
-    // }
+    if (otpValue == otpWEB) {
+      handleSignUp();
+    }
+    else {
+      setLoading(false);
+      alert('Invalid OTP. Please try again.')
+    }
     setVerifyLoading(true)
     handleSignUp();
   }
@@ -367,7 +367,7 @@ export default function Pages() {
                 {errors.confirmPassword && <p className="text-red-500 text-sm -mt-5">{errors.confirmPassword}</p>}
                 <button
                   type="submit"
-                  onClick={(e)=>{OTPVerify(e)}}
+                  onClick={(e)=>{onSignup(e)}}
                   className="bg-blue-600 w-full px-auto flex gap-1 items-center justify-center py-2.5 text-white rounded"
                 >
                   {verifyLoading && (
