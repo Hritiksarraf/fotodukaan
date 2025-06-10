@@ -38,7 +38,7 @@ export default function Navbar() {
             const decodedUser = jwt.decode(token);
             setUser(decodedUser);
             setUserLogin(true)
-            console.log(decodedUser)
+            // console.log(decodedUser)
         }
 
     }, [])
