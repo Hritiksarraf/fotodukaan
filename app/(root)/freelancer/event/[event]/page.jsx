@@ -94,7 +94,7 @@ export default function Page() {
           </p>
           <div className='flex flex-wrap md:gap-8 md:justify-center justify-between mx-1'>
             {filteredCategory.subcategories.map((subcategory, index) => (
-              <Link href={`/freelancer/event/${decodedEvent}/${subcategory}`} key={index} className="w-[45vw] md:w-[22vw] mx-auto">
+              <Link href={`/freelancer/event/${decodedEvent}/${subcategory}`} key={index} className="w-[30vw] md:w-[22vw] mx-auto">
                 <div className="bg-gradient-to-r from-white rounded-sm to-white dark:text-black md:my-6 my-3 shadow-lg flex flex-col bg-primary/10">
                   <div className="block md:h-64 md:w-64 mx-auto rounded-full pt-4">
                     <img
@@ -105,7 +105,7 @@ export default function Page() {
                   </div>
 
                   <div className="flex flex-col items-center text-center md:mt-4">
-                    <p className="text-xl font-bold my-2 md:my-4">{subcategory}</p>
+                    <p className="text-sm  my-2 md:my-4">{subcategory}</p>
                   </div>
                 </div>
               </Link>

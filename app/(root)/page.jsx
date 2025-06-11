@@ -385,20 +385,20 @@ export default function Home() {
 
           >Services we provide</h1>
         </div>
-        <div className='flex flex-wrap items-center md:justify-center justify-between mx-4 md:mx-0'>
+        <div className='flex flex-wrap gap-1 items-center md:justify-center justify-center mx-4 md:mx-0'>
 
           {Services.map(({ service, index, img, title, link, des }) => {
 
 
             return (
               <Link href={link}>
-                <div key={index} className='relative border-4 rounded-md md:border-[0.4rem] w-[45vw]  md:w-[21vw] md:mx-6 bg-gradient-to-r   from-white to-white  dark:text-black md:my-6 my-2  shadow-lg flex flex-col bg-primary/10  '>
-                  <div className='block h-[45vw]  md:h-[17rem] p-3 md:p-0   rounded-full md:pt-6'>
+                <div key={index} className='relative border-4 rounded-md md:border-[0.4rem] w-[30vw]  md:w-[21vw] md:mx-6 bg-gradient-to-r   from-white to-white  dark:text-black md:my-6 my-2  shadow-lg flex flex-col bg-primary/10  '>
+                  <div className='block h-[30vw]  md:h-[17rem] p-3 md:p-0   rounded-full md:pt-6'>
                     <img src={img} alt="" className=' aspect-square object-cover md:px-10 rounded-sm md:rounded-md h-full w-full' />
                   </div>
 
                   <div className='flex flex-col items-center text-center md:mt-4'>
-                    <p className='md:text-xl mb-2 text-[0.83rem] font-bold md:my-1 '>{title}</p>
+                    <p className='md:text-xl mb-2 text-[0.7rem] mx-2  md:my-1 '>{title}</p>
                     <p className='text-sm hidden md:inline-block mb-8 px-3 '> <span className='font-semibold text-lg'> </span >{des}</p>
 
 
