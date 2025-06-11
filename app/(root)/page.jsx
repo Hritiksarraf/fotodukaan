@@ -242,7 +242,7 @@ export default function Home() {
 
           infinite: true,
           speed: 350,
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
           autoplay: true,
           autoplaySpeed: 4000,
@@ -660,7 +660,7 @@ export default function Home() {
       </section>
 
       <section>
-        <div className='my-12'>
+        <div className='md:my-12 my-5'>
           <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-[18px] lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Our Partners</h3></div>
           <div className='bg-gradient-to-r  from-white to-white'>
             <Slider {...partnerSettings}>
@@ -673,13 +673,13 @@ export default function Home() {
 
                 return (
                   <>
-                    <div key={id} className=' md:w-[20vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-xl  bg-primary/10  '>
-                      <div className='block h-64 w-64  mx-auto rounded-full pt-4'>
+                    <div key={id} className=' w-[45vw] md:w-[20vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black md:my-6  shadow-xl  bg-primary/10  '>
+                      <div className='block md:h-64 md:w-64 p-4 md:p-0  mx-auto rounded-full pt-4'>
                         <img src={img} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
                       </div>
 
-                      <div className='flex flex-col items-center text-center my-4'>
-                        <p className='text-xl font-bold my-1'>{title}</p>
+                      <div className='flex flex-col items-center text-center md:my-4'>
+                        <p className='md:text-xl  font-bold md:my-1'>{title}</p>
 
 
 
