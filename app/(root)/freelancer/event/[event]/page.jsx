@@ -89,23 +89,23 @@ export default function Page() {
       
       {filteredCategory ? (
         <>
-          <p className='text-center font-bold  text-2xl md:text-5xl my-4'>
+          <p className='text-center font-bold  text-2xl md:text-5xl md:my-4'>
             Freelancers for <span className='text-blue-600'>{filteredCategory.name}</span>
           </p>
-          <div className='flex flex-wrap gap-8 justify-center'>
+          <div className='flex flex-wrap md:gap-8 md:justify-center justify-between mx-1'>
             {filteredCategory.subcategories.map((subcategory, index) => (
-              <Link href={`/freelancer/event/${decodedEvent}/${subcategory}`} key={index} className="w-[90vw] md:w-[22vw] mx-auto">
-                <div className="bg-gradient-to-r from-white to-white dark:text-black my-6 shadow-lg flex flex-col bg-primary/10">
-                  <div className="block h-64 w-64 mx-auto rounded-full pt-4">
+              <Link href={`/freelancer/event/${decodedEvent}/${subcategory}`} key={index} className="w-[45vw] md:w-[22vw] mx-auto">
+                <div className="bg-gradient-to-r from-white rounded-sm to-white dark:text-black md:my-6 my-3 shadow-lg flex flex-col bg-primary/10">
+                  <div className="block md:h-64 md:w-64 mx-auto rounded-full pt-4">
                     <img
                       src={subcategoryImages[subcategory]}  // Get image based on subcategory
                       alt={subcategory}
-                      className="aspect-square object-cover rounded-md h-full w-full"
+                      className="aspect-square object-cover p-2 md:p-0 rounded-md h-full w-full"
                     />
                   </div>
 
-                  <div className="flex flex-col items-center text-center mt-4">
-                    <p className="text-xl font-bold my-4">{subcategory}</p>
+                  <div className="flex flex-col items-center text-center md:mt-4">
+                    <p className="text-xl font-bold my-2 md:my-4">{subcategory}</p>
                   </div>
                 </div>
               </Link>

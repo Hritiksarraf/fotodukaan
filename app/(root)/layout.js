@@ -3,6 +3,7 @@ import "../globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import { BookingProvider } from "./context/BookingContext";
+import BottomBar from "@/components/bottomBar/BottomBar";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         <BookingProvider>{children}</BookingProvider>
         <Footer />
+        <BottomBar/>
       </body>
     </html>
   );

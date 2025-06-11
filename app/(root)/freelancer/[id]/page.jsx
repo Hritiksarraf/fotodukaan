@@ -230,7 +230,7 @@ export default function page() {
   minPrice = minPrice === Number.MAX_VALUE ? 0 : minPrice;
   let minamount = minPrice;
   
-  console.log("Minimum Freelancer Price:", minPrice);
+  // console.log("Minimum Freelancer Price:", minPrice);
   
 
 

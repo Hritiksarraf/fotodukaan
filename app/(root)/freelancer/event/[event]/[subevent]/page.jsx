@@ -36,7 +36,7 @@ export default function Page() {
 
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching freelancers:', error);
+      // console.error('Error fetching freelancers:', error);
       setLoading(false);
     }
   };
@@ -64,7 +64,7 @@ export default function Page() {
         <p className='text-center text-2xl md:text-5xl'>No freelancers found for {decodecevent} for {decodecsubevent}.</p>
       ) : ( <>
        <p className='text-center font-bold text-2xl md:text-5xl my-4'>Freelancers for <span className='text-blue-600'>{decodecevent}</span> for <span className='text-yellow-500'>{decodecsubevent}. </span></p>
-      <div className='flex flex-wrap items-center justify-center gap-8'>
+      <div className='flex flex-wrap items-center justify-center gap-4 md:gap-8'>
          
         {data.map((freelancer) => (
           <ServiceCard key={freelancer._id} {...freelancer} />

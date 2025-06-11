@@ -19,7 +19,6 @@ export const GET = async (req, { params }) => {
         city: { $regex: city, $options: "i" }  // case-insensitive search for city
       });
 
-      console.log("Searched freelancers:", searchedFreelancers);  // Debugging
       return new Response(JSON.stringify(searchedFreelancers), { status: 200 });
     } catch (err) {
       console.log(err);

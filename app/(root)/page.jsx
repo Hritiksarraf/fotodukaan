@@ -189,11 +189,12 @@ export default function Home() {
 
           infinite: true,
           speed: 350,
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
           autoplay: true,
           autoplaySpeed: 4000,
           pauseOnHover: true,
+          rows: 1,
         }
       },]
   };
@@ -215,7 +216,7 @@ export default function Home() {
 
           infinite: true,
           speed: 350,
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
           autoplay: true,
           autoplaySpeed: 4000,
@@ -331,11 +332,11 @@ export default function Home() {
       .then(
         () => {
           alert('message sent Successfully')
-          console.log('SUCCESS!');
+          // console.log('SUCCESS!');
         },
         (error) => {
           alert('message faild to send')
-          console.log('FAILED...', error.text);
+          // console.log('FAILED...', error.text);
         },
       );
   };
@@ -353,8 +354,7 @@ export default function Home() {
 
           <h1 className="text-6xl md:text-[10vh] pt-5 md:mt-0 font-bold text-center md:text-left text-white">Find the Best Freelancers <p className="text-yellow-500 h-[5vh] " >{' '}<span className=' text-3xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
 
-          {/* <p className='text-gray-300 border-l-2 px-2 text-left font-light hidden md:block  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Or are you a freelancer ready to showcase your talent and get hired for exciting projects? Our platform connects creative professionals with those who need them, making it easier than ever to hire the right person for the job.</p>
-          <p className='text-gray-300 border-l-2 px-2 text-left font-light md:hidden  my-4 md:my-8 md:mr-48 font-[Halant]'>Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p> */}
+          
           <p className='py-8 text-white text-lg'> Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p>
           <div className="mt-10 sm:mt-2  ">
             <div className="bg-white rounded-md shadow-lg  w-full sm:w-[45vw] f gap-9 space-y-  space-x-4">
@@ -373,7 +373,7 @@ export default function Home() {
             // src='https://images.unsplash.com/photo-1587271407850-8d438ca9fdf2?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
             src='https://wedding-planner-ui-by-mani.vercel.app/endpic1.jpg'
             // src='https://unsplash.com/photos/beautiful-indian-bride-and-groom-hand-with-mehandi-design-BDWH_GDKVCIhttps://plus.unsplash.com/premium_photo-1670524465634-93cf255ffa8b?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5kaWFuJTIwd2VkZGluZyUyMGltYWdlfGVufDB8fDB8fHwwhttps://plus.unsplash.com/premium_photo-1670524465634-93cf255ffa8b?q=80&w=3254&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-            className=" rounded-lg shadow-lg md:w-[60vw] w-full  object-cover rounded-b-[10rem] md:rounded-br-[0rem] md:rounded-bl-[25rem]  h-[40vh] md:h-full"
+            className=" rounded-lg shadow-lg md:w-[60vw] w-full md:inline-block hidden  object-cover rounded-b-[10rem] md:rounded-br-[0rem] md:rounded-bl-[25rem]  h-[40vh] md:h-full"
             alt="Camera"
           />
         </div>
@@ -385,21 +385,21 @@ export default function Home() {
 
           >Services we provide</h1>
         </div>
-        <div className='flex flex-wrap items-center justify-center'>
+        <div className='flex flex-wrap items-center md:justify-center justify-between mx-4 md:mx-0'>
 
           {Services.map(({ service, index, img, title, link, des }) => {
 
 
             return (
               <Link href={link}>
-                <div key={index} className='relative border-[0.4rem] md:w-[21vw] mx-6 bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10  '>
-                  <div className='block md:h-[17rem]   rounded-full pt-6'>
-                    <img src={img} alt="" className=' aspect-square object-cover px-10 rounded-md h-full w-full' />
+                <div key={index} className='relative border-4 rounded-md md:border-[0.4rem] w-[45vw]  md:w-[21vw] md:mx-6 bg-gradient-to-r   from-white to-white  dark:text-black md:my-6 my-2  shadow-lg flex flex-col bg-primary/10  '>
+                  <div className='block h-[45vw]  md:h-[17rem] p-3 md:p-0   rounded-full md:pt-6'>
+                    <img src={img} alt="" className=' aspect-square object-cover md:px-10 rounded-sm md:rounded-md h-full w-full' />
                   </div>
 
-                  <div className='flex flex-col items-center text-center mt-4'>
-                    <p className='text-xl font-bold my-1'>{title}</p>
-                    <p className='text-sm mb-8 px-3 '> <span className='font-semibold text-lg'> </span >{des}</p>
+                  <div className='flex flex-col items-center text-center md:mt-4'>
+                    <p className='md:text-xl mb-2 text-[0.83rem] font-bold md:my-1 '>{title}</p>
+                    <p className='text-sm hidden md:inline-block mb-8 px-3 '> <span className='font-semibold text-lg'> </span >{des}</p>
 
 
 
@@ -415,7 +415,7 @@ export default function Home() {
         <div className="flex bg bg-white rounded-b-[9rem] p-5 md:p-0 md:rounded-r-[17rem] justify-center items-center  md:w-[40%]  ">
           <div className="md:w-[500px] md:h-[500px] rounded-t-[10rem]   flex justify-center  relative">
             <Image
-              src="/assets/hero3.png" // Ensure this image has a transparent background (e.g., PNG)
+              src="/assets/hero3.png" 
 
               objectFit="cover"
               width={1000}
@@ -481,10 +481,6 @@ export default function Home() {
           <Slider {...settings2}>
             {freelancer.map(({ _id, profilePhoto, name, startingPrice, stars, freelancerDetails }) => {
 
-              // const [readMore, setReadMore] = useState(true)
-              // const truncatedText = text.split(' ').length > 20
-              //   ? text.split(' ').slice(0, 20).join(' ')
-              //   : text;
               let minPrice = Number.MAX_VALUE;
 
               Object.keys(freelancerDetails || {}).forEach((key) => {
@@ -511,27 +507,17 @@ export default function Home() {
               return (
                 <>
                   <Link href={`/freelancer/${_id}`} className="">
-                    <div key={_id} className='relative w-[90vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                      <div className='block h-64 w-64  mx-auto rounded-full pt-4'>
+                    <div key={_id} className='relative w-[45vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
+                      <div className='block md:h-64 md:w-64  mx-auto rounded-full pt-4'>
                         <img src={profilePhoto} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
                       </div>
 
                       <div className='flex flex-col items-center text-center mt-4'>
-                        <p className='text-xl font-bold my-1'>{name}</p>
-                        <p className='text-sm'> <span className='font-semibold text-xl'>{minamount} ₹ </span > Starting Price  </p>
+                        <p className='md:text-xl text-md font-bold my-1'>{name}</p>
+                        <p className='md:text-sm text-xs'> <span className='font-semibold md:text-xl text-base'>{minamount} ₹ </span > Starting Price  </p>
 
-                        {/* <div className="flex flex-wrap items-center justify-center gap-y-4 my-4 space-x-2">
-                      
-              {skills.map((skill, index) => (
-                <span
-                  key={index}
-                  className=" text-white text-xs p-2 min-w-20 font-medium mr-2  rounded bg-blue-700 "
-                >
-                  {skill}
-                </span>
-              ))}
-            </div> */}
-                        <div className='h-5 flex'>
+                        
+                        <div className='md:h-5 h-3 flex'>
                           {Array(5).fill(0).map((_, index) => (
                             index < Number(stars.star) ? (
                               <StarIcon key={index} size="small" className="text-yellow-500" />
@@ -541,7 +527,7 @@ export default function Home() {
                           ))}
                         </div>
 
-                        <Link href={`/freelancer/${_id}`} className="bg-blue-500 text-white px-6 py-3 my-4 rounded-full mr-4">Know more</Link>
+                        <Link href={`/freelancer/${_id}`} className="bg-blue-500 text-white p-2 mt-4 mb-2 md:px-6 md:py-3 md:my-4 rounded-full mr-4 md:text-base text-sm">Know more</Link>
 
                       </div>
                     </div>
@@ -600,7 +586,7 @@ export default function Home() {
       <section className='mt-20'>
         <div className='bg-gradient-to-r from-blue-100 to-blue-300'>
           <div className='text-center text-3xl lg:text-9xl'>
-            <h3 className='text-center py-5 text-[18px] lg:text-6xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
+            <h3 className='text-center md:py-5 text-[18px] lg:text-6xl font-extrabold' style={{ fontFamily: 'Caveat' }}>
               Testimonial
             </h3>
           </div>
@@ -615,14 +601,15 @@ export default function Home() {
 
                 return (
                   <>
-                    <div key={id} className='relative md:w-[30vw] mx-auto bg-gradient-to-r h-[21rem] md:h-80 from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
+                    <div key={id} className='relative w-[46vw] md:w-[30vw] mx-auto bg-gradient-to-r  md:h-80 from-white to-white  dark:text-black md:my-6 my-3  shadow-lg flex flex-col bg-primary/10 px-5 '>
                       <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
                         <img src={img} alt="" className='rounded-full h-24 w-24 object-cover ' />
                       </div>
                       <div className='flex flex-col items-center text-center mt-10'>
-                        <p className='text-sm h-28 md:h-20 text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
+                        <p className='text-sm h-28 md:h-20 hidden md:inline-block text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
+                        <p className='text-xs h-28 md:h-20 text-center md:hidden text-gray-500'>{truncatedText} {text.split(' ').length > 10 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
 
-                        <div className='h-5 flex'>
+                        <div className='md:h-5 h-2 flex'>
                           {Array(5).fill(0).map((_, index) => (
                             index < star ? (
                               <StarIcon key={index} size="small" className="text-yellow-500" />
@@ -632,8 +619,8 @@ export default function Home() {
                           ))}
                         </div>
 
-                        <p className='text-xl font-bold my-4'>{name}</p>
-                        <p className='absolute top-0 right-0 dark:text-gray-400  text-9xl font-serif text-black/20'>,,</p>
+                        <p className='md:text-xl text-sm font-bold my-4'>{name}</p>
+                        <p className='absolute top-0 right-0 dark:text-gray-400 text-7xl  md:text-9xl font-serif text-black/20'>,,</p>
                       </div>
                     </div>
                   </>

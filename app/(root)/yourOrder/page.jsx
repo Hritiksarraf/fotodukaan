@@ -9,7 +9,6 @@ import Script from 'next/script';
 import Razorpay from 'razorpay';
 import { useRouter } from 'next/navigation';
 
-
 function OrdersPage() {
   const router = useRouter()
   const [orders, setOrders] = useState([]);
@@ -132,6 +131,10 @@ function OrdersPage() {
     }
   }
 
+  useEffect(() => {
+  if(!localStorage.getItem("token"))router.push('/log-in')
+}, [])
+
   if (loading) {
     return (<div className='min-h-[80vh] w-[100vw]'>
       <Box sx={{ display: 'flex' }}>
@@ -161,10 +164,10 @@ function OrdersPage() {
                   <section className="text-gray-600 body-font overflow-hidden my-5  bg-gradient-to-r from-white to-white rounded-2xl">
                     <div className="container lg:w-[60vw] p-2 md:p-5 py-2 mx-auto  bg-white  ">
                       <div className=" mx-auto p-5 flex flex-wrap   ">
-                      
+
                         {/* <img alt="ecommerce" className="lg:w-1/2 aspect-square w-full lg:h-auto h-64 object-cover object-center rounded" src={'https://gratisography.com/wp-content/uploads/2024/03/gratisography-funflower-800x525.jpg'} /> */}
                         <div className=" w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                        <h1 className=" text-sm title-font font-medium mb-1 text-gray-700 ">Order id: <span className='text-gray-400'>{order._id}</span> </h1>
+                          <h1 className=" text-sm title-font font-medium mb-1 text-gray-700 ">Order id: <span className='text-gray-400'>{order._id}</span> </h1>
                           <Link href={`/freelancer/${order.freelancerId}`}>
                             <h2 className="text-sm title-font text-gray-700 tracking-widest  ">Freelancer</h2>
                             <h1 className=" text-3xl title-font font-medium mb-1 text-blue-700 underline">{order.freelancerName}</h1>
@@ -185,14 +188,14 @@ function OrdersPage() {
                           <div>
                             <h2 className="text-sm title-font text-gray-700 mt-3 tracking-widest">Date</h2>
                             <div className='flex flex-wrap'>
-                            {order.date.split(",").map((date, index) => {
-  const formattedDate = date.split("-").reverse().join("-"); // Converts yyyy-mm-dd to dd-mm-yyyy
-  return (
-    <p key={index} className="md:text-xl text-sm font-bold mb-1 px-2 border-r-2">
-      {formattedDate}
-    </p>
-  );
-})}
+                              {order.date.split(",").map((date, index) => {
+                                const formattedDate = date.split("-").reverse().join("-"); // Converts yyyy-mm-dd to dd-mm-yyyy
+                                return (
+                                  <p key={index} className="md:text-xl text-sm font-bold mb-1 px-2 border-r-2">
+                                    {formattedDate}
+                                  </p>
+                                );
+                              })}
 
                             </div>
                           </div>
@@ -226,7 +229,7 @@ function OrdersPage() {
                             <h1 className='text-xl font-bold'> <span className='font-medium text-lg md:text-xl'>discount Amount</span> - ₹{order.discount}</h1>
                             <h1 className='text-xl font-bold'> <span className='font-medium text-lg md:text-xl'>When freelancer visit you need to pay </span> - ₹{(order.totalAmount - order.discount - order.paidAmount).toFixed(2)}</h1>
                           </div>
-                                {order.freelancerAproved && <h1 className='text-xl font-bold'> <span className='font-medium text-lg md:text-xl text-green-500'>Order Completed !! 🎉</span></h1>}
+                          {order.freelancerAproved && <h1 className='text-xl font-bold'> <span className='font-medium text-lg md:text-xl text-green-500'>Order Completed !! 🎉</span></h1>}
 
                           {(!order.freelancerCancel && !order.customerCancel && !order.freelancerAproved) && <div className='flex justify-between'>
                             <button
