@@ -15,8 +15,18 @@ import SearchBar from '@/components/searchBar/SearchBar';
 import Location from '@/components/location/Location';
 import emailjs from '@emailjs/browser';
 import { useRef } from 'react';
+import { Grid, Paper, Typography, Box } from '@mui/material';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import MovieIcon from '@mui/icons-material/Movie';
+import FlightIcon from '@mui/icons-material/Flight';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import TvIcon from '@mui/icons-material/Tv';
+import DisplaySettingsIcon from '@mui/icons-material/DisplaySettings';
 
 export default function Home() {
+
+
 
   const Services = [
     {
@@ -65,6 +75,57 @@ export default function Home() {
       title: "LED TV",
       // img: "https://maduraievents.in/wp-content/uploads/2014/05/wedding-led-tv-videography.jpg",
       img: "https://5.imimg.com/data5/IOS/Default/2024/9/454121300/VQ/PI/NH/7956633/product-jpeg-500x500.png",
+      link: "/freelancer/type/LED TV",
+      des: "We provide high-definition LED TVs for events and presentations, ensuring a clear and vibrant display for your content."
+    }
+  ];
+  const AppServices = [
+    {
+      title: "Traditional Photographer",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750627844/11647879_gyewo8.png",
+      link: "/freelancer/event/Traditional Photography",
+      des: "Our professional photographers capture the essence of your special moments, from weddings and events to personal and corporate shoots."
+    },
+    {
+      title: "Candid Photographer",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750628380/5_1sasa11_nr0uqw.jpg",
+      link: "/freelancer/event/Candid Photography",
+      des: "Specializing in capturing authentic, unposed moments, our candid photography services provide a natural, storytelling approach to documenting your special events."
+    },
+    {
+      title: "Traditional Videographer",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750628144/JEMA_LUIS_352-13_d2jkia.jpg",
+      link: "/freelancer/event/Traditional Videography",
+      des: "Our videographers create stunning visual narratives that highlight the most important moments of your events, preserving your memories in a cinematic way."
+    },
+    {
+      title: "Cinematographer",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750628921/Screenshot_2025-06-23_at_3.18.11_AM_qe9qvf.png",
+      link: "/freelancer/event/Cinematography",
+      des: "Our talented cinematographers specialize in creating high-quality films that evoke emotion and beautifully capture the essence of your events or projects."
+    },
+    {
+      title: "Drone",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750629039/10974684_nlbty0.jpg",
+      link: "/freelancer/event/Drone",
+      des: "Our skilled drone operators provide breathtaking aerial photography and videography, offering a unique perspective perfect for large events, real estate, and outdoor shoots."
+    },
+    {
+      title: "Crane",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750629186/Screenshot_2025-06-23_at_3.22.43_AM_xgjbdi.png",
+      link: "/freelancer/type/Crane",
+      des: "Our crane operators bring cinematic movement to your videos, ideal for large-scale productions such as concerts, weddings, and film shoots."
+    },
+    {
+      title: "LED wall",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750629806/Screenshot_2025-06-23_at_3.33.08_AM_inexjk.png",
+      link: "/freelancer/type/LED wall",
+      des: "Enhance your events with our LED wall services, providing high-quality visual displays perfect for large gatherings, corporate events, and concerts."
+    },
+    {
+      title: "LED TV",
+      // img: "https://maduraievents.in/wp-content/uploads/2014/05/wedding-led-tv-videography.jpg",
+      img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1750629579/Screenshot_2025-06-23_at_3.29.12_AM_sjbeof.png",
       link: "/freelancer/type/LED TV",
       des: "We provide high-definition LED TVs for events and presentations, ensuring a clear and vibrant display for your content."
     }
@@ -118,7 +179,7 @@ export default function Home() {
     },
     {
       id: 4,
-      name: "Shruti and Ashwany",
+      name: "Shruti",
       text: "From photography to videography, the team was on point. The visuals turned out beautifully, and their professionalism was evident throughout the event.",
       img: "https://res.cloudinary.com/hritiksarraf/image/upload/v1739303167/WhatsApp_Image_2025-02-12_at_01.13.30_yb3ul2.jpg",
       star: 4,
@@ -189,7 +250,7 @@ export default function Home() {
 
           infinite: true,
           speed: 350,
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
           autoplay: true,
           autoplaySpeed: 4000,
@@ -216,7 +277,7 @@ export default function Home() {
 
           infinite: true,
           speed: 350,
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
           autoplay: true,
           autoplaySpeed: 4000,
@@ -242,7 +303,7 @@ export default function Home() {
 
           infinite: true,
           speed: 350,
-          slidesToShow: 2,
+          slidesToShow: 3,
           slidesToScroll: 1,
           autoplay: true,
           autoplaySpeed: 4000,
@@ -269,10 +330,10 @@ export default function Home() {
     const response = await fetch("/api/freelancer", {
       method: "POST",
       headers: {
-          "Content-Type": "application/json"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({}) // Send any required payload if needed
-  });
+    });
     const data = await response.json();
     // console.log('got freelancer', data)
     setFreelancer(data);
@@ -321,7 +382,7 @@ export default function Home() {
 
   //for support mail
   const form = useRef();
-  
+
   const sendEmail = (e) => {
     e.preventDefault();
 
@@ -349,15 +410,15 @@ export default function Home() {
 
       </section>
       {/* Hero Section */}
-      <section className="  bg-cover flex flex-col-reverse -z-50 md:flex-row bg-gradient-to-t md:bg-gradient-to-r from-blue-800 to-blue-400   bg-center w-full min-h-[85vh] h-full pt-20  text-center md:text-left ">
+      <section className="hidden   bg-cover md:flex flex-col-reverse -z-50 md:flex-row bg-gradient-to-t md:bg-gradient-to-r from-blue-800 to-blue-400   bg-center w-full md:min-h-[85vh] h-full  pt-20  text-center md:text-left ">
         <div className=" md:w-[70vw] p-5 md:p-10 md:px-15">
 
-          <h1 className="text-6xl md:text-[10vh] pt-5 md:mt-0 font-bold text-center md:text-left text-white">Find the Best Freelancers <p className="text-yellow-500 h-[5vh] " >{' '}<span className=' text-3xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
+          <h1 className="md:text-6xl text-2xl md:text-[10vh] pt-5 md:mt-0 font-bold text-center md:text-left text-white">Find the Best Freelancers <p className="text-yellow-500 h-[5vh] " >{' '}<span className=' text-3xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
 
-          
-          <p className='py-8 text-white text-lg'> Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p>
+
+          <p className='py-8 text-white hidden md:inline-block text-lg'> Are you looking for a skilled photographer, cinematographer, drone operator, or video editor? Our platform connects creative professionals with those who need them.</p>
           <div className="mt-10 sm:mt-2  ">
-            <div className="bg-white rounded-md shadow-lg  w-full sm:w-[45vw] f gap-9 space-y-  space-x-4">
+            <div className="bg-white rounded-md shadow-lg w-full sm:w-[45vw] hidden md:inline-block gap-9 space-y-  space-x-4">
 
               <SearchBar />
             </div>
@@ -380,12 +441,13 @@ export default function Home() {
       </section>
 
       <section>
-        <div>
-          <h1 className="text-4xl md:text-6xl py-10 text-center text-gradient-to-r from-white to-blue-100"
+        <div className='flex items-start justify-center'>
+          <h1 className="md:text-6xl mt-16 text-3xl md:hidden md:text-[10vh] pt-5 md:mt-0 font-bold text-center md:text-left text-black">Services we provide <p className="text-yellow-500 h-[5vh] " >{' '}<span className=' text-xl md:text-6xl  my-7   md:block stikey '> <span className="txt-rotate" dataPeriod="1000" data-rotate='[ "papper cups", "", "UI/UX Designer" ]'><span className="wrap border-r-4 px-1 border-yellow-950">{text}</span></span></span></p></h1>
+          <h1 className="hidden md:inline-flex mx-auto text-4xl md:text-6xl py-10 text-center text-gradient-to-r from-white to-blue-100"
 
           >Services we provide</h1>
         </div>
-        <div className='flex flex-wrap gap-1 items-center md:justify-center justify-center mx-4 md:mx-0'>
+        <div className=' hidden md:flex flex-wrap gap-1 items-center md:justify-center justify-center mx-4 md:mx-0'>
 
           {Services.map(({ service, index, img, title, link, des }) => {
 
@@ -409,13 +471,38 @@ export default function Home() {
             )
           })}
         </div>
+        <div className='md:hidden flex  flex-wrap gap-1 items-center md:justify-center justify-center mx-4 md:mx-0'>
+          {AppServices.map(({ service, index, icon, img, title, link, des }) => {
+
+
+            return (
+              <Link href={link}>
+                <div key={index} className='relative rounded-md md:border-[0.4rem] w-[22vw]  md:w-[21vw] md:mx-6 bg-gradient-to-r   from-white to-white  dark:text-black md:my-6 my-2   flex flex-col bg-primary/10  '>
+                  <div className='flex items-center justify-center p-3 md:p-0   rounded-full md:pt-6'>
+                    <img src={img} alt="" className=' aspect-square object-cover md:px-10 rounded-sm md:rounded-md h-full w-full' />
+                    {/* {icon} */}
+                    {/* <CameraAltIcon sx={{ fontSize: 50 }} /> */}
+                  </div>
+
+                  <div className='flex flex-col items-center text-center md:mt-4'>
+                    <p className='md:text-xl mb-2 text-[0.7rem] mx-2  md:my-1 '>{title}</p>
+                    <p className='text-sm hidden md:inline-block mb-8 px-3 '> <span className='font-semibold text-lg'> </span >{des}</p>
+
+
+
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
       </section>
 
-      <section className="bg-cover  bg-center w-full py-8  flex flex-col md:flex-row text-center md:text-left bg-gradient-to-b md:bg-gradient-to-r from-white to-blue-300">
+      <section className="hidden bg-cover  bg-center w-full py-8  md:flex flex-col md:flex-row text-center md:text-left bg-gradient-to-b md:bg-gradient-to-r from-white to-blue-300">
         <div className="flex bg bg-white rounded-b-[9rem] p-5 md:p-0 md:rounded-r-[17rem] justify-center items-center  md:w-[40%]  ">
           <div className="md:w-[500px] md:h-[500px] rounded-t-[10rem]   flex justify-center  relative">
             <Image
-              src="/assets/hero3.png" 
+              src="/assets/hero3.png"
 
               objectFit="cover"
               width={1000}
@@ -469,8 +556,8 @@ export default function Home() {
       </section>
 
       <section>
-        <div className='my-0 md:my-10'>
-          <h1 className="text-4xl md:text-6xl pt-10 font-serif text-center text-gradient-to-r from-white to-blue-100"
+        <div className='mb-5 md:my-10'>
+          <h1 className="text-3xl md:text-6xl pt-10 font-serif text-center text-gradient-to-r from-white to-blue-100"
             style={{
               fontFamily: "poppins"
 
@@ -485,49 +572,59 @@ export default function Home() {
 
               Object.keys(freelancerDetails || {}).forEach((key) => {
                 const details = freelancerDetails[key];
-              
+
                 let halfDayPrice = details?.price?.halfDayPrice;
                 let fullDayPrice = details?.price?.fullDayPrice;
                 let weddingFullDayPrice = details?.weddingPrice?.fullDayPrice;
-              
+
                 // Convert to numbers only if they are valid (non-empty and non-zero)
                 halfDayPrice = halfDayPrice && Number(halfDayPrice) > 0 ? Number(halfDayPrice) : Number.MAX_VALUE;
                 fullDayPrice = fullDayPrice && Number(fullDayPrice) > 0 ? Number(fullDayPrice) : Number.MAX_VALUE;
                 weddingFullDayPrice = weddingFullDayPrice && Number(weddingFullDayPrice) > 0 ? Number(weddingFullDayPrice) : Number.MAX_VALUE;
-              
+
                 // Find the minimum of all valid prices
                 minPrice = Math.min(minPrice, halfDayPrice, fullDayPrice, weddingFullDayPrice);
               });
-              
+
               // If minPrice is still MAX_VALUE, set it to 0
               minPrice = minPrice === Number.MAX_VALUE ? 0 : minPrice;
               let minamount = minPrice;
-              
+
 
               return (
                 <>
                   <Link href={`/freelancer/${_id}`} className="">
-                    <div key={_id} className='relative w-[45vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                      <div className='block md:h-64 md:w-64  mx-auto rounded-full pt-4'>
+                    <div key={_id} className='relative w-[30vw] md:w-[22vw] mx-auto bg-gradient-to-r border border-gray-100   from-white to-white  dark:text-black md:my-6  md:shadow-lg flex flex-col bg-primary/10 md:px-5 px-2 '>
+                      <div className='block md:h-64 md:w-64  mx-auto rounded-full md:pt-4 pt-2'>
                         <img src={profilePhoto} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
                       </div>
 
-                      <div className='flex flex-col items-center text-center mt-4'>
-                        <p className='md:text-xl text-md font-bold my-1'>{name}</p>
-                        <p className='md:text-sm text-xs'> <span className='font-semibold md:text-xl text-base'>{minamount} ₹ </span > Starting Price  </p>
+                      <div className='flex flex-col items-center text-center mt-1'>
+                        <p className='md:text-xl text-sm md:font-bold md:my-1'>{name}</p>
+                        <p className='md:text-sm text-[0.5rem] md:hidden'> <span className='md:font-semibold md:text-xl text-xs'>{minamount} ₹ </span >Starting</p>
+                        <p className='md:text-sm text-xs hidden md:inline-block'> <span className='md:font-semibold md:text-xl text-sm'>{minamount} ₹ </span >Starting Price</p>
 
-                        
-                        <div className='md:h-5 h-3 flex'>
+
+                        <div className='md:h-5 h-3 flex md:hidden'>
                           {Array(5).fill(0).map((_, index) => (
                             index < Number(stars.star) ? (
-                              <StarIcon key={index} size="small" className="text-yellow-500" />
+                              <StarIcon key={index} sx={{ fontSize: 12 }} className="text-yellow-500" />
                             ) : (
-                              <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                              <StarBorderIcon key={index} sx={{ fontSize: 12 }} className="text-yellow-500" />
+                            )
+                          ))}
+                        </div>
+                        <div className='md:h-5 h-3 hidden md:flex'>
+                          {Array(5).fill(0).map((_, index) => (
+                            index < Number(stars.star) ? (
+                              <StarIcon key={index} size='small' className="text-yellow-500" />
+                            ) : (
+                              <StarBorderIcon key={index} size='small' className="text-yellow-500" />
                             )
                           ))}
                         </div>
 
-                        <Link href={`/freelancer/${_id}`} className="bg-blue-500 text-white p-2 mt-4 mb-2 md:px-6 md:py-3 md:my-4 rounded-full mr-4 md:text-base text-sm">Know more</Link>
+                        <Link href={`/freelancer/${_id}`} className="  text-blue-500  mt- mb-2 md:px-6 md:py-3 md:my-4 rounded-full md:mr-4 md:text-base text-xs">Know more</Link>
 
                       </div>
                     </div>
@@ -544,7 +641,7 @@ export default function Home() {
 
 
       <section>
-        <h1 className='text-center t lg:text-5xl font-mono  whitespace-no-wrap my-16' style={{ fontFamily: 'Lora', }}>Some of the beautyfull moment captured by our freelancer</h1>
+        <h1 className='text-center text-sm md:text-5xl font-mono  whitespace-no-wrap my-5 md:my-16' style={{ fontFamily: 'Lora', }}>Some of the beautyfull moment captured by our freelancer</h1>
         <div class="ratio ratio-4x3 md:h-[60vh] w-screen " >
           <iframe src="https://www.youtube.com/embed/34Tpyu7oogs?si=7fpy43deQISY6DEJ" title="YouTube video" allowfullscreen="true" className='md:h-[60vh] md:w-[80vw] h-[40vh] w-[90vw] m-auto rounded-2xl '></iframe>
         </div>
@@ -552,28 +649,28 @@ export default function Home() {
 
         <div>
           <section class="text-gray-600 body-font">
-            <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-24  text-[18px] lg:text-7xl  pt-10 font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Our gallery</h3></div>
+            <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center md:py-24  text-[18px] lg:text-7xl  pt-10 font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Our gallery</h3></div>
             <div class="container md:px-32 px-5  mx-auto flex flex-wrap">
-              <div class="flex flex-col md:flex-row flex-wrap md:-m-2 -m-1">
-                <div class="flex flex-col md:flex-row flex-wrap md:w-1/2">
-                  <div class="md:p-2 p-1 md:w-1/2">
+              <div class="flex  flex-row flex-wrap -m-2 ">
+                <div class="flex flex-row flex-wrap w-1/2">
+                  <div class="md:p-2 p-1 w-1/2">
                     <img alt="gallery" class="w-full object-cover h-full object-center block" src={`https://wedding-planner-ui-by-mani.vercel.app/pictureperfect.jpeg`} />
                   </div>
-                  <div class="md:p-2 p-1 md:w-1/2">
+                  <div class="md:p-2 p-1 w-1/2">
                     <img alt="gallery" class="w-full object-cover h-full object-center block" src={`https://wedding-planner-ui-by-mani.vercel.app/fest1.jpeg`} />
                   </div>
-                  <div class="md:p-2 p-1 md:w-full">
+                  <div class="md:p-2 p-1  w-full">
                     <img alt="gallery" class="w-full h-full object-cover object-center block" src={`https://wedding-planner-ui-by-mani.vercel.app/venue2.jpeg`} />
                   </div>
                 </div>
-                <div class="md:flex flex-col hidden md:flex-row flex-wrap md:w-1/2">
+                <div class="flex  flex-row flex-wrap w-1/2">
                   <div class="md:p-2 p-1 w-full">
                     <img alt="gallery" class="w-full h-full object-cover object-center block" src={imgurl} />
                   </div>
-                  <div class="md:p-2 p-1 md:w-1/2">
+                  <div class="md:p-2 p-1 w-1/2">
                     <img alt="gallery" class="w-full object-cover h-full object-center block" src={`https://wedding-planner-ui-by-mani.vercel.app/venue4.jpeg`} />
                   </div>
-                  <div class="md:p-2 p-1 md:w-1/2">
+                  <div class="md:p-2 p-1 w-1/2">
                     <img alt="gallery" class="w-full object-cover h-full object-center block" src={`https://wedding-planner-ui-by-mani.vercel.app/artex.webp`} />
                   </div>
                 </div>
@@ -601,15 +698,15 @@ export default function Home() {
 
                 return (
                   <>
-                    <div key={id} className='relative w-[46vw] md:w-[30vw] mx-auto bg-gradient-to-r  md:h-80 from-white to-white  dark:text-black md:my-6 my-3  shadow-lg flex flex-col bg-primary/10 px-5 '>
-                      <div className='block w-24 h-24 mx-auto rounded-full pt-4'>
-                        <img src={img} alt="" className='rounded-full h-24 w-24 object-cover ' />
+                    <div key={id} className='relative w-[30vw] md:w-[30vw] mx-auto bg-gradient-to-r  md:h-80 from-white to-white  dark:text-black md:my-6 my-3  shadow-lg flex flex-col bg-primary/10 md:px-5 px-2'>
+                      <div className='block w-10 h-8 md:w-24 md:h-24 mx-auto rounded-full pt-4'>
+                        <img src={img} alt="" className='rounded-full h-10 w-10 md:h-24 md:w-24 object-cover ' />
                       </div>
-                      <div className='flex flex-col items-center text-center mt-10'>
-                        <p className='text-sm h-28 md:h-20 hidden md:inline-block text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
-                        <p className='text-xs h-28 md:h-20 text-center md:hidden text-gray-500'>{truncatedText} {text.split(' ').length > 10 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
+                      <div className='flex flex-col items-center text-center mt-8 md:mt-10'>
+                        <p className='text-sm h-16 md:h-20 hidden md:inline-block text-center text-gray-500'>{truncatedText} {text.split(' ').length > 20 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
+                        <p className='text-[0.5rem] h-20 md:h-20 text-center md:hidden text-gray-500'>{truncatedText} {text.split(' ').length > 10 && <button onClick={() => handleReadMoreClick({ img, name, text, star })} className='blue1 inline-block'>...read more</button>}</p>
 
-                        <div className='md:h-5 h-2 flex'>
+                        <div className='md:h-5 h-2 md:flex hidden '>
                           {Array(5).fill(0).map((_, index) => (
                             index < star ? (
                               <StarIcon key={index} size="small" className="text-yellow-500" />
@@ -618,9 +715,18 @@ export default function Home() {
                             )
                           ))}
                         </div>
+                        <div className='md:h-5  flex md:hidden'>
+                          {Array(5).fill(0).map((_, index) => (
+                            index < star ? (
+                              <StarIcon key={index} sx={{fontSize:12}} className="text-yellow-500" />
+                            ) : (
+                              <StarBorderIcon key={index} sx={{fontSize:12}} className="text-yellow-500" />
+                            )
+                          ))}
+                        </div>
 
-                        <p className='md:text-xl text-sm font-bold my-4'>{name}</p>
-                        <p className='absolute top-0 right-0 dark:text-gray-400 text-7xl  md:text-9xl font-serif text-black/20'>,,</p>
+                        <p className='md:text-xl text-xs md:font-bold mb-4'>{name}</p>
+                        <p className='absolute top-0 right-0 dark:text-gray-400 text-5xl  md:text-9xl font-serif text-black/20'>,,</p>
                       </div>
                     </div>
                   </>
@@ -673,13 +779,13 @@ export default function Home() {
 
                 return (
                   <>
-                    <div key={id} className=' w-[45vw] md:w-[20vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black md:my-6  shadow-xl  bg-primary/10  '>
+                    <div key={id} className=' w-[30vw] md:w-[20vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black md:my-6  shadow-xl  bg-primary/10  '>
                       <div className='block md:h-64 md:w-64 p-4 md:p-0  mx-auto rounded-full pt-4'>
                         <img src={img} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
                       </div>
 
                       <div className='flex flex-col items-center text-center md:my-4'>
-                        <p className='md:text-xl  font-bold md:my-1'>{title}</p>
+                        <p className='md:text-xl text-sm  font-bold md:my-1'>{title}</p>
 
 
 
@@ -694,7 +800,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='bg-gradient-to-tr from-white  w-full  to-blue-400'>
+      <section className='hidden md:inline-block bg-gradient-to-tr from-white  w-full  to-blue-400'>
         <div id="contact" className="flex flex-col items-center lg:h-96 justify-center pt-10   text-black dark:text-black">
           <div className="text-black pb-12">
             <div className='text-center  text-3xl lg:text-9xl'><h3 className='text-center py-5  text-4xl lg:text-6xl  font-extrabold  ' style={{ fontFamily: 'Caveat', }} >Get in touch with us</h3></div>
@@ -731,7 +837,7 @@ export default function Home() {
         <div className="h-full" >
           <form
             ref={form}
-            onSubmit={(e)=>sendEmail(e)}
+            onSubmit={(e) => sendEmail(e)}
             method="post"
             className="flex flex-col items-center justify-center "
           >
@@ -803,6 +909,93 @@ export default function Home() {
               MESSAGE
             </button>
           </form>
+        </div>
+      </section>
+      <section className='md:hidden'>
+        <div className=" bg-gradient-to-tr from-white to-blue-100 min-h-screen">
+          {/* Hero section for large screens */}
+
+
+          {/* Redesigned Mobile Contact Info Section */}
+          <section className=' py-10 px-6 sm:px-10'>
+            <h2 className='text-center text-3xl font-bold text-blue-700 mb-10'>Get in touch with us</h2>
+            <div className="flex flex-col gap-6 max-w-sm mx-auto">
+              <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-md">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <PermPhoneMsgIcon className='text-blue-600 text-3xl' />
+                </div>
+                <div>
+                  <p className="text-blue-700 font-semibold text-lg">Phone</p>
+                  <p className='text-black text-sm'>+91 72588 66055</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-md">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <EmailIcon className='text-blue-600 text-3xl' />
+                </div>
+                <div>
+                  <p className="text-blue-700 font-semibold text-lg">Email</p>
+                  <p className='text-black text-sm break-all'>info@fotodukaan.com</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-md">
+                <div className="bg-blue-100 p-2 rounded-full">
+                  <LocationOnIcon className='text-blue-600 text-3xl' />
+                </div>
+                <div>
+                  <p className="text-blue-700 font-semibold text-lg">Location</p>
+                  <p className='text-black text-sm'>154, 1st Floor, Maharaja Kameshwar</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Contact Form Section */}
+          <section className="px-4 pb-10">
+            <form
+              ref={form}
+              onSubmit={sendEmail}
+              className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md"
+            >
+              <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">Have a question?</h3>
+              <p className="text-center text-gray-600 mb-6">Please do not hesitate to send us a message</p>
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Your name"
+                required
+                className="w-full bg-blue-100 border border-yellow-500 text-black rounded-md p-3 mb-4"
+              />
+
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Your Phone No"
+                required
+                pattern="^[0-9]{10}$"
+                inputMode="numeric"
+                maxLength={10}
+                className="w-full bg-blue-100 border border-yellow-500 text-black rounded-md p-3 mb-4"
+              />
+
+              <textarea
+                name="message"
+                placeholder="How can we help you"
+                required
+                className="w-full bg-blue-100 border border-yellow-500 text-black rounded-md p-3 h-32 mb-4"
+              ></textarea>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-md transition"
+              >
+                SEND MESSAGE
+              </button>
+            </form>
+          </section>
         </div>
       </section>
 

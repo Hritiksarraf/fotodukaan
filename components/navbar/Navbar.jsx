@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link"
-import { useEffect, useState , useRef} from "react"
+import { useEffect, useState, useRef } from "react"
 import jwt from "jsonwebtoken";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -50,7 +50,7 @@ export default function Navbar() {
         setTimeout(() => {
             window.location.reload();
         }, 1000);
-           // Reload the page to refresh the state  
+        // Reload the page to refresh the state  
     }
 
     const handleCategoryChange = (e) => {
@@ -63,35 +63,63 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleClick = () => {
-          setProfileState(false);
+            setProfileState(false);
         };
-    
+
         if (profileState) {
-          document.addEventListener("click", handleClick);
+            document.addEventListener("click", handleClick);
         }
-    
+
         return () => {
-          document.removeEventListener("click", handleClick);
+            document.removeEventListener("click", handleClick);
         };
-      }, [profileState, setProfileState]);
+    }, [profileState, setProfileState]);
 
 
     return (
         <nav className={`bg-white shadow-xl z-50 fixed  w-[100vw] p-3  md:text-sm ${state ? "shadow-lg rounded-xl border mx-2 mt-2 md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
             <div className="gap-x-14 items-center max-w-screen-xxl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between  md:block">
-                    <Link href="/">
-                        <img
-                            src="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png"
-                            width={150}
-                            height={50}
-                            alt="fotodukaan logo"
-                        />
-                    </Link>
+                    <div className=" md:hidden">
+                        <Link href="/">
+                            <img
+                                src="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png"
+                                width={93}
+                                height={31}
+                                alt="fotodukaan logo"
+                            />
+                        </Link>
+                    </div>
+                    <div className="hidden md:inline-block">
+                        <Link href="/">
+                            <img
+                                src="https://res.cloudinary.com/hritiksarraf/image/upload/v1728397188/logo-light_bvqacf.png"
+                                width={150}
+                                height={50}
+                                alt="fotodukaan logo"
+                            />
+                        </Link>
+                    </div>
+
                     <div className="md:hidden flex gap-4">
                         <div className="flex ">
                             {userLogin && <div>
-                                <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
+                                <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn h-9 w-9 md:w-12 cursor-pointer md:h-12 rounded-full border-2" />
+
+                            </div>}
+                            {!userLogin && <div className="flex flex-row gap-2 md:hidden items-center">
+                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-1 px-4 text-black font-medium bg-yellow-500 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                    Freelancer?
+                                    {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                            <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                        </svg> */}
+                                </button>
+                                
+                                    <Link href="/log-in" className=" text-blue-500 whitespace-nowrap hover:text-gray-400">
+                                        Log in
+                                    </Link>
+                                
+
 
                             </div>}
                             {profileState && !user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-[#0E2041] w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
@@ -116,9 +144,13 @@ export default function Navbar() {
 
                                 </div>
                             </div>}
+                            {
+
+                            }
                             {profileState && user.freelancer && !state && <div className="absolute translate-y-16  -translate-x-48 bg-[#0E2041] w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
+
 
                                 </div>
                                 <h1 className="text-white font-bold">{user.name}</h1>
@@ -136,22 +168,22 @@ export default function Navbar() {
                         </div>
 
 
-                        <button className="menu-btn text-white hover:text-gray-800"
+                        {userLogin && <button className="menu-btn text-white hover:text-gray-800"
                             onClick={() => setState(!state)}
                         >
                             {
                                 state ? (
 
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" viewBox="0 0 20 20" fill="currentColor">
                                         <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                                     </svg>
                                 ) : (
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 blue1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 blue1">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                                     </svg>
                                 )
                             }
-                        </button>
+                        </button>}
                     </div>
                 </div>
                 <div className={`flex-1 items-center mt-8 md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>

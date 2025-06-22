@@ -39,27 +39,37 @@ export default function ServiceCard({
 
   return (
     <Link href={`/freelancer/${_id}`} className="">
-      <div key={_id} className='relative w-[46vw] md:w-[22vw] mx-auto bg-gradient-to-r   from-white to-white  dark:text-black md:my-6  shadow-lg flex flex-col bg-primary/10 px-5 '>
-        <div className='block md:h-64 md:w-64  mx-auto rounded-full md:pt-4 pt-4'>
+      <div key={_id} className='relative w-[30vw] md:w-[22vw] mx-auto bg-gradient-to-r border border-gray-100   from-white to-white  dark:text-black md:my-6  md:shadow-lg flex flex-col bg-primary/10 md:px-5 px-2 '>
+        <div className='block md:h-64 md:w-64  mx-auto rounded-full md:pt-4 pt-2'>
           <img src={profilePhoto} alt="" className=' aspect-square object-cover rounded-md h-full w-full' />
         </div>
 
-        <div className='flex flex-col items-center text-center mt-4'>
-          <p className='md:text-xl text-md font-bold my-1'>{name}</p>
-          <p className='md:text-sm text-xs'> <span className='font-semibold md:text-xl text-base'>{minamount} ₹ </span > Starting Price  </p>
+        <div className='flex flex-col items-center text-center mt-1'>
+          <p className='md:text-xl text-sm md:font-bold md:my-1'>{name}</p>
+          <p className='md:text-sm text-[0.5rem] md:hidden'> <span className='md:font-semibold md:text-xl text-xs'>{minamount} ₹ </span >Starting</p>
+          <p className='md:text-sm text-xs hidden md:inline-block'> <span className='md:font-semibold md:text-xl text-sm'>{minamount} ₹ </span >Starting Price</p>
 
 
-          <div className='md:h-5 h-3 flex'>
+          <div className='md:h-5 h-3 flex md:hidden'>
             {Array(5).fill(0).map((_, index) => (
               index < Number(stars.star) ? (
-                <StarIcon key={index} size="small" className="text-yellow-500" />
+                <StarIcon key={index}sx={{ fontSize: 12 }} className="text-yellow-500" />
               ) : (
-                <StarBorderIcon key={index} size="small" className="text-yellow-500" />
+                <StarBorderIcon key={index} sx={{ fontSize: 12 }} className="text-yellow-500" />
+              )
+            ))}
+          </div>
+          <div className='md:h-5 h-3 hidden md:flex'>
+            {Array(5).fill(0).map((_, index) => (
+              index < Number(stars.star) ? (
+                <StarIcon key={index} size='small' className="text-yellow-500" />
+              ) : (
+                <StarBorderIcon key={index} size='small' className="text-yellow-500" />
               )
             ))}
           </div>
 
-          <Link href={`/freelancer/${_id}`} className="bg-blue-500 text-white p-2 mt-4 mb-2 md:px-6 md:py-3 md:my-4 rounded-full mr-4 md:text-base text-sm">Know more</Link>
+          <Link href={`/freelancer/${_id}`} className="  text-blue-500  mt- mb-2 md:px-6 md:py-3 md:my-4 rounded-full md:mr-4 md:text-base text-xs">Know more</Link>
 
         </div>
       </div>

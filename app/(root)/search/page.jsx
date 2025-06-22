@@ -114,6 +114,29 @@ export default function SearchPage() {
   const [subCategory, setSubCategory] = useState('');
   const [place, setPlace] = useState('');
   const [loading, setLoading] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState('100vh');
+
+  useEffect(() => {
+  let previousHeight = window.innerHeight;
+
+  const updateHeight = () => {
+    const newHeight = window.innerHeight;
+    setViewportHeight(`${newHeight}px`);
+
+    // Keyboard closed: scroll back to top
+    if (newHeight > previousHeight) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    previousHeight = newHeight;
+  };
+
+  window.addEventListener('resize', updateHeight);
+  updateHeight(); // call once on mount
+
+  return () => window.removeEventListener('resize', updateHeight);
+}, []);
+
 
   const router = useRouter();
 
@@ -122,21 +145,7 @@ export default function SearchPage() {
 
   const isSearchDisabled = !category || (place && !subCategory);
 
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
 
-    const originalHtmlOverflow = html.style.overflow;
-    const originalBodyOverflow = body.style.overflow;
-
-    html.style.overflow = 'hidden';
-    body.style.overflow = 'hidden';
-
-    return () => {
-      html.style.overflow = originalHtmlOverflow;
-      body.style.overflow = originalBodyOverflow;
-    };
-  }, []);
 
   const handleSearch = () => {
     if (isSearchDisabled || loading) return;
@@ -145,8 +154,11 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="sm:hidden h-screen overflow-hidden bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2] px-4 pt-20 pb-24 relative">
-      {/* Header */}
+    <div
+  className="sm:hidden z-30 overflow-hidden bg-gradient-to-br from-[#f5f7fa] to-[#c3cfe2] px-4 pt-20 pb-24 relative"
+  style={{ height: viewportHeight }}
+>
+ {/* Header */}
       <div className="mt-4 text-center mb-4">
         <h1 className="text-xl font-bold text-gray-800">Find Your Freelancer</h1>
         <p className="text-sm text-gray-600 mt-1">
@@ -155,7 +167,7 @@ export default function SearchPage() {
       </div>
 
       {/* Scrollable Form */}
-      <div className="overflow-y-auto h-[calc(100vh-9rem)] pb-6 flex flex-col gap-6">
+      <div className="overflow-y-auto  pb-6 flex flex-col gap-6">
         {/* Category */}
         <div className="bg-white shadow-md rounded-xl p-4">
           <label className="text-sm text-gray-600 font-medium mb-1 block">Select Category</label>
@@ -197,17 +209,14 @@ export default function SearchPage() {
         </div>
 
         {/* Location */}
-        <div className="bg-white shadow-md rounded-xl p-4">
+        <div className="bg-white  shadow-md rounded-xl p-4">
           <label className="text-sm text-gray-600 font-medium mb-2 block">Select Location</label>
           <div className="relative">
             <Location onSelectLocation={setPlace} place={place} />
             <LocationOn className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
           </div>
         </div>
-      </div>
-
-      {/* Search Button */}
-      <div className="fixed bottom-20 left-1/2 transform -translate-x-1/2 w-[90%] text-center">
+        <div className=" bottom-20  transform -z-10  w-[90%] text-center">
         <button
           onClick={handleSearch}
           disabled={isSearchDisabled || loading}
@@ -230,6 +239,10 @@ export default function SearchPage() {
           </p>
         )}
       </div>
+      </div>
+
+      {/* Search Button */}
+      
     </div>
   );
 }

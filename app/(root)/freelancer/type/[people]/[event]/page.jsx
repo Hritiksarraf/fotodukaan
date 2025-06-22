@@ -62,7 +62,7 @@ export default function Page() {
         <p className='text-center text-2xl mt-10 md:text-5xl'>No freelancers found for {decodedpeople} in {decodedplace}.</p>
       ) : (<>
         <p className='text-center font-bold text-2xl md:text-5xl my-10'>Freelancers for <span className='text-blue-600'>{decodedpeople}</span> in <span className='text-yellow-500'>{decodedplace}. </span></p>
-        <div className='flex flex-wrap items-center justify-center  gap-8'>
+        <div className='flex flex-wrap items-center justify-center gap-2 md:gap-8'>
 
           {data.map((freelancer) => (
             <ServiceCard key={freelancer._id} {...freelancer} />
