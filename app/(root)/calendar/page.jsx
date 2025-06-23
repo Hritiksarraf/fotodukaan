@@ -8,6 +8,7 @@ import { TextField } from '@mui/material';
 import { Typography, Box, Paper, useMediaQuery } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import { PickersDay } from '@mui/x-date-pickers';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -138,7 +139,7 @@ function BlockedDatesCalendar() {
 
         // console.log("f", freelancerId)
         // console.log("blockedDates", blockedDates)
-        if (input === null || input === ' ') {
+        if ( false) {
           alert("Please enter a valid reason")
         } else {
           if (blockedDates.length == 1) {
@@ -183,9 +184,9 @@ function BlockedDatesCalendar() {
 
   if (loading) {
     return (<div className='min-h-[80vh] w-[100vw]'>
-        <Box sx={{ display: 'flex' }}>
-            <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
-        <CircularProgress color="inherit" size="8rem" />
+      <Box sx={{ display: 'flex' }}>
+        <div className='pt-80 flex items-center justify-center text-center mx-auto  '>
+          <CircularProgress color="inherit" size="8rem" />
         </div>
       </Box>
     </div>);
@@ -197,8 +198,8 @@ function BlockedDatesCalendar() {
         Mange Your Calender Here
       </div> */}
       <div className='flex md:flex-row flex-col'>
-        <div className='md:w-[35vw] h-[90vh] md:h-[100vh]  '>
-          <div className='md:w-[32vw] h-[90vh] md:h-[100vh] md:fixed md:bg-blue-200'>
+        <div className='md:w-[35vw] h-[70vh] md:h-[100vh]  '>
+          <div className='md:w-[32vw] h-[70vh] md:h-[100vh] md:fixed md:bg-blue-200'>
             <div className='flex flex-col  md:w-[30vw] md:absolute  '>
               <h1 className='text-3xl font-semibold text-center mt-10'>Your calender</h1>
 
@@ -209,7 +210,7 @@ function BlockedDatesCalendar() {
                     sx={{
                       width: isSmallScreen ? '90vw' : '70vw', // Adjust width for small screens
                       padding: '10px',
-                      height: isSmallScreen ? '80vh' : '70vh', // Adjust height for small screens
+                      height: isSmallScreen ? '65vh' : '70vh', // Adjust height for small screens
                       borderRadius: '12px',
                       // backgroundColor: '#f5f7fa',
                       backgroundColor: '#f5f7fa',
@@ -218,51 +219,81 @@ function BlockedDatesCalendar() {
                   >
                     <StaticDatePicker
                       displayStaticWrapperAs="desktop"
-                      openTo="day"
-                      value={selectedDate}
-                      onChange={(newDate) => setSelectedDate(newDate)}
-                      shouldDisableDate={shouldDisableDate}
-                      
-                      renderDay={(day, selectedDates, pickersDayProps) => {
-                        const isDisabled = shouldDisableDate(day);
-                        return (
-                          <PickersDay
-                              {...pickersDayProps}
-                              sx={{
-                                  ...(pickersDayProps.disabled && {
-                                      color: 'red !important',
-                                      border: '1px solid red',
-                                      borderRadius:"3px"
-                                  })
-                              }}
-                          />
-                      );
-                      }}
-                    />
-                    <div>
-                      <div className='w-full flex items-center justify-center flex-col py-4 px-3 md:px-10 md:py-4'>
-
-                        <label className='text-center text-lg md:text-xl pb-2'>Select Available/Unavailable Dates.</label>
-
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <DatePicker
-                            label="Select a date"
-                            name="eventDate"
+                      name="eventDate"
                             value={selectedDate}
-                            minDate={new Date()}
+                            // minDate={new Date()}
                             onChange={(date) => handleInputChange(date)}
+                            // shouldDisableDate={shouldDisableDate}
+                            renderDay={(day, _value, pickersDayProps) => {
+                              const formattedDate = format(day, 'yyyy-MM-dd');
+                              const isBlocked = alreadyBlockedDates.includes(formattedDate);
+
+                              return (
+                                <PickersDay
+                                  {...pickersDayProps}
+                                  day={day}
+                                  sx={{
+                                    ...(isBlocked && {
+                                      backgroundColor: '#ffebee',
+                                      border: '1px solid red',
+                                      color: 'red',
+                                      borderRadius: '8px',
+                                    }),
+                                  }}
+                                />
+                              );
+                            }}
                             renderInput={(params) => (
                               <TextField
                                 {...params}
                                 sx={{
                                   width: '100%',
                                   '& .MuiInputBase-root': {
-                                    // Default height for medium and larger devices
                                     height: '56px',
-                                    '@media (max-width:600px)': {
-                                      // Reduced height for small devices
-                                      height: '56px',
-                                    },
+                                  },
+                                }}
+                              />
+                            )}
+                    />
+                    <div>
+                      {/* <div className='w-full flex items-center justify-center flex-col py-4 px-3 md:px-10 md:py-4'>
+
+                        <label className='text-center text-lg md:text-xl pb-2'>Select Available/Unavailable Dates.</label>
+
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DesktopDatePicker
+                            label="Select a date"
+                            name="eventDate"
+                            value={selectedDate}
+                            // minDate={new Date()}
+                            onChange={(date) => handleInputChange(date)}
+                            // shouldDisableDate={shouldDisableDate}
+                            renderDay={(day, _value, pickersDayProps) => {
+                              const formattedDate = format(day, 'yyyy-MM-dd');
+                              const isBlocked = alreadyBlockedDates.includes(formattedDate);
+
+                              return (
+                                <PickersDay
+                                  {...pickersDayProps}
+                                  day={day}
+                                  sx={{
+                                    ...(isBlocked && {
+                                      backgroundColor: '#ffebee',
+                                      border: '1px solid red',
+                                      color: 'red',
+                                      borderRadius: '8px',
+                                    }),
+                                  }}
+                                />
+                              );
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                sx={{
+                                  width: '100%',
+                                  '& .MuiInputBase-root': {
+                                    height: '56px',
                                   },
                                 }}
                               />
@@ -271,7 +302,7 @@ function BlockedDatesCalendar() {
                         </LocalizationProvider>
 
 
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className='w-full flex items-center justify-center'>
@@ -304,7 +335,7 @@ function BlockedDatesCalendar() {
 
 
 
-        <div className='h-full my-10 md:my-0 md:w-[60vw]'>
+        <div className='h-full mt-20 mb-10 md:my-5 md:w-[60vw]'>
           <div className='  md:mt-16'>
             <h1 className='text-3xl font-semibold text-center md:mb-10'>Your Events</h1>
             <div className=' flex flex-wrap gap-x-10 gap-y-5  items-center justify-center'>
@@ -313,8 +344,8 @@ function BlockedDatesCalendar() {
                   item && typeof item === 'object' ? ( // Check if item is an object
                     <div key={index} className='p-5 md:w-[25vw] w-[90vw] border-2 bg-blue-200 rounded-xl'>
                       <p>
-  Date - {item.date ? new Date(item.date).toLocaleDateString("en-GB") : "N/A"}
-</p>
+                        Date - {item.date ? new Date(item.date).toLocaleDateString("en-GB") : "N/A"}
+                      </p>
 
                       <p>Event - {item.event || "No event information available"}</p>
                     </div>
@@ -324,46 +355,7 @@ function BlockedDatesCalendar() {
             </div>
           </div>
 
-          {/* <div className='h-full mt-24'>
-            <div className='text-2xl font-bold text-center mb-5'>
-              My Events
-            </div>
-            <div className='w-full h-[100vh] flex items-start justify-center'>
-              <div className='w-[80%] grid grid-cols-3 gap-2'>
-                {
-                  events?.map((event) => (
-                    <div key={events.id} className='bg-gray-300 p-4 rounded-lg shadow-md flex items-center flex-col'>
-                      <div className='text-lg font-bold'>{event?.event || ""}</div>
-                      <div className='text-lg font-bold'>{event?.service || ""}</div>
-                      <div className='text-lg font-bold'>
-                        {event.date ? event.date.split('T')[0] : ""}
-                      </div>
-                      <div className='text-lg font-bold'>
-                        <div>Location:</div>
-                        <div>city:{event?.city || ""}</div>
-                        <div>pincode:{event?.pinCode || ""}</div>
-                        <div>address:{event?.address || ""}</div>
-                      </div>
-                      <div>
-                        total amount:{event?.totalAmount || ""}
-                      </div>
-                      <div>
-                        paid amount:{event?.paidAmount || ""}
-                      </div>
-                      <div>
-                        time:{event?.time || ""}
-                      </div>
-                      <div>
-                        customer:{event?.customerName || ""}
-                      </div>
 
-
-                    </div>
-                  ))
-                }
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

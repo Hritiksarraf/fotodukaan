@@ -108,12 +108,12 @@ export default function Navbar() {
 
                             </div>}
                             {!userLogin && <div className="flex flex-row gap-2 md:hidden items-center">
-                                <button onClick={handleLogout} className="flex items-center w-full justify-center gap-x-1 py-1 px-4 text-black font-medium bg-yellow-500 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
+                                <Link href={"/register"} className="flex items-center w-full justify-center gap-x-1 py-1 px-4 text-black font-medium bg-yellow-500 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex">
                                     Freelancer?
                                     {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                                             <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
                                         </svg> */}
-                                </button>
+                                </Link>
                                 
                                     <Link href="/log-in" className=" text-blue-500 whitespace-nowrap hover:text-gray-400">
                                         Log in
@@ -256,16 +256,16 @@ export default function Navbar() {
                     </ul>
                     {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">
-                            <div>
+                            {/* <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>
                             <button onClick={() => { setProfileState(!profileState) }} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 font-medium text-[#0E2041] hover:text-yellow-700 active:bg-[#0E2041] rounded-full md:inline-flex">
                                 {user.name}
-                            </button>
+                            </button> */}
                         </div>
 
-                        {profileState && !user.freelancer && <div className="absolute  md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3  ">
+                        {/* {profileState && !user.freelancer && <div className="absolute  md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3  ">
                             <div>
                                 <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -286,9 +286,9 @@ export default function Navbar() {
                                 </button>
 
                             </div>
-                        </div>}
+                        </div>} */}
                         <div>
-                            {profileState && user.freelancer && <div ref={menuRef} className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
+                            {/* {profileState && user.freelancer && <div ref={menuRef} className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -306,7 +306,7 @@ export default function Navbar() {
                                     </button>
 
                                 </div>
-                            </div>}
+                            </div>} */}
                         </div>
                     </div>) :
                         (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
