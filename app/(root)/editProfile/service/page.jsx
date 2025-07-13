@@ -25,6 +25,9 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true,
+        }
     },
     {
         name: 'Candid Photography',
@@ -39,6 +42,9 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true
+        }
     },
     {
         name: 'Traditional Videography',
@@ -53,6 +59,9 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true
+        }
     },
     {
         name: 'Cinematography',
@@ -67,6 +76,9 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true,
+        }
     },
     {
         name: 'Drone',
@@ -77,6 +89,9 @@ const categories = [
         weddingPrice: {
             fullDayPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true
+        }
     },
     {
         name: 'Crane',
@@ -472,6 +487,7 @@ export default function page() {
                                                         </div>
                                                     )}
                                                 </div>
+
                                                 {category?.weddingPrice && (
                                                     <h3 className="text-lg font-medium mt-4 mb-1 md:w-[70vw] mx-auto">Wedding Pricing:</h3>
                                                 )}
@@ -519,6 +535,27 @@ export default function page() {
                                                         </div>
                                                     )}
                                                 </div>
+
+                                                {category?.birthdayPrice && (
+                                                    <h3 className="text-lg font-medium mt-4 mb-1 md:w-[70vw] mx-auto">Birthday , Aniversary , Engagement Pricing:</h3>
+                                                )}
+                                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:w-[70vw] mx-auto">
+                                                    {category?.birthdayPrice?.fullDayPrice && (
+                                                        <div>
+                                                            <label className="block">Full Day Price:</label>
+                                                            <input
+                                                                type="number"
+                                                                required
+                                                                value={selectedCategories[category.name]?.birthdayPrice?.fullDayPrice}
+                                                                onChange={(e) => handlePriceChange(category.name, 'birthdayPrice', 'fullDayPrice', e.target.value)}
+                                                                className="w-full p-2 border rounded"
+                                                                min="0"
+                                                            />
+
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                
 
 
                                                 {category.name === "Drone" && (

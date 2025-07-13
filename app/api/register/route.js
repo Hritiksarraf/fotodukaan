@@ -52,7 +52,8 @@ export const POST = async (req) => {
         acc[category] = {
           ...details,
           price: details.price || {},
-          weddingPrice: details.weddingPrice || {}
+          weddingPrice: details.weddingPrice || {},
+          birthdayPrice: details.birthdayPrice || {}
         };
       }
       return acc;

@@ -75,6 +75,10 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        // this includes all birthday aniversary , engagement price
+        birthdayPrice: {
+            fullDayPrice: true
+        }
     },
     {
         name: 'Candid Photography',
@@ -89,6 +93,9 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true
+        }
     },
     {
         name: 'Traditional Videography',
@@ -103,6 +110,9 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true,
+        }
     },
     {
         name: 'Cinematography',
@@ -117,6 +127,9 @@ const categories = [
             halfDayPrice: true,
             extraHourPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true
+        }
     },
     {
         name: 'Drone',
@@ -127,6 +140,9 @@ const categories = [
         weddingPrice: {
             fullDayPrice: true,
         },
+        birthdayPrice: {
+            fullDayPrice: true,
+        }
     },
     {
         name: 'Crane',
@@ -257,6 +273,10 @@ export default function Page() {
                 }
                 if (details.price.extraHourPrice === '') {
                     errors[category].price.extraHourPrice = "Extra hour price is required";
+                }
+
+                if(details.birthdayPrice.fullDayPrice === ''){
+                    errors[category].birthdayPrice.fullDayPrice = "Birthday price is required"
                 }
 
                 // Validate wedding prices only if 'Wedding' subcategory is selected
@@ -1078,6 +1098,27 @@ export default function Page() {
                                                             </div>
                                                         )}
                                                     </div>
+                                                    {category?.birthdayPrice && (
+                                                        <h3 className="text-lg font-medium mt-4 mb-1 md:w-[70vw] mx-auto">Birthday , Aniversary , Engagement Pricing:</h3>
+                                                    )}
+                                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:w-[70vw] mx-auto">
+                                                        {category?.birthdayPrice?.fullDayPrice && (
+                                                            <div>
+                                                                <label className="block">Full Day Price:</label>
+                                                                <input
+                                                                    type="number"
+                                                                    required
+                                                                    value={selectedCategories[category.name]?.birthdayPrice?.fullDayPrice}
+                                                                    onChange={(e) => handlePriceChange(category.name, 'birthdayPrice', 'fullDayPrice', e.target.value)}
+                                                                    className="w-full p-2 border rounded"
+                                                                    min="0"
+                                                                />
+                                                                {formErrors[category.name]?.birthdayPrice?.fullDayPrice && (
+                                                                    <p className="text-red-500 text-xs mt-1">{formErrors[category.name].birthdayPrice.fullDayPrice}</p>
+                                                                )}
+                                                            </div>
+                                                        )}
+                                                    </div>
 
 
                                                     {category.name === "Drone" && (
@@ -1131,11 +1172,6 @@ export default function Page() {
                                                             </div>
                                                         </div>
                                                     )}
-
-
-
-
-
                                                 </div>
                                             )}
                                         </div>

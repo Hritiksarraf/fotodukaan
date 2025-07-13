@@ -218,16 +218,17 @@ export default function page() {
     let halfDayPrice= details?.price?.halfDayPrice||"";
     let fullDayPrice = Number(details?.price?.fullDayPrice)||0;
     let wedPrice = Number(details?.weddingPrice?.fullDayPrice)||0;
+    let birthdayPrice = Number(details?.birthdayPrice?.fullDayPrice)||0;
     minfullamount=Math.min(minfullamount, fullDayPrice) 
     minwedamount=Math.min(minwedamount,wedPrice)
     if(halfDayPrice==="" || halfDayPrice===null){
       halfDayPrice=0
       if(minamount===Number.MAX_VALUE){
-        minamount=Math.min(minamount,halfDayPrice)
+        minamount=Math.min(minamount,halfDayPrice,birthdayPrice)
       }
     }else{
       halfDayPrice=Number(halfDayPrice)
-      minamount=Math.min(minamount,halfDayPrice)
+      minamount=Math.min(minamount,halfDayPrice,birthdayPrice)
     }
   });
   if(minamount===Number.MAX_VALUE){
