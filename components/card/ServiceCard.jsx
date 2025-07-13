@@ -20,14 +20,15 @@ export default function ServiceCard({
     let halfDayPrice = details?.price?.halfDayPrice;
     let fullDayPrice = details?.price?.fullDayPrice;
     let weddingFullDayPrice = details?.weddingPrice?.fullDayPrice;
+    let birthdayPrice = details?.birthdayPrice?.fullDayPrice;
 
     // Convert to numbers only if they are valid (non-empty and non-zero)
     halfDayPrice = halfDayPrice && Number(halfDayPrice) > 0 ? Number(halfDayPrice) : Number.MAX_VALUE;
     fullDayPrice = fullDayPrice && Number(fullDayPrice) > 0 ? Number(fullDayPrice) : Number.MAX_VALUE;
     weddingFullDayPrice = weddingFullDayPrice && Number(weddingFullDayPrice) > 0 ? Number(weddingFullDayPrice) : Number.MAX_VALUE;
-
+    birthdayPrice = birthdayPrice && Number(birthdayPrice) > 0 ? Number(birthdayPrice) : Number.MAX_VALUE;
     // Find the minimum of all valid prices
-    minPrice = Math.min(minPrice, halfDayPrice, fullDayPrice, weddingFullDayPrice);
+    minPrice = Math.min(minPrice, halfDayPrice, fullDayPrice, weddingFullDayPrice, birthdayPrice);
   });
 
   // If minPrice is still MAX_VALUE, set it to 0
