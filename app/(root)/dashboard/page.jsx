@@ -29,6 +29,9 @@ function OrdersPage() {
   const [cancelReason, setCancelReason] = useState('');
   const [cancelOrderId, setCancelOrderId] = useState(null);
   const [formError, setFormError] = useState('');
+  const [otpWEB, setOtpWEB] = useState('');
+  const [otp, setOtp] = useState('');
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -134,70 +137,96 @@ function OrdersPage() {
   };
 
   //for otp start here
-  function onCaptchVerify() {
-    if (!window.recaptchaVerifier) {
-      try {
-        window.recaptchaVerifier = new RecaptchaVerifier(
-          auth,
-          "recaptcha-container",
-          {
-            size: "invisible",
-            callback: (response) => {
-              // console.log("reCAPTCHA solved:", response);
-            },
-            "expired-callback": () => {
-              // console.log("reCAPTCHA expired");
-            },
-          }
-        );
-        window.recaptchaVerifier.render().then((widgetId) => {
-          window.recaptchaWidgetId = widgetId;
-          setRecaptchaLoaded(true);
-        });
-      } catch (error) {
-        // console.error("Error initializing reCAPTCHA:", error);
-      }
-    }
-  }
+  // function onCaptchVerify() {
+  //   if (!window.recaptchaVerifier) {
+  //     try {
+  //       window.recaptchaVerifier = new RecaptchaVerifier(
+  //         auth,
+  //         "recaptcha-container",
+  //         {
+  //           size: "invisible",
+  //           callback: (response) => {
+  //             // console.log("reCAPTCHA solved:", response);
+  //           },
+  //           "expired-callback": () => {
+  //             // console.log("reCAPTCHA expired");
+  //           },
+  //         }
+  //       );
+  //       window.recaptchaVerifier.render().then((widgetId) => {
+  //         window.recaptchaWidgetId = widgetId;
+  //         setRecaptchaLoaded(true);
+  //       });
+  //     } catch (error) {
+  //       // console.error("Error initializing reCAPTCHA:", error);
+  //     }
+  //   }
+  // }
 
   const sendOTP = async (e, oid, cphone) => {
     e.preventDefault();
 
     setOrderId(oid);
-    if (!recaptchaLoaded) {
-      alert("error sending otp");
-    }
-    const appVerifier = window.recaptchaVerifier;
+    
     const phoneNumber = "+91" + String(cphone);
-    signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-      .then((confirmationResult) => {
-        window.confirmationResult = confirmationResult;
-        setEnterOtp(true);
-      })
-      .catch((error) => {
-        // console.error("Error sending OTP:", error);
+    // signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    //   .then((confirmationResult) => {
+    //     window.confirmationResult = confirmationResult;
+    //     setEnterOtp(true);
+    //   })
+    //   .catch((error) => {
+       
+    //   });
+    const res = await fetch("/api/send-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber: phoneNumber }),
       });
+      const response = await res.json();
+
+      if (response.status) {
+        setOtpWEB(response.otp);
+        // setVerifyLoading(false)
+        setOtp(true);
+      }
+      else {
+        alert(response.message)
+        // setVerifyLoading(false)
+      }
+
+      setEnterOtp(true);
   };
 
   function OTPVerify(e) {
+    // e.preventDefault();
+    // setOtpLoading(true);
+    // window.confirmationResult
+    //   .confirm(otpValue)
+    //   .then(async (res) => {
+    //     // console.log(res);
+    //     handleworkstart();
+    //   })
+    //   .catch((err) => {
+    //     // console.log("Invalid OTP:", err);
+    //     setOtpLoading(false);
+    //     alert('Inviled otp')
+    //   });
+
     e.preventDefault();
     setOtpLoading(true);
-    window.confirmationResult
-      .confirm(otpValue)
-      .then(async (res) => {
-        // console.log(res);
-        handleworkstart();
-      })
-      .catch((err) => {
-        // console.log("Invalid OTP:", err);
-        setOtpLoading(false);
+    
+    if (otpValue == otpWEB) {
+      handleworkstart();
+    }
+    else {
+      setOtpLoading(false);
         alert('Inviled otp')
-      });
+    }
   }
 
-  useEffect(() => {
-    onCaptchVerify();
-  }, [orders]);
+  
 
   if (loading) {
     return (

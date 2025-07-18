@@ -256,16 +256,16 @@ export default function Navbar() {
                     </ul>
                     {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">
-                            {/* <div>
+                            <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
 
                             </div>
                             <button onClick={() => { setProfileState(!profileState) }} className="profile-btn flex items-center justify-center gap-x-1 py-2 px-4 font-medium text-[#0E2041] hover:text-yellow-700 active:bg-[#0E2041] rounded-full md:inline-flex">
                                 {user.name}
-                            </button> */}
+                            </button>
                         </div>
 
-                        {/* {profileState && !user.freelancer && <div className="absolute  md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3  ">
+                        {profileState && !user.freelancer && <div className="absolute  md:translate-y-32 bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4 justify-center rounded-2xl  p-3  ">
                             <div>
                                 <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -286,9 +286,9 @@ export default function Navbar() {
                                 </button>
 
                             </div>
-                        </div>} */}
+                        </div>}
                         <div>
-                            {/* {profileState && user.freelancer && <div ref={menuRef} className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
+                            {profileState && user.freelancer && <div ref={menuRef} className=" absolute translate-y-10 -translate-x-[11vw] h-[95vh] bg-blue-600 w-[80vw] md:w-60 flex-col flex items-center gap-4  rounded-2xl  p-3 ">
                                 <div>
                                     <img src={user.profilePhoto} alt="" className="w-12 h-12 rounded-full border-2" />
 
@@ -306,7 +306,7 @@ export default function Navbar() {
                                     </button>
 
                                 </div>
-                            </div>} */}
+                            </div>}
                         </div>
                     </div>) :
                         (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">

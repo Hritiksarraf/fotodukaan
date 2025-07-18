@@ -65,7 +65,7 @@ function BlockedDatesCalendar() {
     })
     const blockedDates2 = await data.json();
     // console.log("bd2", blockedDates2)
-    setAllEvents(blockedDates2)
+    setAllEvents(blockedDates2.reverse())
     setInitialEvents(blockedDates2)
     const blockedDates = []
     blockedDates2.map((ele) => blockedDates.push(ele?.date || ""))
