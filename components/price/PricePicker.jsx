@@ -87,6 +87,10 @@ export default function PricePicker({ freelancerData }) {
             const isany = selectedSubcategory === 'Birthday' || selectedSubcategory === 'Anniversary' || selectedSubcategory === 'Engagement';
             const selectedPrice = isWedding ? weddingPrice : isany ? birthdayPrice : price;
 
+            if(isany && !birthdayPrice){
+                setSelectedSubcategory("");
+                alert('You cannot book as price details is not availabe ')
+            }
             if (selectedPrice) {
                 const basePrice = selectedPrice[timeOption];
 
