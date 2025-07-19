@@ -254,7 +254,7 @@ export default function Navbar() {
 </select>
                         </li> */}
                     </ul>
-                    {userLogin ? (<div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
+                    {userLogin ? (<div className="hidden md:flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         <div className="flex ">
                             <div>
                                 <img onClick={() => { setProfileState(!profileState) }} src={user.profilePhoto} alt="" className=" profile-btn w-12 cursor-pointer h-12 rounded-full border-2" />
